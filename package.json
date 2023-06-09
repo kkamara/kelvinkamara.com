@@ -1,0 +1,35 @@
+{
+    "name": "kelvinkamara.com",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node src/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kkamara/kelvinkamara.com.git"
+    },
+    "author": "https://kelvinkamara.com",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/kkamara/kelvinkamara.com/issues"
+    },
+    "homepage": "https://github.com/kkamara/kelvinkamara.com#readme",
+    "dependencies": {
+        "cookie-parser": "^1.4.4",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-minify-html": "^0.12.0",
+        "form-data": "^4.0.0",
+        "mailgun.js": "^9.0.1",
+        "pug": "^3.0.1",
+        "sanitize": "^2.1.0"
+    },
+    "devDependencies": {
+        "concurrently": "^6.2.0",
+        "nodemon": "^2.0.12",
+        "open": "^8.2.1"
+    }
+}

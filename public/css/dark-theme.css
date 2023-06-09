@@ -1,0 +1,34 @@
+body {
+    background-image: url(/img/background.min.gif);
+}
+
+.hero-content .blog-description,
+.subscribe_form p,
+.header-area .logo h2,
+.post-content .title,
+.post-content .post-card-excerpt,
+.post-content .tags,
+a
+ {
+    color: #fff;
+}
+
+.post-content * {
+    color: #fff !important;
+}
+
+.pub-link,
+.site-footer * {
+    color: #000 !important;
+}
+
+.modal-body a {
+    color: #343f44;
+}
+
+#top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(1),
+#top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(2),
+.post-card:nth-child(2n+1) .post-content .title::before,
+.post-card:nth-child(2n) .post-content::before {
+    background: #fff;
+}

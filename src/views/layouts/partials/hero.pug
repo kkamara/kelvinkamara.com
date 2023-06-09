@@ -1,0 +1,79 @@
+.hero-area.d-flex.justify-content-between.align-items-center.flex-wrap
+    .publication-cover(style=`\
+        background-image: url(${asset('img/profile.min.jpg')});\
+        background-position: 0px -28px;\
+    `)
+    .hero-right.px-2
+        .hero-content
+            h1.blog-description Award-Winning Web Developer
+        include ./subscribe
+        form(action="https://www.paypal.com/donate", 
+            method="post", target="_top", style={
+                'position': 'relative',
+                'margin-left': '23px',
+                'margin-top': '23px',
+            })
+            input(type="hidden", name="hosted_button_id", value="GCCWYL4HNKGQQ")
+            input(type="image", src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button")
+            img(alt="", border="0", src="https://www.paypal.com/en_GB/i/scr/pixel.gif", width="1", height="1")
+        .hero-menu-link
+            a(href="https://github.com/kkamara",
+                style={ outline: "none" })
+                i.fab.fa-github-square.fa-2x.header-icon(style={ "margin-right": '-2.5px', })
+            | &nbsp; &nbsp;
+            a#contact-me-link.d-flex.align-items-center(href="" data-toggle="modal" data-target="#contactMeModal")
+                span.pr-2 contact ME
+                i.arrow_right.feature-post-arrow
+    i.arrow_down.hero-bottom-arrow
+// Modal
+#contactMeModal.modal.hero-modal.left(tabindex="-1" role="dialog" aria-labelledby="contactMeModalTitle" aria-hidden="true")
+    .modal-dialog.modal-dialog-centered(role="document")
+        .modal-content
+            .modal-header
+                h5#exampleModalLongTitle.modal-title
+                    | Contact me
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") ×
+            .modal-body
+                form#contact-form.container
+                    .col-md-12
+                        p
+                            | Let's discuss ways in which we can fulfill your
+                            | needs.
+                        a(href="mailto:kamaracomputers@gmail.com")
+                            | Send me an email&nbsp;
+                            i.far.fa-envelope.pub-icon.fa-2x
+                        br
+                        a(href="tel:+447956666734")
+                            | Give me a call&nbsp;
+                            i.fas.fa-phone.pub-icon.fa-2x
+                    br
+                    .col-md-12
+                        .form-group
+                            label(for="name")
+                            | Name&nbsp;
+                            input#name.form-control(name="name" type="text" required)
+                        .form-group
+                            label(for="email")
+                            | Email&nbsp;
+                            input#email.form-control(name="email" type="email" required)
+                        .form-group
+                            label(for="message") Message
+                            textarea#message.form-control(name="message")
+                        .form-group.text-center
+                            button#submit.btn.btn-primary(name="submit") Submit
+.modalbox.success.col-sm-8.col-md-6.col-lg-5.center.animate(style="display: none;")
+    .icon
+        i.fas.fa-check.fa-4x.modal-icon
+    // /.icon
+    h1 Success!
+    p Your message has been sent.
+    button.close-success.btn(type="button") Ok
+.modalbox.error.col-sm-8.col-md-6.col-lg-5.center.animate(style="display: none;")
+    .icon
+        i.far.fa-thumbs-down.fa-4x.modal-icon
+    // /.icon
+    h1 Oh no!
+    p
+    | Oops! Something went wrong, you should try again.
+    button.close-error.btn(type="button") Try again

@@ -1,0 +1,24 @@
+header.header-area.home-page-navbar.inner-page-navbar
+    .container-fluid
+        .row
+            .col-sm-12
+                .header-content.d-flex.justify-content-between.align-items-center.py-3
+                    .logo.flex-3
+                        a.site-logo(href="/")
+                            h2.logo-text=appName.toUpperCase() 
+                    .header-right.flex-1.justify-content-end
+                        .right-push-menu
+                            ul.d-flex.align-items-center
+                                li.menu-icon.ml-3
+                                    span.menu-bar
+                                        span.single-bar
+                                        span.single-bar
+.push-back-menu
+    .close-icon.text-white
+        i.icon_close
+    .menu-content
+        ul
+            li.nav-home.nav-current(role="presentation")
+                a(href="#top") Home
+            li.nav-work(role="presentation")
+                a(href="#work") Work
