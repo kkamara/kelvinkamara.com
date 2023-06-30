@@ -1,5 +1,5 @@
-const path = require('node:path')
-const { log, } = require('node:console')
+const path = require('path')
+const { log, } = require('console')
 const minifyHTML = require("express-minify-html")
 const cookieParser = require("cookie-parser")
 const sanitize = require('sanitize')
