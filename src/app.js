@@ -38,9 +38,9 @@ app.post(
     "/api/contact",
     async (req, res) => {
         const data = {
-            name: req.queryString('name') || "",
-            email: req.queryString('email') || "",
-            message: req.queryString('message') || ""
+            name: req.bodyString('name') || "",
+            email: req.bodyEmail('email') || "",
+            message: req.bodyString('message') || ""
         }
         let errorMsg = ""
 
