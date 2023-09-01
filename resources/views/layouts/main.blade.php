@@ -33,7 +33,11 @@
             <span>
               {{ config("app.name") }} © 2020
             </span>
-            <a href="https://github.com/kkamara" style="outline: none;">
+            <a 
+                href="https://github.com/kkamara" 
+                style="outline: none;"
+                class="header-icon-container"
+            >
                 <i 
                     class="fab fa-github-square fa-3x header-icon"
                     style="margin-left: 2.5px; margin-right 10px;"

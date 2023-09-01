@@ -27,6 +27,10 @@
   padding-top: 0px !important;
 }
 
+footer .header-icon-container:hover {
+  text-decoration: none;
+}
+
 @media only screen and (max-width: 1024px) {
     .publication-cover {
       background-position: 0px 80px !important;
