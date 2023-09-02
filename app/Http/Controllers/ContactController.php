@@ -22,10 +22,13 @@ class ContactController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
+        $name = htmlspecialchars($request->get("name"));
+        $email = htmlspecialchars($request->get("email"));
+        $message = htmlspecialchars($request->get("message"));
         Mail::to(config("mail.to_address"))->send(new ContactForm(
-            $request->get("name"),
-            $request->get("email"),
-            $request->get("message")
+            $name,
+            $email,
+            $message
         ));
         return response()->json([ "message" => "Success" ]);
     }
