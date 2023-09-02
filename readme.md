@@ -105,6 +105,8 @@ php artisan test --testsuite=Feature
 
 ## Misc
 
+This website was first made with PHP and the Laravel framework. It then spent years as a Nodejs Javascript app. At 01-Sep-2023 I put this website back to a PHP app with the Laravel 10 framework.
+
 [See Laravel 10 movies app.](https://github.com/kkamara/movies)
 
 [See Laravel 10 GDPR Users app.](https://github.com/kkamara/users-api-laravel-10-php-app-5)
