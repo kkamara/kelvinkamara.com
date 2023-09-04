@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>{{ config("app.name") }} - Award Winning Software Engineer</title>

@@ -84,9 +84,6 @@ $(document).ready(function() {
 
         // send ajax request
         $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-            },
             url: "/api/contact",
             global: false,
             type: "POST"
