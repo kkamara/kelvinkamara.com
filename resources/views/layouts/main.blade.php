@@ -30,7 +30,7 @@
     <footer class="site-footer">
         <p>
             <span>
-              {{ config("app.name") }} © 2020
+              {{ config("app.name") }} © 2024
             </span>
             <a 
                 href="https://github.com/kkamara" 
