@@ -7,8 +7,8 @@
         </p>
         <p>
             Specializing in backend server development Kel was fortunate to achieve
-            a <a style="color:blue;" href="{{asset('award.jpg')}}">UK Government Award</a> 
-            for his work with secure web systems.
+            the <a style="color:blue;" href="{{asset('award.jpg')}}">UK Government 
+            Recognition Award</a> for his work with secure web systems.
         </p>
     </form>
 </div>
