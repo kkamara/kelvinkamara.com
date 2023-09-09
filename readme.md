@@ -1,6 +1,6 @@
-![kelvinkamara.com-light-2.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light-2.png)
+![kelvinkamara.com-light.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png)
 
-![kelvinkamara.com-dark-2.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark-2.png)
+![kelvinkamara.com-dark.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png)
 
 # kelvinkamara.com
 
