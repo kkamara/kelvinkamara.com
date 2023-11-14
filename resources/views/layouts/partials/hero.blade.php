@@ -41,6 +41,15 @@
                     style="margin-right: -2.5px;"
                 ></i>
             </a>
+            <a 
+                href="https://www.linkedin.com/in/kelvin-kamara-2ab84629b/"
+                style="outline: none;"
+            >
+                <i 
+                    class="fab fa-linkedin fa-2x header-icon"
+                    style="margin-right: -2.5px;margin-left:15px"
+                ></i>
+            </a>
             &nbsp; &nbsp;
             <a
                 id="contact-me-link"

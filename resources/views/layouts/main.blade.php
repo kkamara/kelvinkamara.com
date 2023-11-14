@@ -42,6 +42,16 @@
                     style="margin-left: 2.5px; margin-right 10px;"
                 ></i>
             </a>
+            <a 
+                href="https://www.linkedin.com/in/kelvin-kamara-2ab84629b/" 
+                style="outline: none;"
+                class="header-icon-container"
+            >
+                <i 
+                    class="fab fa-linkedin fa-3x header-icon"
+                    style="margin-left: 2.5px; margin-right 10px;"
+                ></i>
+            </a>
             @if($darkMode !== null && $darkMode === "on")
                 <a href="/">
                     <i class="fas fa-toggle-on fa-3x"></i>
