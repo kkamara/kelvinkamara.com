@@ -42,7 +42,7 @@
                 ></i>
             </a>
             <a 
-                href="https://www.linkedin.com/in/kelvin-kamara-2ab84629b/"
+                href="https://www.linkedin.com/in/kelvin-kamara"
                 style="outline: none;"
             >
                 <i 
