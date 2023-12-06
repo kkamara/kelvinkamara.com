@@ -4,7 +4,7 @@
 
 # kelvinkamara.com
 
-Award-winning Web Developer.
+(2020) Award-winning Web Developer.
 
 Kelvin Kamara has over 10 years competency in both frontend & backend solutions. He is a firm believer in using the right tool for the job.
 
