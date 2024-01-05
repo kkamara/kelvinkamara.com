@@ -41,4 +41,8 @@ footer .header-icon-container:hover {
   .featured-text {
     display: none;
   }
+  .pub-link-tel {
+    display: block;
+    margin-left: 0px !important;
+  }
 }
