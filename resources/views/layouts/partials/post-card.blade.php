@@ -108,7 +108,7 @@
                 group brands Tessuti, Ultimate Outdoors and more. I built an 
                 order management system for JD’s warehouse managing team for which 
                 I had ownership. I built that with DynamoDB, AWS Amplify & Serverless 
-                with React and Material ui on the frontend.
+                with React and Material UI on the frontend.
             </p>
         </div>
         <div class="tags">
