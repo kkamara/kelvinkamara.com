@@ -76,7 +76,7 @@
             <p>
                 American Golf being the largest golf retailer in Europe; AG
                 required a custom site for their blogging needs, complete
-                with Google maps integration.
+                with Google Maps integration.
             </p>
         </div>
         <div class="tags">
