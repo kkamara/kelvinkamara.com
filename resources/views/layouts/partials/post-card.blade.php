@@ -103,7 +103,7 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                Working with fullstack javascript: Nodejs, React & React Native, 
+                Working with full-stack JavaScript: Nodejs, React & React Native, 
                 Typescript, Electron. I worked on the mobile app for JD and 
                 group brands Tessuti, Ultimate Outdoors and more. I built an 
                 order management system for JD’s warehouse managing team for which 
