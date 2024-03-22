@@ -12,15 +12,13 @@ Specializing in backend server development Kel was fortunate to achieve a UK Gov
 
 ![government award](https://www.kelvinkamara.com/award.jpg)
 
-* [Tinker](#tinker)
-
 * [Installation](#installation)
 
 * [Usage](#usage)
 
 * [Api Documentation](#api-documentation)
 
-* [Run Tests](#run-tests)
+* [Unit Tests](#unit-tests)
 
 * [Misc](#misc)
 
@@ -28,106 +26,69 @@ Specializing in backend server development Kel was fortunate to achieve a UK Gov
 
 * [License](#license)
 
-## Tinker
-
-```bash
-php artisan tinker
-> $u = new \App\Models\User;
-= App\Models\User {#6216}
-```
-
 ## Installation
 
-* [PHP and MySQL](https://www.apachefriends.org/download.html)
-* [Yarn](https://yarnpkg.com/getting-started/install) (can be installed with `npm i -g yarn`)
-* [https://laravel.com/docs/10.x/installation](https://laravel.com/docs/10.x/installation)
-* [https://laravel.com/docs/10.x/mix#main-content](https://laravel.com/docs/10.x/mix#main-content)
-
-Create our environment file.
+* [https://laravel.com/docs/11.x/installation](https://laravel.com/docs/11.x/installation)
+* [https://laravel.com/docs/11.x/vite#main-content](https://laravel.com/docs/11.x/vite#main-content)
 
 ```bash
+# Create our environment file.
 cp .env.example .env
-```
-
-Install our app dependencies.
-
-```bash
+# Install our app dependencies.
 composer i
-```
-
-Generate app key.
-
-```bash
-# php artisan key:generate
-composer run post-create-project-cmd
-```
-
-Run migrations with seeders.
-
-```bash
+php artisan key:generate
+# Before running the next command:
+# Update your database details in .env
 php artisan migrate --seed
-```
-
-Install javascript required packages.
-
-```bash
-yarn && yarn build
-# Do `yarn dev` during development to see live changes
-# of your blade and js and css/scss dependencies with vite.config.js
+npm install
+npm run build
 ```
 
 ## Usage
 
-* [https://github.com/kkamara/laravel-makefile](https://github.com/kkamara/laravel-makefile)
-* [https://laravel.com/docs/10.x/sail#main-content](https://laravel.com/docs/10.x/sail#main-content)
-
 ```bash
-php artisan serve --port 3000
+php artisan serve --port=3000
 ```
 
 ## Api Documentation
 
 ```bash
-php artisan route:list -vvv
-# example output:
-...
-POST       api/user ............................ login › Api\UserController@login
-GET|HEAD   api/user/authorize .................. Api\UserController@authorizeUser
-POST       api/user/register ................... Api\UserController@register
-...
+php artisan route:list
 ```
 
-## Run Tests
+## Unit Tests
 
 ```bash
-php artisan test --testsuite=Feature
+php artisan test --filter=Unit
 ```
 
 ## Misc
 
-This website was first made with PHP and the Laravel framework. It then spent years as a Nodejs Javascript app. At 01-Sep-2023 I put this website back to a PHP app with the Laravel 10 framework.
+[See MRVL Desktop.](https://github.com/kkamara/mrvl-desktop)
 
-[See Laravel 10 movies app.](https://github.com/kkamara/movies)
-
-[See Laravel 10 GDPR Users app.](https://github.com/kkamara/users-api-laravel-10-php-app-5)
+[See MRVL Web.](https://github.com/kkamara/mrvl-web)
 
 [See Github to Bitbucket Backup Repo Updater.](https://github.com/kkamara/ghbbupdater)
 
-[See CRM 2 Laravel 10.](https://github.com/kkamara/crm-2-laravel-10)
+[See PHP Docker Skeleton.](https://github.com/kkamara/php-docker-skeleton)
 
-[See laravel makefile](https://github.com/kkamara/laravel-makefile)
+[See Laravel 10 API 3.](https://github.com/kkamara/laravel-10-api-3)
 
-[See Laravel 9 food nutrition facts search web app.](https://github.com/kkamara/food-nutrition-facts-search-web-app)
+[See movies app.](https://github.com/kkamara/movies)
+
+[See food nutrition facts search web app.](https://github.com/kkamara/food-nutrition-facts-search-web-app)
+
+[See ecommerce web.](https://github.com/kkamara/ecommerce-web)
+
+[See city maps mobile.](https://github.com/kkamara/city-maps-mobile)
+
+[See ecommerce mobile.](https://github.com/kkamara/ecommerce-mobile)
 
 [See crm.](https://github.com/kkamara/crm)
 
-[See php scraper.](https://github.com/kkamara/php-scraper)
+[See birthday currency.](https://github.com/kkamara/birthday-currency)
 
-[See amazon scraper.](https://github.com/kkamara/amazon-scraper)
-
-[See python amazon scraper 2.](https://github.com/kkamara/selenium-py)
-
-[See wordpress.](https://github.com/kkamara/wordpress)
+[See PHP scraper.](https://github.com/kkamara/php-scraper)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
