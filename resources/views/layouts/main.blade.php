@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/modal-styles.css') }}"/>
     <link href="{{ asset('css/font-awesome.min.css') }}"/>
-    @if($darkMode !== null && $darkMode === "on")
+    @if($darkMode === null || $darkMode === "on")
       <link rel="stylesheet" href="{{ asset('css/dark-theme.css') }}"/>
     @endif
 </head>  
@@ -52,12 +52,12 @@
                     style="margin-left: 2.5px; margin-right 10px;"
                 ></i>
             </a>
-            @if($darkMode !== null && $darkMode === "on")
-                <a href="/">
+            @if($darkMode === null || $darkMode === "on")
+                <a href="/?darkMode=off">
                     <i class="fas fa-toggle-on fa-3x"></i>
                 </a>
             @else
-              <a href="/?darkMode=on">
+              <a href="/">
                   <i class="fas fa-toggle-off fa-3x"></i>
               </a>
             @endif
