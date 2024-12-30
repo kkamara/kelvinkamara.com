@@ -32,3 +32,12 @@ a
 .post-card:nth-child(2n) .post-content::before {
     background: #fff;
 }
+
+@media only screen and (max-width: 991px) {
+    .navbar-header {
+      background-color: #000 !important;
+    }
+    .navbar-header .logo-text {
+      color: #fff !important;
+    }
+}

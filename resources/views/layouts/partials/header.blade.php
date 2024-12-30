@@ -1,7 +1,7 @@
 <header class="header-area home-page-navbar inner-page-navbar">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 navbar-header">
                 <div 
                     class="header-content d-flex justify-content-between align-items-center py-3"
                 >
