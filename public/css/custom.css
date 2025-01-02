@@ -31,6 +31,15 @@ footer .header-icon-container:hover {
   text-decoration: none;
 }
 
+.gov-award-link {
+  color: blue;
+  text-decoration: underline;
+}
+
+.gov-award-link:hover {
+  color: lightblue;
+}
+
 @media only screen and (max-width: 1024px) {
     .publication-cover {
       background-position: 0px 80px !important;

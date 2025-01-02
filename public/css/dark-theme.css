@@ -26,6 +26,15 @@ a
     color: #343f44;
 }
 
+.gov-award-link {
+  color: white;
+  text-decoration: underline;
+}
+
+.gov-award-link:hover {
+  color: red;
+}
+
 #top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(1),
 #top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(2),
 .post-card:nth-child(2n+1) .post-content .title::before,
