@@ -28,6 +28,8 @@ Specializing in backend server development Kel was fortunate to achieve a UK Gov
 
 ## Installation
 
+* [XAMPP: Apache, MariaDB (MySQL alternative), & PHP](https://www.apachefriends.org/)
+* If you find that the MariaDB XAMPP service fails to start (I get this on Windows) then install MySQL manually [here](https://dev.mysql.com/downloads/mysql/)
 * [https://laravel.com/docs/11.x/installation](https://laravel.com/docs/11.x/installation)
 * [https://laravel.com/docs/11.x/vite#main-content](https://laravel.com/docs/11.x/vite#main-content)
 
@@ -48,6 +50,7 @@ npm run build
 
 ```bash
 php artisan serve --port=3000
+# Website accessible at http://localhost:3000
 ```
 
 ## Api Documentation
