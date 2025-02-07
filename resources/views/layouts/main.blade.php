@@ -9,7 +9,7 @@
     <meta name="keywords" content="Award Winning, Build, Websites, Web Apps, Mobile Apps, Desktop Apps"/>
     <meta name="author" content="Kelvin Kamara"/>
     <meta name="title" content="Kelvin Kamara - Award Winning Software Engineer"/>
-    <meta name="description" content="Kelvin Kamara has over 10 years competency in both frontend & backend systems. Specializing in backend technologies, Kelvin has achieved a UK Government award for his works on secure web systems."/>
+    <meta name="description" content="Mr. Kelvin Kamara has over 10 years competency in both frontend & backend solutions. He is a firm believer in using the right tool for the job. Specialising in backend server development, Kel was fortunate to achieve the UK Government Cabinet Office Recognition Award, on April 2019, for his work with secure web systems."/>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}"/>
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
