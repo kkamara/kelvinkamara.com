@@ -9,7 +9,7 @@ class HomeController extends Controller
     public function home(Request $request) {
         $darkMode = null;
         if (
-            false === $request->has("darkMode") || 
+            true === $request->has("darkMode") && 
             $request->query("darkMode") === "on"
         ) {
             $darkMode = "on";
