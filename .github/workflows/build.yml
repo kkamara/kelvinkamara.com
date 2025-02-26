@@ -6,6 +6,17 @@ jobs:
   laravel:
     name: Tests Pipeline (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: 'secret'
+          MYSQL_DATABASE: 'kelvin_kamara'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'secret'
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       fail-fast: false
       matrix:
@@ -26,8 +37,14 @@ jobs:
       - name: Prepare environment
         run: |
           cp .env.example .env
+          sed -i "s/DB_CONNECTION=sqlite/DB_CONNECTION=mysql/g" .env
+          sed -i "s/DB_FOREIGN_KEYS=true/# DB_FOREIGN_KEYS=true/g" .env
+          sed -i "s/# DB_PORT=3306/DB_PORT=3306/g" .env
           sed -i "s/3306/${{ job.services.mysql.ports['3306'] }}/g" .env
-          sed -i "s/DB_PASSWORD=/DB_PASSWORD=secret/g" .env
+          sed -i "s/# DB_PASSWORD=/DB_PASSWORD=secret/g" .env
+          sed -i "s/# DB_USERNAME=root/DB_USERNAME=user/g" .env
+          sed -i "s/# DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/g" .env
+          sed -i "s/# DB_DATABASE=kelvin_kamara/DB_DATABASE=kelvin_kamara/g" .env
       - name: Clear config cache
         run: php artisan config:clear
       - name: Generate key
