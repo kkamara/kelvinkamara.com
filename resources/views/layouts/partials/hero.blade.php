@@ -63,7 +63,7 @@
             </a>
         </div>
     </div>
-    <i class="arrow_down hero-bottom-arrow"></i>
+    <i class="arrow_down hero-bottom-arrow arrow-down-icon"></i>
 </div>
 {{-- Modal --}}
 <div 
