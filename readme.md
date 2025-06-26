@@ -67,31 +67,19 @@ php artisan test --filter=Unit
 
 ## Misc
 
-[See MRVL Desktop.](https://github.com/kkamara/mrvl-desktop)
+[See NodeJS ReactJS Boilerplate](https://github.com/kkamara/nodejs-reactjs-boilerplate).
 
-[See MRVL Web.](https://github.com/kkamara/mrvl-web)
+[See PHP ReactJS Boilerplate](https://github.com/kkamara/php-reactjs-boilerplate).
 
-[See Github to Bitbucket Backup Repo Updater.](https://github.com/kkamara/ghbbupdater)
+[See ReactJS Native Mobile App Boilerplate](https://github.com/kkamara/ReactJSNativeMobileAppBoilerplate).
 
-[See PHP Docker Skeleton.](https://github.com/kkamara/php-docker-skeleton)
+[See MRVL Desktop](https://github.com/kkamara/mrvl-desktop).
 
-[See Laravel 10 API 3.](https://github.com/kkamara/laravel-10-api-3)
+[See MRVL Web](https://github.com/kkamara/mrvl-web).
 
-[See movies app.](https://github.com/kkamara/movies)
+[See NodeJS Docker Skeleton](https://github.com/kkamara/nodejs-docker-skeleton).
 
-[See food nutrition facts search web app.](https://github.com/kkamara/food-nutrition-facts-search-web-app)
-
-[See ecommerce web.](https://github.com/kkamara/ecommerce-web)
-
-[See city maps mobile.](https://github.com/kkamara/city-maps-mobile)
-
-[See ecommerce mobile.](https://github.com/kkamara/ecommerce-mobile)
-
-[See crm.](https://github.com/kkamara/crm)
-
-[See birthday currency.](https://github.com/kkamara/birthday-currency)
-
-[See PHP scraper.](https://github.com/kkamara/php-scraper)
+[See NodeJS Scraper](https://github.com/kkamara/nodejs-scraper).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
