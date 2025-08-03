@@ -50,6 +50,15 @@
                     style="margin-right: -2.5px;margin-left:15px"
                 ></i>
             </a>
+            <a 
+                href="https://www.facebook.com/realkelvinkamara"
+                style="outline: none;"
+            >
+                <i 
+                    class="fab fa-facebook-square fa-2x header-icon"
+                    style="margin-right: -2.5px;margin-left:15px"
+                ></i>
+            </a>
             &nbsp; &nbsp;
             <a
                 id="contact-me-link"

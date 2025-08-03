@@ -52,6 +52,16 @@
                     style="margin-left: 2.5px; margin-right 10px;"
                 ></i>
             </a>
+            <a 
+                href="https://www.facebook.com/realkelvinkamara" 
+                style="outline: none;"
+                class="header-icon-container"
+            >
+                <i 
+                    class="fab fa-facebook-square fa-3x header-icon"
+                    style="margin-left: 2.5px; margin-right 10px;"
+                ></i>
+            </a>
             @if($darkMode === "on")
                 <a href="/">
                     <i class="fas fa-toggle-on fa-3x"></i>
