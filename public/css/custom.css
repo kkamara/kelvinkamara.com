@@ -27,7 +27,7 @@
   padding-top: 0px !important;
 }
 
-footer .header-icon-container:hover {
+footer.site-footer .footer-icon-container:hover {
   text-decoration: none;
 }
 
@@ -38,6 +38,35 @@ footer .header-icon-container:hover {
 
 .gov-award-link:hover {
   color: lightblue;
+}
+
+.hero-menu-link > a:first-child > .header-icon {
+  margin-right: -2.5px;
+  margin-left: 0px !important; /* first item to have 0px left-margin */
+}
+
+.hero-menu-link > a > .header-icon {
+  margin-right: -2.5px;
+  margin-left: 15px; /* remaining items to have 15px left-margin */
+}
+
+footer.site-footer .footer-icon-container > .footer-icon {
+  margin-left: 2.5px;
+  margin-right 10px;
+}
+
+.publication-cover {
+  background-position: 0px -28px !important;
+}
+
+.paypal-donate-form {
+  position: relative;
+  margin-left: 23px;
+  margin-top: 23px;
+}
+
+.modalbox.success, .modalbox.error {
+  display: none;
 }
 
 @media only screen and (max-width: 1024px) {

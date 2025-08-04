@@ -1,7 +1,7 @@
 <div class="hero-area d-flex justify-content-between align-items-center flex-wrap">
     <div 
         class="publication-cover" 
-        style="background-image: url({{asset('img/profile.min.jpg')}}); background-position: 0px -28px;"
+        style="background-image: url({{asset('img/profile.min.jpg')}});"
     ></div>
     <div class="hero-right px-2">
         <div class="hero-content">
@@ -12,7 +12,7 @@
             action="https://www.paypal.com/donate"
             method="post"
             target="_top"
-            style="position: relative; margin-left: 23px; margin-top: 23px;"
+            class="paypal-donate-form"
         >
             <input type="hidden" name="hosted_button_id" value="GCCWYL4HNKGQQ"/>
             <input 
@@ -32,32 +32,14 @@
             />
         </form>
         <div class="hero-menu-link">
-            <a 
-                href="https://github.com/kkamara"
-                style="outline: none;"
-            >
-                <i 
-                    class="fab fa-github-square fa-2x header-icon"
-                    style="margin-right: -2.5px;"
-                ></i>
+            <a href="https://github.com/kkamara">
+                <i class="fab fa-github-square fa-2x header-icon"></i>
             </a>
-            <a 
-                href="https://www.linkedin.com/in/kelvin-kamara"
-                style="outline: none;"
-            >
-                <i 
-                    class="fab fa-linkedin fa-2x header-icon"
-                    style="margin-right: -2.5px;margin-left:15px"
-                ></i>
+            <a href="https://www.linkedin.com/in/kelvin-kamara">
+                <i class="fab fa-linkedin fa-2x header-icon"></i>
             </a>
-            <a 
-                href="https://www.facebook.com/realkelvinkamara"
-                style="outline: none;"
-            >
-                <i 
-                    class="fab fa-facebook-square fa-2x header-icon"
-                    style="margin-right: -2.5px;margin-left:15px"
-                ></i>
+            <a href="https://www.facebook.com/realkelvinkamara">
+                <i class="fab fa-facebook-square fa-2x header-icon"></i>
             </a>
             &nbsp; &nbsp;
             <a
@@ -136,7 +118,7 @@
         </div>
     </div>
 </div>
-<div class="modalbox success col-sm-8 col-md-6 col-lg-5 center animate" style="display: none;">
+<div class="modalbox success col-sm-8 col-md-6 col-lg-5 center animate">
     <div class="icon">
         <i class="fas fa-check fa-4x modal-icon"></i>
     </div>
@@ -146,7 +128,7 @@
         Ok
     </button>
 </div>
-<div class="modalbox error col-sm-8 col-md-6 col-lg-5 center animate" style="display: none;">
+<div class="modalbox error col-sm-8 col-md-6 col-lg-5 center animate">
     <div class="icon">
         <i class="far fa-thumbs-down fa-4x modal-icon"></i>
     </div>

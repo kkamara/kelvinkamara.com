@@ -33,34 +33,22 @@
               {{ config("app.name") }} © 2025
             </span>
             <a 
-                href="https://github.com/kkamara" 
-                style="outline: none;"
-                class="header-icon-container"
+                href="https://github.com/kkamara"
+                class="footer-icon-container"
             >
-                <i 
-                    class="fab fa-github-square fa-3x header-icon"
-                    style="margin-left: 2.5px; margin-right 10px;"
-                ></i>
+                <i class="fab fa-github-square fa-3x footer-icon"></i>
             </a>
             <a 
-                href="https://www.linkedin.com/in/kelvin-kamara" 
-                style="outline: none;"
-                class="header-icon-container"
+                href="https://www.linkedin.com/in/kelvin-kamara"
+                class="footer-icon-container"
             >
-                <i 
-                    class="fab fa-linkedin fa-3x header-icon"
-                    style="margin-left: 2.5px; margin-right 10px;"
-                ></i>
+                <i class="fab fa-linkedin fa-3x footer-icon"></i>
             </a>
             <a 
-                href="https://www.facebook.com/realkelvinkamara" 
-                style="outline: none;"
-                class="header-icon-container"
+                href="https://www.facebook.com/realkelvinkamara"
+                class="footer-icon-container"
             >
-                <i 
-                    class="fab fa-facebook-square fa-3x header-icon"
-                    style="margin-left: 2.5px; margin-right 10px;"
-                ></i>
+                <i class="fab fa-facebook-square fa-3x footer-icon"></i>
             </a>
             @if($darkMode === "on")
                 <a href="/">
