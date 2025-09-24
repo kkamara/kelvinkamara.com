@@ -1,5 +1,5 @@
 body {
-    background-image: url(/img/background.min.gif);
+  background-image: url(/img/background.min.gif);
 }
 
 .hero-content .blog-description,
@@ -9,20 +9,20 @@ body {
 .post-content .tags,
 a
  {
-    color: #fff;
+  color: #fff;
 }
 
 .post-content * {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .pub-link,
 .site-footer * {
-    color: #000 !important;
+  color: #000 !important;
 }
 
 .modal-body a {
-    color: #343f44;
+  color: #343f44;
 }
 
 .gov-award-link {
