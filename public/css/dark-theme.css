@@ -4,7 +4,6 @@ body {
 
 .hero-content .blog-description,
 .subscribe_form p,
-.header-area .logo h2,
 .post-content .title,
 .post-content .post-card-excerpt,
 .post-content .tags,
@@ -39,6 +38,10 @@ a
   color: #fff;
 }
 
+.site-logo > .logo-text {
+  color: #000;
+}
+
 #top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(1),
 #top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(2),
 .post-card:nth-child(2n+1) .post-content .title::before,
@@ -52,5 +55,8 @@ a
     }
     .navbar-header .logo-text {
       color: #fff !important;
+    }
+    .site-logo > .logo-text {
+      color: #fff;
     }
 }
