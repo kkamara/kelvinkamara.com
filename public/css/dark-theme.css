@@ -46,17 +46,17 @@ a
 #top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(2),
 .post-card:nth-child(2n+1) .post-content .title::before,
 .post-card:nth-child(2n) .post-content::before {
-    background: #fff;
+  background: #fff;
 }
 
 @media only screen and (max-width: 991px) {
-    .navbar-header {
-      background-color: #000 !important;
-    }
-    .navbar-header .logo-text {
-      color: #fff !important;
-    }
-    .site-logo > .logo-text {
-      color: #fff;
-    }
+  .navbar-header {
+    background-color: #000 !important;
+  }
+  .navbar-header .logo-text {
+    color: #fff !important;
+  }
+  .site-logo > .logo-text {
+    color: #fff;
+  }
 }
