@@ -70,9 +70,9 @@ footer.site-footer .footer-icon-container > .footer-icon {
 }
 
 @media only screen and (max-width: 1024px) {
-    .publication-cover {
-      background-position: 0px 80px !important;
-    }
+  .publication-cover {
+    background-position: 0px 80px !important;
+  }
 }
 
 @media only screen and (max-width: 750px) {
