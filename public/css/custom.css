@@ -69,9 +69,25 @@ footer.site-footer .footer-icon-container > .footer-icon {
   display: none;
 }
 
-@media only screen and (max-width: 1024px) {
+/* Phones dimensions */
+@media only screen and (max-width: 431px) {
   .publication-cover {
     background-position: 0px 80px !important;
+  }
+}
+
+/* Responsive dimensions */
+@media only screen and (min-width: 432px) and (max-width: 991px) {
+  .publication-cover {
+    background-position: 0px 25px !important;
+  }
+}
+
+/* iPad Pro and Nest Hub dimension */
+@media only screen and (width: 1024px) {
+  .publication-cover {
+    background-position: -198px 0px !important;
+    background-repeat: no-repeat; /* Nest Hub-specific */
   }
 }
 
