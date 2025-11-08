@@ -15,4 +15,11 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @include("layouts.partials.recommendations")
+            </div>
+        </div>
+    </div>
 @stop
