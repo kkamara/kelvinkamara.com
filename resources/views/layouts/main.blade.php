@@ -14,9 +14,11 @@
     <link rel="stylesheet" href="{{ asset('css/theme.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}"/>
+    <!-- Removed the following line because previous line imports all font-awesome. -->
+    <!-- <link href="{{ asset('css/font-awesome.min.css') }}"/> -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/modal-styles.css') }}"/>
-    <link href="{{ asset('css/font-awesome.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/recommendations.css') }}"/>
     @if($darkMode === "on")
       <link rel="stylesheet" href="{{ asset('css/dark-theme.css') }}"/>
     @endif

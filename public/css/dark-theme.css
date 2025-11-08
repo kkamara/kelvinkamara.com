@@ -49,6 +49,35 @@ a
   background: #fff;
 }
 
+/* Recommendations styles */
+
+.testimonials {
+  color: #fff;
+}
+
+cite {
+  color: #fff;
+}
+
+.bx-pager-item {
+  color:#fff;
+}
+
+.bx-pager-link.active {
+  background:#fff;
+  color:#000;
+}
+
+.testimonial blockquote {
+  border-color: #fff;
+}
+
+.testimonials-header {
+  color: #fff;
+}
+
+/* End recommendations styles */
+
 @media only screen and (max-width: 991px) {
   .navbar-header {
     background-color: #000 !important;

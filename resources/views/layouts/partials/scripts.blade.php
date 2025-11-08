@@ -3,7 +3,7 @@
     Site Scripts
     ======================================
 -->
-<script src="{{ asset('/plugins/jquery.js') }}"></script>
+<script src="{{ asset('/plugins/recommendations/jquery-3-2-1.min.js') }}"></script>
 <script src="{{ asset('/plugins/owl-carousel/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('/plugins/isotope.min.js') }}"></script>
 <script src="{{ asset('/plugins/imagesloaded.pkgd.min.js') }}"></script>
@@ -45,8 +45,10 @@
         }
     }
 </script>
+<script src="{{ asset('/plugins/recommendations/jquery.bxslider.min.js') }}"></script>
 <script src="{{ asset('/js/main.js') }}"></script>
 <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/js/all.min.js') }}"></script>
 <script src="{{ asset('/js/custom.js') }}"></script>
 <script src="{{ asset('/js/fontawesome.min.js') }}"></script>
+<script src="{{ asset('/js/recommendations.js') }}"></script>

@@ -1,0 +1,56 @@
+.bx-has-pager /* nav */ {
+  text-align:center;
+  margin-top:2em;
+  margin-bottom: 30px;
+}
+
+.bx-pager-item {
+  display:inline-block;
+  margin:0 .5em;
+  color:#000;
+}
+
+.bx-pager-link {
+  width:44px;
+  height:44px;
+  line-height:44px;
+  display:block;
+}
+
+.bx-pager-link.active {
+  background:#000;
+  border-radius:22px;
+  color:#fff;
+}
+
+cite {
+  color:grey;
+  text-align:center;
+  width:100%;
+  float:left;
+  font-size:1.4em;
+}
+
+.testimonials /* wrap */ {
+  text-align:center;
+  color:#000;
+  margin-bottom: 30px;
+}
+
+.testimonials-header {
+  margin-bottom: 30px;
+}
+
+.testimonial blockquote {
+  font-size:1.4em;
+
+  @media all and ( max-width:640px ) { /* sample of some responsive style */
+    font-size:1.1em;
+  }
+}
+
+cite {
+  @media all and ( max-width:640px ) { /* sample of some responsive style */
+    font-size:1.1em;
+  }
+}

@@ -67,6 +67,10 @@ php artisan test --filter=Unit
 
 ## Misc
 
+This website uses an older version of the premium website theme, [Writter](https://themeforest.net/item/writter-minimal-membership-subscription-ghost-theme/35463290?srsltid=AfmBOoqjqZ4qwuzO1v5SrwAStq4XaNxurwmS6KA9bfGcWLJssXkbHvum).
+
+The recommendations section uses the reviews slider at https://codepen.io/legwork/pen/PKaVpE .
+
 [See NodeJS ReactJS Boilerplate](https://github.com/kkamara/nodejs-reactjs-boilerplate).
 
 [See PHP ReactJS Boilerplate](https://github.com/kkamara/php-reactjs-boilerplate).
