@@ -48,3 +48,9 @@ cite {
     font-size:1.1em;
   }
 }
+
+cite {
+  @media all and ( max-width:640px ) { /* sample of some responsive style */
+    font-size:1.1em;
+  }
+}
