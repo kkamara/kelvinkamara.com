@@ -3,6 +3,18 @@
 <div class="testimonials">
     <div class="testimonial">
         <blockquote>
+            I am pleased to recommend Kelvin Kamara, with whom I work on a video game project at Joystick. Kelvin is responsible for the backend services that support the project, including the databases, account systems, and web services that manage user IDs, authentication, and live connectivity.
+            <br/>
+            <br/>
+            Thanks to his work, we’ve been able to integrate the game with a stable and reliable service layer, which has made progress on the project much smoother than it otherwise would have been. His contributions have been central to ensuring that our online features function correctly and can scale as the project grows.
+            <br/>
+            <br/>
+            Day to day, Kelvin is easy to work with and brings a calm, solution-focused mindset to every discussion. He listens carefully, communicates clearly, and is quick to translate requirements into concrete, actionable steps. Working with him is consistently collaborative and constructive, and he reliably follows through on what he commits to.
+        </blockquote>
+        <cite>- Jesus Palacios, Lead Games Developer at Joystick LLC (December 2025)</cite>
+    </div>
+    <div class="testimonial">
+        <blockquote>
             During his time with us, Kelvin consistently demonstrated exceptional technical expertise, professionalism, and creativity in every project he worked on.
             <br/>
             <br/>
