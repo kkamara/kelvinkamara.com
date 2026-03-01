@@ -41,6 +41,9 @@
             <li class="nav-work" role="presentation">
                 <a href="#work">Work</a>
             </li>
+            <li class="nav-recommendations" role="presentation">
+                <a href="#recommendations">Recommendations</a>
+            </li>
         </ul>
     </div>
 </div>

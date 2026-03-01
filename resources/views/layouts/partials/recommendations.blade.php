@@ -1,4 +1,9 @@
-<h3 class="testimonials-header">Recommendations</h3>
+<h3
+    class="testimonials-header"
+    id="recommendations"
+>
+    Recommendations
+</h3>
 
 <div class="testimonials">
     <div class="testimonial">
