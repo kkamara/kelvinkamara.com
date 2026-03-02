@@ -101,4 +101,48 @@ $(document).ready(function() {
                 $(".error").toggle();
             });
     });
+
+    handleNavCurrentClass();
 });
+
+// Handle setting `nav-current` class on nav links.
+function handleNavCurrentClass() {
+    const navHome = $(".nav-home");
+    const navWork = $(".nav-work");
+    const navRecommendations = $(".nav-recommendations");
+
+    navHome.removeClass("nav-current");
+    navWork.removeClass("nav-current");
+    navRecommendations.removeClass("nav-current");
+
+    switch(window.location.hash) {
+        case "":
+        case "#top":
+            navHome.addClass("nav-current");
+            break;
+        case "#work":
+            navWork.addClass("nav-current");
+            break;
+        case "#recommendations":
+            navRecommendations.addClass("nav-current");
+            break;
+    }
+
+    navHome.on("click", function() {
+        navHome.addClass("nav-current");
+        navWork.removeClass("nav-current");
+        navRecommendations.removeClass("nav-current");
+    });
+
+    navWork.on("click", function() {
+        navWork.addClass("nav-current");
+        navHome.removeClass("nav-current");
+        navRecommendations.removeClass("nav-current");
+    });
+
+    navRecommendations.on("click", function() {
+        navRecommendations.addClass("nav-current");
+        navHome.removeClass("nav-current");
+        navWork.removeClass("nav-current");
+    });
+}
