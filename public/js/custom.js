@@ -117,7 +117,7 @@ function handleNavCurrentClass() {
 
     switch(window.location.hash) {
         case "":
-        case "#top":
+        case "#home":
             navHome.addClass("nav-current");
             break;
         case "#work":

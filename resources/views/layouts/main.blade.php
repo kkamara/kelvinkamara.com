@@ -23,7 +23,7 @@
       <link rel="stylesheet" href="{{ asset('css/dark-theme.css') }}"/>
     @endif
 </head>  
-<body id="top">
+<body id="home">
     <div class="site-wrapper">
         @include("layouts.partials.header")
         @section("content") @show

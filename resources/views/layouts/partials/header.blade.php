@@ -36,7 +36,7 @@
     <div class="menu-content">
         <ul>
             <li class="nav-home nav-current" role="presentation">
-                <a href="#top">Home</a>
+                <a href="#home">Home</a>
             </li>
             <li class="nav-work" role="presentation">
                 <a href="#work">Work</a>
