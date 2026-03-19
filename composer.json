@@ -18,22 +18,21 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.0",
+        "php": "^8.5",
+        "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0.8",
-        "laravel/tinker": "^2.10.1",
+        "laravel/tinker": "^3.0",
         "symfony/http-client": "^7.2.4",
         "symfony/mailgun-mailer": "^7.2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24.1",
-        "laravel/boost": "^1.1",
-        "laravel/pint": "^1.21.0",
+        "laravel/boost": "^2.3",
+        "laravel/pint": "^1.27",
         "laravel/sail": "^1.41.0",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.6.1",
-        "phpunit/phpunit": "^11.5.10",
-        "spatie/laravel-ignition": "^2.9.1"
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^12.5.12"
     },
     "autoload": {
         "psr-4": {
@@ -72,7 +71,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "12.x-dev"
+            "dev-master": "13.x-dev"
         },
         "laravel": {
             "dont-discover": []
