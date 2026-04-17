@@ -103,12 +103,19 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                Working with full-stack JavaScript technologies: NodeJS, ReactJS, React Native, 
-                Typescript, and ElectronJS. I worked on the mobile app for JD Sports
-                and group brands Tessuti, Ultimate Outdoors and more. I created the 
-                order management system for JD’s warehouse team for which 
-                I had ownership. I built that with AWS services DynamoDB, Amplify,
-                and Serverless, with React and Material UI on the frontend.
+                Working with full-stack JavaScript technologies: NodeJS,
+                ReactJS, ReactJS Native, Typescript, and ElectronJS. I
+                worked heavily with AWS and microservices.
+                <br />
+                <br />
+                I worked on the mobile app for JD Sports and group brands
+                Tessuti, Ultimate Outdoors and more. I created the
+                warehouse management system web app for JD's warehouse
+                team for which I had ownership. This allowed the JD team
+                to perform actions on orders like refunding and returning
+                order items. I built the management system with AWS
+                services DynamoDB, Amplify, and Serverless, with ReactJS
+                and Material UI on the frontend.
             </p>
         </div>
         <div class="tags">
