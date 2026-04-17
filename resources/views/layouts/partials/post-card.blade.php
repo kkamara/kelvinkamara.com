@@ -43,7 +43,11 @@
         <div class="post-card-excerpt">
             <p>
                 From portal appeal systems to static ANPR cameras, I both
-                created and extended systems for ParkSmart.
+                created and extended systems for ParkSmart. I wrote the
+                AWS Lambda Python code that would pull data from car park
+                cameras based throughout the UK and integrate the data
+                within Park Smart's systems.
+                <br />
                 <br />
                 Doing this with a
                 keen eye for detail while taking care to use
