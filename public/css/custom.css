@@ -69,6 +69,10 @@ footer.site-footer .footer-icon-container > .footer-icon {
   display: none;
 }
 
+.pub-card-container .card {
+  height: 632px;
+}
+
 /* Phones dimensions */
 @media only screen and (max-width: 431px) {
   .publication-cover {
