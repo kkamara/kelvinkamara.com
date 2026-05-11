@@ -10,12 +10,12 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                In lieu of leaving the European Union, the UK Government
-                require new systems to replace those the EU provide to
-                countries part of their unified trade.
-                <br />
-                This is where Contracts Finder comes in, a way for businesses to
-                create notices and the public to search for them.
+                Following the UK's departure from the European Union, the Government
+                needed new national systems to replace EU-supported trade and
+                procurement services. Contracts Finder was developed to meet that
+                need, enabling organisations to publish procurement notices and
+                giving the public and businesses a transparent way to search and
+                track opportunities.
             </p>
         </div>
         <div class="tags">
@@ -42,16 +42,16 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                From portal appeal systems to static ANPR cameras, I both
-                created and extended systems for ParkSmart. I wrote the
-                AWS Lambda Python code that would pull data from car park
-                cameras based throughout the UK and integrate the data
-                within Park Smart's systems.
+                At ParkSmart, I designed, built and improved systems spanning
+                portal appeals services and static ANPR camera operations. I
+                also developed the data-processing workflows that captured
+                information from car park cameras across the UK and integrated
+                it into ParkSmart's core business systems.
                 <br />
                 <br />
-                Doing this with a
-                keen eye for detail while taking care to use
-                only the best tech available.
+                This work required strong attention to detail, dependable
+                delivery, and a practical focus on choosing the right
+                approach for long-term reliability and performance.
             </p>
         </div>
         <div class="tags">
@@ -78,9 +78,11 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                American Golf being the largest golf retailer in Europe; AG
-                required a custom site for their blogging needs, complete
-                with Google Maps integration.
+                As Europe's largest golf retailer, American Golf required a
+                bespoke blogging platform tailored to its content and
+                customer engagement needs. I delivered a custom solution,
+                including Google Maps integration, to support
+                location-aware content and a stronger user experience.
             </p>
         </div>
         <div class="tags">
@@ -107,19 +109,19 @@
         </h3>
         <div class="post-card-excerpt">
             <p>
-                Working with full-stack JavaScript technologies: NodeJS,
-                ReactJS, ReactJS Native, Typescript, and ElectronJS. I
-                worked heavily with AWS and microservices.
+                I worked across complex digital products in a full-stack capacity,
+                delivering scalable solutions within a modern, service-led
+                architecture.
                 <br />
                 <br />
-                I worked on the mobile app for JD Sports and group brands
-                Tessuti, Ultimate Outdoors and more. I created the
-                warehouse management system web app for JD's warehouse
-                team for which I had ownership. This allowed the JD team
-                to perform actions on orders like refunding and returning
-                order items. I built the management system with AWS
-                services DynamoDB, Amplify, and Serverless, with ReactJS
-                and Material UI on the frontend.
+                I was part of the team that developed the JD Sports mobile app,
+                and I also contributed to digital products for group brands
+                including Tessuti and Ultimate Outdoors. In addition, I owned
+                delivery of a warehouse management web application for JD's
+                warehouse operations team, enabling key order actions such as
+                refunds and returns. The platform improved operational
+                efficiency and gave warehouse staff a more effective way to
+                manage customer orders.
             </p>
         </div>
         <div class="tags">

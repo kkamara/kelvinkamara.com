@@ -6,9 +6,9 @@
 
 (2020) Award-Winning Web Developer.
 
-Mr. Kelvin Kamara has over 10 years competency in both frontend & backend solutions. He is a firm believer in using the right tool for the job.
+Mr. Kelvin Kamara has over ten years of commercial experience delivering both front-end and back-end solutions. He believes in using the right tool for the job and takes a practical, quality-driven approach to building effective software.
 
-Specialising in backend server development, Kel was fortunate to achieve the UK Government Cabinet Office Recognition Award, on April 2019, for his work with secure web systems.
+With a particular strength in back-end and server-side development, Kel received the UK Government Cabinet Office Recognition Award in April 2019 for his work on secure web systems.
 
 ![government award](https://www.kelvinkamara.com/award.jpg)
 

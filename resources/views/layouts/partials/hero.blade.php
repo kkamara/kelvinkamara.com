@@ -79,7 +79,7 @@
                 <form id="contact-form" class="container">
                     <div class="col-md-12">
                         <p>
-                            Let's discuss ways in which we can fulfill your needs.
+                            Let's discuss how I can help meet your requirements.
                         </p>
                         <a href="mailto:kamaracomputers@gmail.com">
                             Send me an email <i class="far fa-envelope pub-icon fa-2x"></i>
