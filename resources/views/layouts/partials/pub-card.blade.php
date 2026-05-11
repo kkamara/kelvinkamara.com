@@ -76,7 +76,7 @@
             <h5 class="card-title">Work history</h5>
             <h6 class="card-subtitle mb-2 text-muted">Past work places</h6>
             <p class="card-text">
-                See the established businesses I've had the priviledge of completing work for.
+                See the established businesses I've had the privilege of completing work for.
                 <br />
                 <br />
                 <a class="card-link pub-link" href="#work">View work history</a>
