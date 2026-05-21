@@ -9,9 +9,7 @@
         <p>
             With a particular strength in back-end and server-side development,
             Kel received the 
-            <a class="gov-award-link" href="{{asset('award.jpg')}}">
-                UK Government Cabinet Office Recognition Award
-            </a>
+            <a class="gov-award-link" href="{{asset('award.jpg')}}">UK Government Cabinet Office Recognition Award</a>
             in April 2019 for his work on secure web systems.
         </p>
     </form>
