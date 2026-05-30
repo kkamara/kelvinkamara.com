@@ -38,11 +38,11 @@
             <li class="nav-home nav-current" role="presentation">
                 <a href="#home">Home</a>
             </li>
-            <li class="nav-work" role="presentation">
-                <a href="#work">Work</a>
-            </li>
             <li class="nav-recommendations" role="presentation">
                 <a href="#recommendations">Recommendations</a>
+            </li>
+            <li class="nav-work" role="presentation">
+                <a href="#work">Work</a>
             </li>
         </ul>
     </div>
