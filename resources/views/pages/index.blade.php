@@ -9,13 +9,13 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container pub-container">
         <div class="row">
             @include("layouts.partials.pub-card")
         </div>
     </div>
     @include("layouts.partials.featured-slider")
-    <div class="container">
+    <div class="container post-loop-container">
         <div class="row">
             <div class="col-md-12">
                 @include("layouts.partials.loop")

@@ -1,6 +1,10 @@
 
+.pub-container {
+  margin-top: 0px;
+}
+
 .pub-card-container {
-  margin-top: 65px;
+  margin-top: 35px;
 }
 
 .pub-card-container ul.list-group > li.list-group-item {
@@ -74,7 +78,23 @@ footer.site-footer .footer-icon-container > .footer-icon {
 }
 
 #recommendations {
-  margin-top: 92.25px;
+  margin-top: 80px;
+}
+
+.pub-card-container:last-child {
+  margin-bottom: 35px;
+}
+
+.post-loop-container {
+  margin-top: -55px;
+}
+
+.post-card {
+  margin-bottom: -40px;
+}
+
+.post-card:last-child {
+  margin-bottom: -6px;
 }
 
 /* Phones dimensions */
