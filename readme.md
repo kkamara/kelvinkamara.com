@@ -4,7 +4,7 @@
 
 # kelvinkamara.com
 
-(2020) Award-Winning Web Developer.
+(2020) Award-Winning Software Engineer.
 
 Mr. Kelvin Kamara has over ten years of commercial experience delivering both front-end and back-end solutions. He believes in using the right tool for the job and takes a practical, quality-driven approach to building effective software.
 

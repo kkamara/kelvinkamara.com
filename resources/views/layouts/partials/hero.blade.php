@@ -5,7 +5,7 @@
     ></div>
     <div class="hero-right px-2">
         <div class="hero-content">
-            <h1 class="blog-description">Award-Winning Web Developer</h1>
+            <h1 class="blog-description">Award-Winning Software Engineer</h1>
         </div>
         @include("layouts.partials.subscribe")
         <form 
