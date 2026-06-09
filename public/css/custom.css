@@ -127,4 +127,7 @@ footer.site-footer .footer-icon-container > .footer-icon {
     display: block;
     margin-left: 0px !important;
   }
+  .post-card {
+    margin-bottom: 70px;
+  }
 }
