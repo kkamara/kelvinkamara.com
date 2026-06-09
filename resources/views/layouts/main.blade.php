@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Self-referencing canonical URL for SEO, so search engines know the preferred URL for this page -->
+    <!-- This should be added for each page to indicate the preferred URL -->
+    <link rel="canonical" href="https://kelvinkamara.com" />
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>{{ config("app.name") }} - Award Winning Software Engineer</title>
