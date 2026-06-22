@@ -84,7 +84,7 @@ python manage.py createsuperuser \
 
 <img src="https://raw.githubusercontent.com/kkamara/useful/main/docker-mailhog.png" alt="docker-mailhog.png" width="300px"/>
 
-Mail environment credentials are at [.env](./.env.example).
+Mail environment credentials are at [.env](./.env.example) .
 
 The [Mailhog](https://github.com/mailhog/MailHog) Docker mail client runs at `http://localhost:8025`. This is running in the above image that is receiving emails from your Django app.
 
