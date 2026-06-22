@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png" alt="kelvinkamara.com-light.png" height="200px" width="200px"/> <img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png" alt="kelvinkamara.com-dark.png" height="200px" width="200px"/> <img src="./kelvinkamara/assets/award.jpg" alt="award.jpg" height="200px" width="100px"/>
+<img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png" alt="kelvinkamara.com-light.png" width="300px"/> <img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png" alt="kelvinkamara.com-dark.png" width="300px"/> <img src="./kelvinkamara/assets/award.jpg" alt="award.jpg" width="120px"/>
 
 # kelvinkamara.com
 
@@ -82,11 +82,11 @@ python manage.py createsuperuser \
 
 #### Using Docker's Mail Server
 
-![docker-mailhog.png](https://raw.githubusercontent.com/kkamara/useful/main/docker-mailhog.png)
+<img src="https://raw.githubusercontent.com/kkamara/useful/main/docker-mailhog.png" alt="docker-mailhog.png" width="300px"/>
 
 Mail environment credentials are at [.env](./.env.example).
 
-The [mailhog](https://github.com/mailhog/MailHog) docker image runs at `http://localhost:8025`.
+The [Mailhog](https://github.com/mailhog/MailHog) Docker mail client runs at `http://localhost:8025`. This is running in the above image that is receiving emails from your Django app.
 
 ## iPython Django Shell
 
