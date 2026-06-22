@@ -1,0 +1,165 @@
+.pub-container {
+  margin-top: 0px;
+}
+
+.pub-card-container {
+  margin-top: 35px;
+}
+
+.pub-card-container ul.list-group > li.list-group-item {
+  padding: 0px;
+  border: none;
+  font-size: 15px;
+}
+
+.pub-link {
+  color: blue;
+}
+
+.pub-link:hover {
+  color: red;
+}
+
+.pub-icon {
+  color: black;
+}
+
+.modal-icon {
+  color: #fff;
+  margin-top: 19px;
+}
+
+.subscribe_form {
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+}
+
+footer.site-footer .footer-icon-container:hover {
+  text-decoration: none;
+}
+
+.gov-award-link {
+  color: blue;
+}
+
+.gov-award-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.hero-menu-link > a:first-child > .header-icon {
+  margin-right: -2.5px;
+  margin-left: 0px !important; /* first item to have 0px left-margin */
+}
+
+.hero-menu-link > a > .header-icon {
+  margin-right: -2.5px;
+  margin-left: 15px; /* remaining items to have 15px left-margin */
+}
+
+footer.site-footer .footer-icon-container > .footer-icon {
+  margin-left: 2.5px;
+  margin-right 10px;
+}
+
+.publication-cover {
+  background-position: 0px -28px !important;
+}
+
+.paypal-donate-form {
+  position: relative;
+  margin-left: 23px;
+  margin-top: 23px;
+}
+
+.modalbox.success, .modalbox.error {
+  display: none;
+}
+
+.pub-card-container .card {
+  height: 605px;
+}
+
+#recommendations {
+  margin-top: 80px;
+}
+
+.pub-card-container:last-child {
+  margin-bottom: 35px;
+}
+
+.post-loop-container {
+  margin-top: -67px;
+}
+
+.post-card {
+  margin-bottom: -40px;
+}
+
+.post-card:last-child {
+  margin-bottom: -6px;
+}
+
+.contact-form-email-link,
+.contact-form-phone-link {
+  color: blue;
+}
+
+.contact-form-email-link:hover,
+.contact-form-phone-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+#contact-me-link {
+  color: blue;
+}
+
+#contact-me-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.bx-pager-link {
+  color: blue;
+}
+
+.bx-pager-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+/* Phones dimensions */
+@media only screen and (max-width: 431px) {
+  .publication-cover {
+    background-position: 0px 80px !important;
+  }
+}
+
+/* Responsive dimensions */
+@media only screen and (min-width: 432px) and (max-width: 991px) {
+  .publication-cover {
+    background-position: 0px 25px !important;
+  }
+}
+
+/* iPad Pro and Nest Hub dimension */
+@media only screen and (width: 1024px) {
+  .publication-cover {
+    background-position: -198px 0px !important;
+    background-repeat: no-repeat; /* Nest Hub-specific */
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .featured-text {
+    display: none;
+  }
+  .pub-link-tel {
+    display: block;
+    margin-left: 0px !important;
+  }
+  .post-card {
+    margin-bottom: 70px;
+  }
+}

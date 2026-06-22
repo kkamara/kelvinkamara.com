@@ -1,88 +1,116 @@
-![kelvinkamara.com-light.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png)
-
-![kelvinkamara.com-dark.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png)
+<img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png" alt="kelvinkamara.com-light.png" width="300px"/> <img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png" alt="kelvinkamara.com-dark.png" width="300px"/> <img src="./kelvinkamara/assets/award.jpg" alt="award.jpg" width="120px"/>
 
 # kelvinkamara.com
 
-(2020) Award-Winning Software Engineer.
+(2020) Award-Winning Web Developer.
 
 Mr. Kelvin Kamara has over ten years of commercial experience delivering both front-end and back-end solutions. He believes in using the right tool for the job and takes a practical, quality-driven approach to building effective software.
 
 With a particular strength in back-end and server-side development, Kel received the UK Government Cabinet Office Recognition Award in April 2019 for his work on secure web systems.
 
-![government award](https://www.kelvinkamara.com/award.jpg)
+* [Requirements](#requirements)
 
 * [Installation](#installation)
 
 * [Usage](#usage)
 
-* [Api Documentation](#api-documentation)
+* [Using Docker?](#using-docker)
 
-* [Unit Tests](#unit-tests)
+    * [Existing Admin User When Using Docker](#existing-admin-user-when-using-docker)
 
-* [Misc](#misc)
+    * [Using Docker's Mail Server](#using-dockers-mail-server)
+
+* [iPython Django Shell](#ipython-django-shell)
+
+* [API](#api)
+
+* [Cache View Templates](#cache-view-templates)
+
+* [Extra Details](#extra-details)
 
 * [Contributing](#contributing)
 
 * [License](#license)
 
+## Requirements
+
+* [Python >=3.11](https://www.python.org)
+
 ## Installation
 
-* [XAMPP: Apache, MariaDB (MySQL alternative), & PHP](https://www.apachefriends.org/)
-* If you find that the MariaDB XAMPP service fails to start (I get this on Windows) then install MySQL manually [here](https://dev.mysql.com/downloads/mysql/)
-* [https://laravel.com/docs](https://laravel.com/docs)
-
 ```bash
-# Create our environment file.
 cp .env.example .env
-# Install our app dependencies.
-composer i
-php artisan key:generate
-# Before running the next command:
-# Update your database details in .env
-php artisan migrate --seed
-yarn install
-yarn build
+
+pip install virtualenv && \
+  virtualenv env && \
+  source env/bin/activate
+
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 ## Usage
 
 ```bash
-php artisan serve --port=3000
-# Website accessible at http://localhost:3000
+python manage.py runserver
+# http://localhost:8000
 ```
 
-## Api Documentation
+## Using Docker?
 
 ```bash
-php artisan route:list
+alias compose='docker-compose -f local.yml'
+compose build
+compose up
+# http://localhost:8000
 ```
 
-## Unit Tests
+#### Existing Admin User When Using Docker
+
+The admin user details are set in [./compose/local/django/start](./compose/local/django/start) .
 
 ```bash
-php artisan test --filter=Unit
+export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-secret}"
+
+python manage.py createsuperuser \
+  --username admin_user \
+  --email admin@django-app.com \
+  --no-input \
+  --first_name Admin \
+  --last_name User
 ```
 
-## Misc
+#### Using Docker's Mail Server
+
+<img src="https://raw.githubusercontent.com/kkamara/useful/main/docker-mailhog.png" alt="docker-mailhog.png" width="300px"/>
+
+Mail environment credentials are at [.env](./.env.example) .
+
+The [Mailhog](https://github.com/mailhog/MailHog) Docker mail client runs at `http://localhost:8025`. This is running in the above image that is receiving emails from your Django app.
+
+## iPython Django Shell
+
+```bash
+python manage.py shell -i ipython
+```
+
+## API
+
+```bash
+python manage.py show_urls
+```
+
+## Cache View Templates
+
+```bash
+python manage.py collectstatic
+```
+
+## Extra Details
 
 This website uses an older version of the premium website theme, [Writter](https://themeforest.net/item/writter-minimal-membership-subscription-ghost-theme/35463290?srsltid=AfmBOoqjqZ4qwuzO1v5SrwAStq4XaNxurwmS6KA9bfGcWLJssXkbHvum).
 
 The recommendations section uses the reviews slider at https://codepen.io/legwork/pen/PKaVpE .
-
-[See NodeJS ReactJS Boilerplate](https://github.com/kkamara/nodejs-reactjs-boilerplate).
-
-[See PHP ReactJS Boilerplate](https://github.com/kkamara/php-reactjs-boilerplate).
-
-[See ReactJS Native Mobile App Boilerplate](https://github.com/kkamara/ReactJSNativeMobileAppBoilerplate).
-
-[See MRVL Desktop](https://github.com/kkamara/mrvl-desktop).
-
-[See MRVL Web](https://github.com/kkamara/mrvl-web).
-
-[See NodeJS Docker Skeleton](https://github.com/kkamara/nodejs-docker-skeleton).
-
-[See NodeJS Scraper](https://github.com/kkamara/nodejs-scraper).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -90,4 +118,15 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
-[BSD](https://opensource.org/licenses/BSD-3-Clause)
+All rights reserved. This is a proprietary portfolio project.
+
+No permission is granted to copy, modify, redistribute, or create derivative
+works without prior written consent.
+
+Relicensing notice: this repository is proprietary from 22 June 2026 onward.
+Versions published before that date were made available under BSD-3-Clause.
+
+See [license](./license) for current terms, [LICENSING.md](./LICENSING.md) for
+relicensing and contributor ownership notes, and
+[THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md) for third-party licensing
+boundaries.

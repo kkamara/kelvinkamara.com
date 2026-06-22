@@ -1,65 +1,52 @@
 name: Tests Pipeline
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 env:
-  PHPUNIT_FLAGS: "--testsuite=Unit --stop-on-failure"
+  django_test_args: '-Wa'
+
 jobs:
-  laravel:
-    name: Tests Pipeline (PHP ${{ matrix.php-versions }})
+  build:
+    name: Tests Pipeline (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+    
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: 'secret'
-          MYSQL_DATABASE: 'kelvin_kamara'
+          MYSQL_DATABASE: 'kelvinkamara'
           MYSQL_USER: 'user'
           MYSQL_PASSWORD: 'secret'
         ports:
           - 3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['8.5']
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup PHP, with Composer and extensions
-        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+      - uses: actions/checkout@v7
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, dom, fileinfo, mysql
-          coverage: none
-      - name: Start MySQL service
-        run: sudo /etc/init.d/mysql start
-      - name: Install Composer dependencies
-        run: composer install -q --no-progress --prefer-dist --optimize-autoloader
-      - name: Prepare environment
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Create environment file
         run: |
           cp .env.example .env
-          sed -i "s/DB_CONNECTION=sqlite/DB_CONNECTION=mysql/g" .env
-          sed -i "s/DB_FOREIGN_KEYS=true/# DB_FOREIGN_KEYS=true/g" .env
-          sed -i "s/# DB_PORT=3306/DB_PORT=3306/g" .env
-          sed -i "s/3306/${{ job.services.mysql.ports['3306'] }}/g" .env
-          sed -i "s/# DB_PASSWORD=/DB_PASSWORD=secret/g" .env
-          sed -i "s/# DB_USERNAME=root/DB_USERNAME=user/g" .env
-          sed -i "s/# DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/g" .env
-          sed -i "s/# DB_DATABASE=kelvin_kamara/DB_DATABASE=kelvin_kamara/g" .env
-      - name: Clear config cache
-        run: php artisan config:clear
-      - name: Generate key
-        run: php artisan key:generate -q -n
-      - name: Migrate & seed database
-        run: php artisan migrate --seed --force
-      - name: Change directory permissions
-        run: chmod -R 777 storage bootstrap/cache
-      - name: Install JavaScript packages
-        run: yarn install --silent --no-progress 
-      - name: Build JavaScript packages
-        run: yarn build
-      - name: Run Laravel server
-        run: php artisan serve --port=3000 --no-reload &
-      - name: Curl to localhost
-        run: curl localhost:3000 &
-      - name: Run tests
-        run: php artisan test ${{ env.PHPUNIT_FLAGS }}
+          sed -i "s/APP_ENV=local/APP_ENV=test/g" .env
+          sed -i "s/CONNECTION=sqlite/CONNECTION=mysql/g" .env
+          sed -i "s/MARIADB_USER=root/MARIADB_USER=user/g" .env
+          sed -i "s/MARIADB_PASSWORD=/MARIADB_PASSWORD=secret/g" .env
+          sed -i "s/MARIADB_PORT=3306/MARIADB_PORT=${{ job.services.mysql.ports['3306'] }}/g" .env
+      - name: Run Tests
+        run: |
+          python ${{ env.django_test_args }} manage.py test

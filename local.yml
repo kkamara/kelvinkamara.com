@@ -1,0 +1,51 @@
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: kkamara_local_django
+    container_name: kkamara_local_django
+    platform: linux/x86_64
+    depends_on:
+      - mariadb
+      - mailhog
+    volumes:
+      - .:/app:z
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    command: /start
+    networks:
+      - kkamara_app
+
+  mariadb:
+    container_name: kkamara_local_mariadb
+    image: 'mariadb:10.7'
+    ports:
+      - '3306:3306'
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-secret}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-kelvinkamara}
+    volumes:
+      - 'localmariadb:/var/lib/mysql'
+    networks:
+      - kkamara_app
+
+  mailhog:
+    container_name: kkamara_local_mailhog
+    restart: unless-stopped
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025 
+    networks:
+      - kkamara_app
+
+networks:
+  kkamara_app:
+    driver: bridge
+
+volumes:
+  localmariadb:
+    driver: local
