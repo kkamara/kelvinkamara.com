@@ -1,6 +1,4 @@
-![kelvinkamara.com-light.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png)
-
-![kelvinkamara.com-dark.png](https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png)
+<img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-light.png" alt="kelvinkamara.com-light.png" height="200px" width="200px"/> <img src="https://raw.githubusercontent.com/kkamara/useful/main/kelvinkamara.com-dark.png" alt="kelvinkamara.com-dark.png" height="200px" width="200px"/> <img src="./kelvinkamara/assets/award.jpg" alt="award.jpg" height="200px" width="100px"/>
 
 # kelvinkamara.com
 
@@ -9,8 +7,6 @@
 Mr. Kelvin Kamara has over ten years of commercial experience delivering both front-end and back-end solutions. He believes in using the right tool for the job and takes a practical, quality-driven approach to building effective software.
 
 With a particular strength in back-end and server-side development, Kel received the UK Government Cabinet Office Recognition Award in April 2019 for his work on secure web systems.
-
-![government award](./kelvinkamara/assets/award.jpg)
 
 * [Requirements](#requirements)
 
