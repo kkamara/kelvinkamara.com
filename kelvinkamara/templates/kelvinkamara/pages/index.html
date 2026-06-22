@@ -1,0 +1,32 @@
+{% extends "layouts/main.html" %}
+
+{% block content %}
+    {% include "layouts/partials/hero.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% include "layouts/partials/award-how.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 recommendations-outer-container">
+                {% include "layouts/partials/recommendations.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="container pub-container">
+        <div class="row">
+            {% include "layouts/partials/pub-card.html" %}
+        </div>
+    </div>
+    {% include "layouts/partials/featured-slider.html" %}
+    <div class="container post-loop-container">
+        <div class="row">
+            <div class="col-md-12">
+                {% include "layouts/partials/loop.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
