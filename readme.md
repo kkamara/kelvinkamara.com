@@ -67,7 +67,7 @@ compose up
 
 #### Existing Admin User When Using Docker
 
-The admin user details are set in [./compose/local/django/start](./compose/local/django/start)
+The admin user details are set in [./compose/local/django/start](./compose/local/django/start) .
 
 ```bash
 export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-secret}"
