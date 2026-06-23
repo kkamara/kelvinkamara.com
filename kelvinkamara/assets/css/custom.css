@@ -134,6 +134,9 @@ footer.site-footer .footer-icon-container > .footer-icon {
   .publication-cover {
     background-position: 0px 80px !important;
   }
+  .post-loop-container {
+    margin-top: 1px;
+  }
 }
 
 /* Responsive dimensions */
