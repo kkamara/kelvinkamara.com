@@ -12,14 +12,12 @@ From `requirements.txt`:
 - django-environ
 - django-extensions
 - django-filter
-- django-templated-mail
 - djangorestframework
 - djangorestframework-simplejwt
 - gunicorn
 - ipython
 - pymysql
 - requests
-- whitenoise
 
 ## Front-end libraries and vendor assets
 
