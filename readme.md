@@ -34,7 +34,7 @@ With a particular strength in back-end and server-side development, Kel received
 
 ## Requirements
 
-* [Tested using Python >=3.13](https://www.python.org)
+* [Tested using Python 3.13](https://www.python.org)
 
 ## Installation
 
