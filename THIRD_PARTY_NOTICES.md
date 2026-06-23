@@ -14,10 +14,13 @@ From `requirements.txt`:
 - django-filter
 - djangorestframework
 - djangorestframework-simplejwt
-- gunicorn
 - ipython
 - pymysql
 - requests
+
+From `requirements-docker-production.txt`:
+
+- gunicorn
 
 ## Front-end libraries and vendor assets
 
