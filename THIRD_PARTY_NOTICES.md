@@ -17,11 +17,11 @@ From `requirements.txt`:
 - ipython
 - pymysql
 - requests
+- whitenoise
 
 From `requirements-docker-production.txt` (includes everything in `requirements.txt`, plus):
 
 - gunicorn
-- whitenoise
 
 ## Front-end libraries and vendor assets
 
