@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11-slim-bookworm
+ARG PYTHON_VERSION=3.13-slim-bookworm
 
 
 
@@ -18,11 +18,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev
 
 # Requirements are installed here to ensure they will be cached.
-COPY requirements.txt .
+COPY requirements-docker-production.txt .
 
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
-  -r requirements.txt
+  -r requirements-docker-production.txt
 
 
 # Python 'run' stage

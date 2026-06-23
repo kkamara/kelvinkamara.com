@@ -12,13 +12,15 @@ From `requirements.txt`:
 - django-environ
 - django-extensions
 - django-filter
-- django-templated-mail
 - djangorestframework
 - djangorestframework-simplejwt
-- gunicorn
 - ipython
 - pymysql
 - requests
+
+From `requirements-docker-production.txt` (includes everything in `requirements.txt`, plus):
+
+- gunicorn
 - whitenoise
 
 ## Front-end libraries and vendor assets
