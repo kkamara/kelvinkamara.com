@@ -21,6 +21,7 @@ From `requirements.txt`:
 From `requirements-docker-production.txt`:
 
 - gunicorn
+- whitenoise
 
 ## Front-end libraries and vendor assets
 
