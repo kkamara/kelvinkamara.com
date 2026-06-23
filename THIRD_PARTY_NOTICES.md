@@ -18,7 +18,7 @@ From `requirements.txt`:
 - pymysql
 - requests
 
-From `requirements-docker-production.txt`:
+From `requirements-docker-production.txt` (includes everything in `requirements.txt`, plus):
 
 - gunicorn
 - whitenoise
