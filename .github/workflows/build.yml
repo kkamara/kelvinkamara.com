@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: pip install --no-input -vqr requirements.txt
       - name: Create environment file
         run: |
           cp .env.example .env
