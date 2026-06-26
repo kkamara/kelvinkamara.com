@@ -129,6 +129,13 @@ footer.site-footer .footer-icon-container > .footer-icon {
   text-decoration: none;
 }
 
+.award-how-img {
+  margin: 0px auto;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 13px;
+}
+
 /* Phones dimensions */
 @media only screen and (max-width: 431px) {
   .publication-cover {
@@ -143,6 +150,11 @@ footer.site-footer .footer-icon-container > .footer-icon {
 @media only screen and (min-width: 432px) and (max-width: 991px) {
   .publication-cover {
     background-position: 0px 25px !important;
+  }
+}
+@media only screen and (min-width: 432px) {
+  .award-how-img {
+    max-width: 50%;
   }
 }
 
