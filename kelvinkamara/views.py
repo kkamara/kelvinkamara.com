@@ -15,29 +15,35 @@ import logging
 import requests
 
 
-def sitemap_xml(request):
-    sitemap_path = finders.find("sitemap.xml")
-    if not sitemap_path:
-        # Fallbacks for environments where static finders are unavailable.
+def _static_file_response(filename, content_type):
+    static_path = finders.find(filename)
+    if not static_path:
         static_root = getattr(settings, "STATIC_ROOT", "")
         fallback_paths = []
         if static_root:
-            fallback_paths.append(Path(static_root) / "sitemap.xml")
+            fallback_paths.append(Path(static_root) / filename)
         fallback_paths.extend(
             [
-                Path(settings.BASE_DIR) / "static" / "sitemap.xml",
-                Path(settings.BASE_DIR) / "kelvinkamara" / "assets" / "sitemap.xml",
+                Path(settings.BASE_DIR) / "static" / filename,
+                Path(settings.BASE_DIR) / "kelvinkamara" / "assets" / filename,
             ]
         )
-        sitemap_path = next(
-            (str(path) for path in fallback_paths if path.exists()),
-            None,
+        static_path = next(
+            (str(path) for path in fallback_paths if path.exists()), None
         )
 
-    if not sitemap_path:
-        raise Http404("sitemap.xml not found")
+    if not static_path:
+        raise Http404(f"{filename} not found")
 
-    return FileResponse(open(sitemap_path, "rb"), content_type="application/xml")
+    return FileResponse(open(static_path, "rb"), content_type=content_type)
+
+
+def sitemap_xml(request):
+    return _static_file_response("sitemap.xml", "application/xml")
+
+
+def robots_txt(request):
+    return _static_file_response("robots.txt", "text/plain")
 
 
 @ensure_csrf_cookie

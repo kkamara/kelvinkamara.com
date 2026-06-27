@@ -5,4 +5,5 @@ urlpatterns = [
     path("", view=views.index, name="home"),
     path("sitemap.xml", view=views.sitemap_xml, name="sitemap"),
     path("api/contact", view=views.contact, name="contact"),
+    path("robots.txt", view=views.robots_txt, name="robots"),
 ]
