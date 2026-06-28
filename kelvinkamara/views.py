@@ -51,7 +51,7 @@ def index(request):
     context = {
         "turnstile_sitekey": settings.TURNSTILE_SITEKEY,
     }
-    return render(request, "pages/index.html", context=context)
+    return render(request, "kelvinkamara/pages/index.html", context=context)
 
 
 def is_valid_email(subject):
@@ -127,7 +127,7 @@ def contact(request):
         if len(error_msg) > 0:
             return JsonResponse({"error": error_msg}, status=400)
 
-        html = get_template("emails/contact.html")
+        html = get_template("kelvinkamara/emails/contact.html")
         html_content = html.render(
             {
                 "name": name,
