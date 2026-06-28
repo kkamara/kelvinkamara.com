@@ -56,7 +56,9 @@ $(document).ready(function() {
     }
 
     $(document).on("change input", "input[name='cf-turnstile-response']", function() {
-        setCaptchaInvalid(!$(this).val());
+        if ($(this).val()) {
+            setCaptchaInvalid(false);
+        }
     });
 
     $name.on("input", function() {

@@ -115,8 +115,6 @@ footer.site-footer .footer-icon-container > .footer-icon {
   display: inline-flex;
   justify-content: center;
   align-items: flex-start;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
   --captcha-scale: 0.72;
   --captcha-base-width: 320px;
   width: calc(var(--captcha-base-width) * var(--captcha-scale));
@@ -125,13 +123,24 @@ footer.site-footer .footer-icon-container > .footer-icon {
 }
 
 .captcha-widget {
+  display: inline-block;
+  line-height: 0;
   width: var(--captcha-base-width);
   transform: scale(var(--captcha-scale));
   transform-origin: top center;
+  border-radius: 0.25rem;
+}
+
+.captcha-widget iframe {
+  display: block;
 }
 
 .captcha-field.is-invalid {
-  border-color: #dc3545;
+}
+
+.captcha-field.is-invalid .captcha-widget {
+  outline: 1px solid #dc3545;
+  outline-offset: 0;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
 
