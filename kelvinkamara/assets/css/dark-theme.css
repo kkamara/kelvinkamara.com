@@ -161,6 +161,68 @@ a:hover {
   background-color: #222526;
 }
 
+/* Contact modal styles */
+
+.modal-header {
+  border-bottom-color: #35393b;
+  background-color: #1b1d1e;
+}
+
+.close {
+  color: #e8e6e3;
+  text-shadow: #181a1b 0px 1px 0px;
+}
+
+.close:not(:disabled):not(.disabled):hover,
+.close:not(:disabled):not(.disabled):focus {
+    color: #e8e6e3;
+}
+
+.modal-content {
+  background-color: #181a1b;
+}
+
+.contact-form-email-link,
+.contact-form-phone-link {
+  color: var(--link-color);
+}
+
+.contact-form-email-link:hover,
+.contact-form-phone-link:hover {
+  color: var(--link-hover-color);
+}
+
+.form-control {
+    color: #b5afa6;
+    background-color: #181a1b;
+    background-clip: padding-box;
+    border-top-color: #3c4144;
+    border-right-color: #3c4144;
+    border-bottom-color: #3c4144;
+    border-left-color: #3c4144;
+}
+
+.form-control:focus {
+    color: #b5afa6;
+    background-color: #181a1b;
+    border-top-color: #00438c;
+    border-right-color: #00438c;
+    border-bottom-color: #00438c;
+    border-left-color: #00438c;
+    outline-color: initial;
+    box-shadow: #0062cc40 0px 0px 0px 0.2rem;
+}
+
+.form-group .btn.btn-primary {
+    background-color: #414649;
+    border-top-color: #70685c;
+    border-right-color: #70685c;
+    border-bottom-color: #70685c;
+    border-left-color: #70685c;
+}
+
+/* End contact modal styles */
+
 @media only screen and (max-width: 991px) {
   .navbar-header {
     background-color: #000 !important;
