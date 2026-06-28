@@ -207,15 +207,6 @@ footer.site-footer .footer-icon-container > .footer-icon {
 /* iPad Pro and phones dimensions */
 @media only screen and (max-width: 1024px) {
   .captcha-field {
-    display: inline-flex;
-    justify-content: center;
-    align-items: flex-start;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
     --captcha-scale: 0.77;
-    --captcha-base-width: 320px;
-    width: calc(var(--captcha-base-width) * var(--captcha-scale));
-    height: calc(65px * var(--captcha-scale));
-    overflow: visible;
   }
 }
