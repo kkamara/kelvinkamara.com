@@ -213,6 +213,8 @@ function handleNavCurrentClass() {
 
 // These callbacks are invoked by Cloudflare Turnstile from data-* attributes
 // in the contact form template, so they are used even without JS call-sites.
+// Note: Chrome's warning text mentions a preload resource. In this codebase we do
+// not add a Turnstile preload tag directly; the preload is introduced by Turnstile.
 function onContactCaptchaSolved() {
     $(".captcha-field").removeClass("is-invalid");
 }
