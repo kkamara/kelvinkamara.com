@@ -49,12 +49,8 @@ def robots_txt(request):
 @ensure_csrf_cookie
 def index(request):
     context = {
-        "dark_mode": "off",
         "turnstile_sitekey": settings.TURNSTILE_SITEKEY,
     }
-    dark_mode = request.GET.get("dark_mode", False)
-    if dark_mode is not False and dark_mode == "on":
-        context["dark_mode"] = "on"
     return render(request, "pages/index.html", context=context)
 
 
@@ -70,7 +66,9 @@ def is_valid_email(subject):
 def contact(request):
     if "POST" == request.method:
         captcha_token = request.POST.get("cf-turnstile-response", "")
-        captcha_required = bool(settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY)
+        captcha_required = bool(
+            settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY
+        )
         if captcha_required and not captcha_token:
             return JsonResponse(
                 {"error": "Captcha is required before submitting."}, status=400

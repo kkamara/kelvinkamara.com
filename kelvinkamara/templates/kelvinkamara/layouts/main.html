@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="{% static 'css/modal-styles.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/award-how.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/recommendations.css' %}"/>
-    {% if "on" == dark_mode %}
-      <link rel="stylesheet" href="{% static 'css/dark-theme.css' %}"/>
-    {% endif %}
+    <script
+        src="{% static 'js/theme-init.js' %}"
+        data-storage-key="kelvinkamara.theme"
+        data-dark-theme-href="{% static 'css/dark-theme.css' %}"
+    ></script>
 </head>  
 <body id="home">
     <div class="site-wrapper">
@@ -56,15 +58,16 @@
             >
                 <i class="fab fa-facebook-square fa-3x footer-icon"></i>
             </a>
-            {% if "on" == dark_mode %}
-                <a href="/">
-                    <i class="fas fa-toggle-on fa-3x"></i>
-                </a>
-            {% else %}
-              <a href="/?dark_mode=on">
-                  <i class="fas fa-toggle-off fa-3x"></i>
-              </a>
-            {% endif %}
+            <a
+                id="theme-toggle"
+                href="#"
+                class="footer-icon-container"
+                aria-label="Toggle dark mode"
+                aria-pressed="false"
+                data-dark-theme-href="{% static 'css/dark-theme.css' %}"
+            >
+                <i id="theme-toggle-icon" class="fas fa-toggle-off fa-3x"></i>
+            </a>
         </p>
     </footer>
     {% include "layouts/partials/scripts.html" %}
