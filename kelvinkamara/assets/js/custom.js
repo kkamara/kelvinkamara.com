@@ -233,15 +233,25 @@ function initDarkModeToggle() {
 
     applyTheme(getStoredTheme());
 
-    themeToggle.off("click.themeToggle").on("click.themeToggle", function(event) {
-        event.preventDefault();
+    themeToggle
+        .off("click.themeToggle keydown.themeToggle")
+        .on("click.themeToggle", function(event) {
+            event.preventDefault();
 
-        const nextTheme = document.documentElement.getAttribute("data-theme") === "dark"
-            ? "light"
-            : "dark";
-        persistTheme(nextTheme);
-        applyTheme(nextTheme);
-    });
+            const nextTheme = document.documentElement.getAttribute("data-theme") === "dark"
+                ? "light"
+                : "dark";
+            persistTheme(nextTheme);
+            applyTheme(nextTheme);
+        })
+        .on("keydown.themeToggle", function(event) {
+            if (event.key !== " " && event.key !== "Spacebar") {
+                return;
+            }
+
+            event.preventDefault();
+            themeToggle.trigger("click");
+        });
 
     window.addEventListener("storage", function(event) {
         if (event.key !== storageKey) {
