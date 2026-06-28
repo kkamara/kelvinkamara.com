@@ -49,13 +49,9 @@ def robots_txt(request):
 @ensure_csrf_cookie
 def index(request):
     context = {
-        "dark_mode": "off",
         "turnstile_sitekey": settings.TURNSTILE_SITEKEY,
     }
-    dark_mode = request.GET.get("dark_mode", False)
-    if dark_mode is not False and dark_mode == "on":
-        context["dark_mode"] = "on"
-    return render(request, "pages/index.html", context=context)
+    return render(request, "kelvinkamara/pages/index.html", context=context)
 
 
 def is_valid_email(subject):
@@ -70,7 +66,9 @@ def is_valid_email(subject):
 def contact(request):
     if "POST" == request.method:
         captcha_token = request.POST.get("cf-turnstile-response", "")
-        captcha_required = bool(settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY)
+        captcha_required = bool(
+            settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY
+        )
         if captcha_required and not captcha_token:
             return JsonResponse(
                 {"error": "Captcha is required before submitting."}, status=400
@@ -115,8 +113,8 @@ def contact(request):
             error_msg = "Email string must be provided"
         elif len(email) < 3:
             error_msg = "Email length must be greater than 2 characters"
-        elif len(email) > 50:
-            error_msg = "Email length must be less than 51 characters"
+        elif len(email) > 100:
+            error_msg = "Email length must be less than 101 characters"
         elif not is_valid_email(email):
             error_msg = "Email must be a valid format like johnsmith@example.com"
 
@@ -129,7 +127,7 @@ def contact(request):
         if len(error_msg) > 0:
             return JsonResponse({"error": error_msg}, status=400)
 
-        html = get_template("emails/contact.html")
+        html = get_template("kelvinkamara/emails/contact.html")
         html_content = html.render(
             {
                 "name": name,

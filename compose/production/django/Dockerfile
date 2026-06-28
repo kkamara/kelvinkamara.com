@@ -32,6 +32,7 @@ ARG BUILD_ENVIRONMENT=production
 ARG APP_HOME=/app
 
 ENV PYTHONUNBUFFERED=1
+# Prevents Python from writing __pycache__ files to disk
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV BUILD_ENV=${BUILD_ENVIRONMENT}
 

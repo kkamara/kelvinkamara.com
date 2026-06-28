@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    initDarkModeToggle();
+
     /* close modal modal */
     $(".close-success").click(function() {
         $(".success").toggle();
@@ -8,11 +10,11 @@ $(document).ready(function() {
     });
 
     // set form values
-    $name = $("#name");
-    $email = $("#email");
-    $message = $("#message");
-    $contactForm = $("#contact-form");
-    $captchaField = $(".captcha-field");
+    const $name = $("#name");
+    const $email = $("#email");
+    const $message = $("#message");
+    const $contactForm = $("#contact-form");
+    const $captchaField = $(".captcha-field");
 
     /* clear inputs on page load */
     $name.val("");
@@ -155,6 +157,111 @@ $(document).ready(function() {
     handleNavCurrentClass();
 });
 
+function initDarkModeToggle() {
+    const storageKey = "kelvinkamara.theme";
+    const themeToggle = $("#theme-toggle");
+    const darkThemeStylesheetId = "dark-theme-stylesheet";
+
+    if (!themeToggle.length) {
+        return;
+    }
+
+    const darkThemeHref = themeToggle.data("darkThemeHref");
+
+    function getStoredTheme() {
+        try {
+            return window.localStorage.getItem(storageKey) === "dark" ? "dark" : "light";
+        } catch (error) {
+            return "light";
+        }
+    }
+
+    function attachDarkStylesheet() {
+        if (!darkThemeHref || document.getElementById(darkThemeStylesheetId)) {
+            return;
+        }
+
+        const stylesheet = document.createElement("link");
+        stylesheet.id = darkThemeStylesheetId;
+        stylesheet.rel = "stylesheet";
+        stylesheet.href = darkThemeHref;
+        document.head.appendChild(stylesheet);
+    }
+
+    function detachDarkStylesheet() {
+        const stylesheet = document.getElementById(darkThemeStylesheetId);
+        if (stylesheet) {
+            stylesheet.remove();
+        }
+    }
+
+    function updateToggleUi(theme) {
+        const isDarkModeEnabled = theme === "dark";
+        themeToggle.attr("aria-pressed", isDarkModeEnabled ? "true" : "false");
+
+        let themeToggleIcon = themeToggle.find("#theme-toggle-icon");
+        if (!themeToggleIcon.length) {
+            themeToggle.append('<i id="theme-toggle-icon" class="fas fa-toggle-off fa-3x"></i>');
+            themeToggleIcon = themeToggle.find("#theme-toggle-icon");
+        }
+
+        const iconClass = isDarkModeEnabled
+            ? "fas fa-toggle-on fa-3x"
+            : "fas fa-toggle-off fa-3x";
+        themeToggleIcon.attr("class", iconClass);
+    }
+
+    function applyTheme(theme) {
+        if (theme === "dark") {
+            attachDarkStylesheet();
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            detachDarkStylesheet();
+            document.documentElement.setAttribute("data-theme", "light");
+        }
+
+        updateToggleUi(theme);
+    }
+
+    function persistTheme(theme) {
+        try {
+            window.localStorage.setItem(storageKey, theme);
+        } catch (error) {
+            // Continue without persistence if browser storage is unavailable.
+        }
+    }
+
+    applyTheme(getStoredTheme());
+
+    themeToggle
+        .off("click.themeToggle keydown.themeToggle")
+        .on("click.themeToggle", function(event) {
+            event.preventDefault();
+
+            const nextTheme = document.documentElement.getAttribute("data-theme") === "dark"
+                ? "light"
+                : "dark";
+            persistTheme(nextTheme);
+            applyTheme(nextTheme);
+        })
+        .on("keydown.themeToggle", function(event) {
+            if (event.key !== " " && event.key !== "Spacebar") {
+                return;
+            }
+
+            event.preventDefault();
+            themeToggle.trigger("click");
+        });
+
+    window.addEventListener("storage", function(event) {
+        if (event.key !== storageKey) {
+            return;
+        }
+
+        applyTheme(event.newValue === "dark" ? "dark" : "light");
+    });
+}
+
 // Handle setting `nav-current` class on nav links.
 function handleNavCurrentClass() {
     const navHome = $(".nav-home");
@@ -213,6 +320,8 @@ function handleNavCurrentClass() {
 
 // These callbacks are invoked by Cloudflare Turnstile from data-* attributes
 // in the contact form template, so they are used even without JS call-sites.
+// Note: Chrome's warning text mentions a preload resource. In this codebase we do
+// not add a Turnstile preload tag directly; the preload is introduced by Turnstile.
 function onContactCaptchaSolved() {
     $(".captcha-field").removeClass("is-invalid");
 }

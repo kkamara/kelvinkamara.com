@@ -112,7 +112,7 @@ KELVINKAMARA_DIR = os.path.join(
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(KELVINKAMARA_DIR, "kelvinkamara")],
+        "DIRS": [KELVINKAMARA_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

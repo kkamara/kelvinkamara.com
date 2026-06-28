@@ -1,100 +1,227 @@
+/* Variables */
+:root {
+  --link-color: #337dff;
+  --link-hover-color: #ff1a1a;
+}
+/* End variables */
+
+html {
+  color-scheme: dark; /* Sets scrollbar color to dark mode */
+}
+
 body {
-  background-image: url(/static/img/background.min.gif);
+  background: #181a1b;
+  color: #d1cdc7;
 }
 
-.hero-content .blog-description,
-.subscribe_form p,
-.post-content .title,
-.post-content .post-card-excerpt,
-.post-content .tags,
-a
- {
-  color: #fff;
-}
-
-.post-content * {
-  color: #fff !important;
-}
-
-.site-footer * {
-  color: #000 !important;
-}
-
-.gov-award-link {
-  color: yellow;
-}
-
-.gov-award-link:hover {
-  color: blue;
-}
-
-.arrow-down-icon {
-  color: #fff;
-}
-
-.site-logo > .logo-text {
-  color: #000;
-}
-
-#top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(1),
-#top > div > header > div > div > div > div > div.header-right.flex-1.justify-content-end > div > ul > li > span > span:nth-child(2),
-.post-card:nth-child(2n+1) .post-content .title::before,
-.post-card:nth-child(2n) .post-content::before {
+.menu-icon .menu-bar .single-bar {
   background: #fff;
 }
 
-/* Recommendations styles */
-
-.testimonials {
-  color: #fff;
+.hero-content .blog-description {
+  color: #c8c3bc;
 }
 
-cite {
-  color: #fff;
+p {
+  color: #c2bdb5;
 }
 
-.bx-pager-item {
-  color:#fff;
+.gov-award-link {
+  color: var(--link-color);
 }
 
-.bx-pager-link.active {
-  background:#fff;
-  color:#000;
+.gov-award-link:hover {
+  color: var(--link-hover-color);
 }
 
-.testimonial blockquote {
-  border-color: #fff;
+.header-icon, .footer-icon {
+  color: #b2aba1;
 }
 
-.testimonials-header {
-  color: #fff;
+.header-icon:hover, .footer-icon:hover {
+  color: #61b7ff;
 }
-
-/* End recommendations styles */
-
-/* Navigation menu opener button styles */
-
-.right-push-menu .menu-bar .single-bar {
-    background: #fff;
-}
-
-/* End navigation menu opener button styles */
 
 #contact-me-link {
-  color: yellow;
+  color: var(--link-color);
 }
 
 #contact-me-link:hover {
-  color: blue;
+  color: var(--link-hover-color);
+}
+
+.arrow_down.hero-bottom-arrow.arrow-down-icon {
+  color: #d1cdc7;
+}
+
+.card {
+  background-color: #181a1b;
+  border: 1px solid #8c827321;
+}
+
+.card-header {
+  border-bottom-color: #8c827321;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #c8c3bc;
+}
+
+.award-how-inner-container a {
+  color: var(--link-color);
+}
+
+.award-how-inner-container a:hover {
+  color: var(--link-hover-color);
+}
+
+blockquote {
+  border-left-color: #70685c;
+}
+
+.testimonials {
+  color: #e8e6e3;
+}
+
+cite {
+  color: #988f81;
 }
 
 .bx-pager-link {
-  color: yellow;
+  color: var(--link-color);
 }
 
 .bx-pager-link:hover {
-  color: blue;
+  color: var(--link-hover-color);
 }
+
+.bx-pager-link.active {
+  color: #e8e6e3;
+}
+
+.card-subtitle.mb-2.text-muted {
+  color: #9e9689 !important;
+}
+
+.list-group-item {
+  background-color: #181a1b;
+}
+
+.pub-link {
+  color: var(--link-color);
+}
+
+.pub-link:hover {
+  color: var(--link-hover-color);
+}
+
+.pub-icon {
+  color: #e8e6e3;
+}
+
+.featured-text h2 a {
+  color: #e8e6e3;
+}
+
+.featured-slider .owl-nav button[class*="owl-"] .feture-post-arrow {
+  color: #b2aba1;
+  background-color: #181a1b80;
+}
+
+.featured-slider .owl-nav button[class*="owl-"] .feture-post-arrow:hover {
+  background-color: #181a1b;
+}
+
+.post-card .post-content .title a {
+  color: #b2aba1;
+}
+
+.post-card .post-content .post-card-excerpt p {
+  color: #a1988c;
+}
+
+.post-card:nth-child(2n+1) .post-content .title::before {
+  background-color: #414649;
+}
+
+a {
+  color: #b2aba1;
+}
+
+a:hover {
+  color: #61b7ff;
+}
+
+.post-card:nth-child(2n) .post-content::before {
+  background-color: #414649;
+}
+
+.site-footer {
+  color: #a1998d;
+  background-color: #222526;
+}
+
+/* Contact modal styles */
+
+.modal-header {
+  border-bottom-color: #35393b;
+  background-color: #1b1d1e;
+}
+
+.close {
+  color: #e8e6e3;
+  text-shadow: #181a1b 0px 1px 0px;
+}
+
+.close:not(:disabled):not(.disabled):hover,
+.close:not(:disabled):not(.disabled):focus {
+    color: #e8e6e3;
+}
+
+.modal-content {
+  background-color: #181a1b;
+}
+
+.contact-form-email-link,
+.contact-form-phone-link {
+  color: var(--link-color);
+}
+
+.contact-form-email-link:hover,
+.contact-form-phone-link:hover {
+  color: var(--link-hover-color);
+}
+
+.form-control {
+    color: #b5afa6;
+    background-color: #181a1b;
+    background-clip: padding-box;
+    border-top-color: #3c4144;
+    border-right-color: #3c4144;
+    border-bottom-color: #3c4144;
+    border-left-color: #3c4144;
+}
+
+.form-control:focus {
+    color: #b5afa6;
+    background-color: #181a1b;
+    border-top-color: #00438c;
+    border-right-color: #00438c;
+    border-bottom-color: #00438c;
+    border-left-color: #00438c;
+    outline-color: initial;
+    box-shadow: #0062cc40 0px 0px 0px 0.2rem;
+}
+
+.form-group .btn.btn-primary {
+    background-color: #414649;
+    border-top-color: #70685c;
+    border-right-color: #70685c;
+    border-bottom-color: #70685c;
+    border-left-color: #70685c;
+}
+
+/* End contact modal styles */
 
 @media only screen and (max-width: 991px) {
   .navbar-header {

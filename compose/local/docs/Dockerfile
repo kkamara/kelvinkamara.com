@@ -7,6 +7,7 @@ FROM python:${PYTHON_VERSION} as python
 # Python build stage
 FROM python as python-build-stage
 
+# Prevents Python from writing __pycache__ files to disk
 ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -32,6 +33,7 @@ FROM python as python-run-stage
 
 ARG BUILD_ENVIRONMENT
 ENV PYTHONUNBUFFERED 1
+# Prevents Python from writing __pycache__ files to disk
 ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN apt-get update && apt-get install --no-install-recommends -y \

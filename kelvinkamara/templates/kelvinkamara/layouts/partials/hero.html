@@ -8,7 +8,7 @@
         <div class="hero-content">
             <h1 class="blog-description">Award-Winning Software Engineer</h1>
         </div>
-        {% include "layouts/partials/subscribe.html" %}
+        {% include "kelvinkamara/layouts/partials/subscribe.html" %}
         <form 
             action="https://www.paypal.com/donate"
             method="post"
@@ -139,6 +139,10 @@
         </div>
     </div>
 </div>
+{% comment %}
+Chrome may log a Turnstile preload warning for challenges.cloudflare.com.
+That preload is introduced by Cloudflare Turnstile internals, not this template.
+{% endcomment %}
 {% if turnstile_sitekey %}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endif %}
