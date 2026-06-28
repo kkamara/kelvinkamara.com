@@ -113,8 +113,8 @@ def contact(request):
             error_msg = "Email string must be provided"
         elif len(email) < 3:
             error_msg = "Email length must be greater than 2 characters"
-        elif len(email) > 50:
-            error_msg = "Email length must be less than 51 characters"
+        elif len(email) > 100:
+            error_msg = "Email length must be less than 101 characters"
         elif not is_valid_email(email):
             error_msg = "Email must be a valid format like johnsmith@example.com"
 
