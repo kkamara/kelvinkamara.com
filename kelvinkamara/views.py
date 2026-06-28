@@ -70,27 +70,31 @@ def is_valid_email(subject):
 def contact(request):
     if "POST" == request.method:
         captcha_token = request.POST.get("cf-turnstile-response", "")
-        if not captcha_token:
+        captcha_required = bool(settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY)
+        if captcha_required and not captcha_token:
             return JsonResponse(
                 {"error": "Captcha is required before submitting."}, status=400
             )
 
-        try:
-            captcha_response = requests.post(
-                "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-                data={
-                    "secret": settings.TURNSTILE_SECRET,
-                    "response": captcha_token,
-                    "remoteip": request.META.get("REMOTE_ADDR", ""),
-                },
-                timeout=10,
-            )
-            captcha_result = captcha_response.json()
-        except requests.RequestException as exc:
-            logging.error("Turnstile verification request failed: %s", str(exc))
-            return JsonResponse({"error": "Internal Server Error."}, status=500)
+        captcha_result = {"success": True}
+        if captcha_required:
+            try:
+                captcha_response = requests.post(
+                    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                    data={
+                        "secret": settings.TURNSTILE_SECRET,
+                        "response": captcha_token,
+                        "remoteip": request.META.get("REMOTE_ADDR", ""),
+                    },
+                    timeout=10,
+                )
+                captcha_response.raise_for_status()
+                captcha_result = captcha_response.json()
+            except (requests.RequestException, ValueError) as exc:
+                logging.error("Turnstile verification failed: %s", str(exc))
+                return JsonResponse({"error": "Internal Server Error."}, status=500)
 
-        if not captcha_result.get("success"):
+        if captcha_required and not captcha_result.get("success"):
             return JsonResponse(
                 {"error": "Captcha verification failed. Please try again."},
                 status=400,
