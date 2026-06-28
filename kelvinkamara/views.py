@@ -48,7 +48,10 @@ def robots_txt(request):
 
 @ensure_csrf_cookie
 def index(request):
-    context = {"dark_mode": "off"}
+    context = {
+        "dark_mode": "off",
+        "turnstile_sitekey": settings.TURNSTILE_SITEKEY,
+    }
     dark_mode = request.GET.get("dark_mode", False)
     if dark_mode is not False and dark_mode == "on":
         context["dark_mode"] = "on"
@@ -66,6 +69,33 @@ def is_valid_email(subject):
 
 def contact(request):
     if "POST" == request.method:
+        captcha_token = request.POST.get("cf-turnstile-response", "")
+        if not captcha_token:
+            return JsonResponse(
+                {"error": "Captcha is required before submitting."}, status=400
+            )
+
+        try:
+            captcha_response = requests.post(
+                "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                data={
+                    "secret": settings.TURNSTILE_SECRET,
+                    "response": captcha_token,
+                    "remoteip": request.META.get("REMOTE_ADDR", ""),
+                },
+                timeout=10,
+            )
+            captcha_result = captcha_response.json()
+        except requests.RequestException as exc:
+            logging.error("Turnstile verification request failed: %s", str(exc))
+            return JsonResponse({"error": "Internal Server Error."}, status=500)
+
+        if not captcha_result.get("success"):
+            return JsonResponse(
+                {"error": "Captcha verification failed. Please try again."},
+                status=400,
+            )
+
         error_msg = ""
         name = request.POST.get("name", False)
         email = request.POST.get("email", False)

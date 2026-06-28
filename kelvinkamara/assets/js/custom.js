@@ -12,6 +12,7 @@ $(document).ready(function() {
     $email = $("#email");
     $message = $("#message");
     $contactForm = $("#contact-form");
+    $captchaField = $(".captcha-field");
 
     /* clear inputs on page load */
     $name.val("");
@@ -40,6 +41,23 @@ $(document).ready(function() {
             $(this).removeClass("is-invalid");
         }
     }
+
+    function setCaptchaInvalid(isInvalid) {
+        if (!$captchaField.length) {
+            return;
+        }
+
+        if (isInvalid) {
+            $captchaField.addClass("is-invalid");
+            return;
+        }
+
+        $captchaField.removeClass("is-invalid");
+    }
+
+    $(document).on("change input", "input[name='cf-turnstile-response']", function() {
+        setCaptchaInvalid(!$(this).val());
+    });
 
     $name.on("input", function() {
         fieldHandler.call(this, undefined, true);
@@ -81,6 +99,16 @@ $(document).ready(function() {
         data.name = $name.val();
         data.email = $email.val();
         if ($message.val().length) data.message = $message.val();
+        data["cf-turnstile-response"] = $(
+            "input[name='cf-turnstile-response']"
+        ).val();
+
+        if (!data["cf-turnstile-response"]) {
+            setCaptchaInvalid(true);
+            return;
+        }
+
+        setCaptchaInvalid(false);
 
         // send ajax request
         $.ajaxSetup({
@@ -98,10 +126,27 @@ $(document).ready(function() {
                 $name.val("");
                 $email.val("");
                 $message.val("");
+                setCaptchaInvalid(false);
                 $(".success").toggle();
             })
-            .fail(function() {
+            .fail(function(xhr) {
+                const errorMsg =
+                    xhr && xhr.responseJSON && xhr.responseJSON.error
+                        ? xhr.responseJSON.error.toLowerCase()
+                        : "";
+                const isCaptchaError = errorMsg.includes("captcha");
+
+                if (isCaptchaError) {
+                    setCaptchaInvalid(true);
+                    return;
+                }
+
                 $(".error").toggle();
+            })
+            .always(function() {
+                if (window.turnstile && "function" === typeof window.turnstile.reset) {
+                    window.turnstile.reset();
+                }
             });
     });
 
@@ -162,4 +207,18 @@ function handleNavCurrentClass() {
         navWork.removeClass("nav-current");
         navRecommendations.removeClass("nav-current");
     });
+}
+
+// These callbacks are invoked by Cloudflare Turnstile from data-* attributes
+// in the contact form template, so they are used even without JS call-sites.
+function onContactCaptchaSolved() {
+    $(".captcha-field").removeClass("is-invalid");
+}
+
+function onContactCaptchaExpired() {
+    $(".captcha-field").addClass("is-invalid");
+}
+
+function onContactCaptchaError() {
+    $(".captcha-field").addClass("is-invalid");
 }

@@ -7,7 +7,7 @@ set -o nounset
 export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-secret}"
 
 rm -rf static 2>/dev/null || true
-python manage.py collectstatic --no-input
+# python manage.py collectstatic --no-input # commented because this makes the server render old static files and so Django will overlook your changes if static/ is present
 # python manage.py makemigrations  # run manually and commit migrations
 python manage.py migrate --fake-initial
 python manage.py createsuperuser \
