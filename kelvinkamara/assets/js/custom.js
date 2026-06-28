@@ -170,7 +170,7 @@ function initDarkModeToggle() {
 
     function getStoredTheme() {
         try {
-            return window.localStorage.getItem(storageKey) === "dark" ? "dark" : "light";
+            return "dark" === window.localStorage.getItem(storageKey) ? "dark" : "light";
         } catch (error) {
             return "light";
         }
@@ -196,7 +196,7 @@ function initDarkModeToggle() {
     }
 
     function updateToggleUi(theme) {
-        const isDarkModeEnabled = theme === "dark";
+        const isDarkModeEnabled = "dark" === theme;
         themeToggle.attr("aria-pressed", isDarkModeEnabled ? "true" : "false");
 
         let themeToggleIcon = themeToggle.find("#theme-toggle-icon");
@@ -212,7 +212,7 @@ function initDarkModeToggle() {
     }
 
     function applyTheme(theme) {
-        if (theme === "dark") {
+        if ("dark" === theme) {
             attachDarkStylesheet();
             document.documentElement.setAttribute("data-theme", "dark");
         } else {
@@ -238,7 +238,7 @@ function initDarkModeToggle() {
         .on("click.themeToggle", function(event) {
             event.preventDefault();
 
-            const nextTheme = document.documentElement.getAttribute("data-theme") === "dark"
+            const nextTheme = "dark" === document.documentElement.getAttribute("data-theme")
                 ? "light"
                 : "dark";
             persistTheme(nextTheme);
@@ -258,7 +258,7 @@ function initDarkModeToggle() {
             return;
         }
 
-        applyTheme(event.newValue === "dark" ? "dark" : "light");
+        applyTheme("dark" === event.newValue ? "dark" : "light");
     });
 }
 

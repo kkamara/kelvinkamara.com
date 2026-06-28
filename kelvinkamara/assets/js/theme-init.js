@@ -23,14 +23,14 @@
     }
 
     try {
-        if (window.localStorage.getItem(storageKey) === "dark") {
+        if ("dark" === window.localStorage.getItem(storageKey)) {
             theme = "dark";
         }
     } catch (error) {
         theme = "light";
     }
 
-    if (theme === "dark") {
+    if ("dark" === theme) {
         ensureDarkThemeStylesheet();
     }
 
