@@ -225,12 +225,9 @@ a:hover {
 
 @media only screen and (max-width: 991px) {
   .navbar-header {
-    background-color: #000 !important;
+    background-color: #181a1b !important;
   }
-  .navbar-header .logo-text {
-    color: #fff !important;
-  }
-  .site-logo > .logo-text {
-    color: #fff;
+  .header-area .logo h2.logo-text {
+    color: #b2aba1;
   }
 }
