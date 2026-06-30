@@ -175,7 +175,7 @@ a:hover {
 
 .close:not(:disabled):not(.disabled):hover,
 .close:not(:disabled):not(.disabled):focus {
-    color: #e8e6e3;
+  color: #e8e6e3;
 }
 
 .modal-content {
@@ -193,32 +193,32 @@ a:hover {
 }
 
 .form-control {
-    color: #b5afa6;
-    background-color: #181a1b;
-    background-clip: padding-box;
-    border-top-color: #3c4144;
-    border-right-color: #3c4144;
-    border-bottom-color: #3c4144;
-    border-left-color: #3c4144;
+  color: #b5afa6;
+  background-color: #181a1b;
+  background-clip: padding-box;
+  border-top-color: #3c4144;
+  border-right-color: #3c4144;
+  border-bottom-color: #3c4144;
+  border-left-color: #3c4144;
 }
 
 .form-control:focus {
-    color: #b5afa6;
-    background-color: #181a1b;
-    border-top-color: #00438c;
-    border-right-color: #00438c;
-    border-bottom-color: #00438c;
-    border-left-color: #00438c;
-    outline-color: initial;
-    box-shadow: #0062cc40 0px 0px 0px 0.2rem;
+  color: #b5afa6;
+  background-color: #181a1b;
+  border-top-color: #00438c;
+  border-right-color: #00438c;
+  border-bottom-color: #00438c;
+  border-left-color: #00438c;
+  outline-color: initial;
+  box-shadow: #0062cc40 0px 0px 0px 0.2rem;
 }
 
 .form-group .btn.btn-primary {
-    background-color: #414649;
-    border-top-color: #70685c;
-    border-right-color: #70685c;
-    border-bottom-color: #70685c;
-    border-left-color: #70685c;
+  background-color: #414649;
+  border-top-color: #70685c;
+  border-right-color: #70685c;
+  border-bottom-color: #70685c;
+  border-left-color: #70685c;
 }
 
 /* End contact modal styles */
