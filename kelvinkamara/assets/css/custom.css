@@ -135,9 +135,6 @@ footer.site-footer .footer-icon-container > .footer-icon {
   display: block;
 }
 
-.captcha-field.is-invalid {
-}
-
 .captcha-field.is-invalid .captcha-widget {
   outline: 1px solid #dc3545;
   outline-offset: 0;
