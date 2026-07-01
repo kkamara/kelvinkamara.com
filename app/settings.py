@@ -63,8 +63,6 @@ SITE_ID = 1
 
 THIRD_PARTY_APPS = [
     "django_extensions",
-    "rest_framework",
-    "rest_framework.authtoken",
 ]
 
 LOCAL_APPS = [
@@ -88,18 +86,6 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS", cast=lambda value: value.split())
-
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
-
-SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("JWT",),
-}
 
 ROOT_URLCONF = "app.urls"
 

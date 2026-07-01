@@ -11,9 +11,6 @@ From `requirements.txt`:
 - django-cors-headers
 - django-environ
 - django-extensions
-- django-filter
-- djangorestframework
-- djangorestframework-simplejwt
 - ipython
 - pymysql
 - requests
