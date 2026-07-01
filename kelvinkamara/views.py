@@ -56,7 +56,7 @@ def index(request):
     return render(request, "kelvinkamara/pages/index.html", context=context)
 
 
-def is_valid_email(subject):
+def _is_valid_email(subject):
     try:
         validate_email(subject)
         return True
@@ -100,34 +100,32 @@ def contact(request):
             status=400,
         )
 
-    error_msg = ""
+    errors = list()
     name = request.POST.get("name", False)
     email = request.POST.get("email", False)
     message = request.POST.get("message", False)
-    if not name or name == "":
-        error_msg = "Name string must be provided"
+
+    if not name:
+        errors.append("Name string must be provided")
     elif len(name) < 3:
-        error_msg = "Name length must be greater than 2 characters"
+        errors.append("Name length must be greater than 2 characters")
     elif len(name) > 50:
-        error_msg = "Name length must be less than 51 characters"
+        errors.append("Name length must be less than 51 characters")
 
-    if not email or email == "":
-        error_msg = "Email string must be provided"
+    if not email:
+        errors.append("Email string must be provided")
     elif len(email) < 3:
-        error_msg = "Email length must be greater than 2 characters"
+        errors.append("Email length must be greater than 2 characters")
     elif len(email) > 100:
-        error_msg = "Email length must be less than 101 characters"
-    elif not is_valid_email(email):
-        error_msg = "Email must be a valid format like johnsmith@example.com"
+        errors.append("Email length must be less than 101 characters")
+    elif not _is_valid_email(email):
+        errors.append("Email must be a valid format like johnsmith@example.com")
 
-    if message:
-        if type(message) is not str:
-            error_msg = "Message string must be provided"
-        elif len(message) > 1000:
-            error_msg = "Message length must be less than 1001 characters"
+    if message and 1000 < len(message):
+        errors.append("Message length must be less than 1001 characters")
 
-    if len(error_msg) > 0:
-        return JsonResponse({"error": error_msg}, status=400)
+    if errors:
+        return JsonResponse({"error": errors[0]}, status=400)
 
     html = get_template("kelvinkamara/emails/contact.html")
     html_content = html.render(
