@@ -73,11 +73,9 @@ The admin user details are set in [./compose/local/django/start](./compose/local
 export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-secret}"
 
 python manage.py createsuperuser \
-  --username admin_user \
-  --email admin@django-app.com \
   --no-input \
-  --first_name Admin \
-  --last_name User
+  --username admin_user \
+  --email admin@django-app.com
 ```
 
 #### Using Docker's Mail Server
