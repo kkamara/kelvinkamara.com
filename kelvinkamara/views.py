@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import render
 from django.core.mail import EmailMultiAlternatives
@@ -10,11 +9,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.staticfiles import finders
 from django.views.decorators.csrf import ensure_csrf_cookie
-
 import logging
 import requests
-from django.views.decorators.http import require_POST
-
+from django_ratelimit.decorators import ratelimit
+from django.views.decorators.http import require_POST, require_safe
 
 
 def _static_file_response(filename, content_type):
@@ -40,14 +38,20 @@ def _static_file_response(filename, content_type):
     return FileResponse(open(static_path, "rb"), content_type=content_type)
 
 
+@ratelimit(key="ip", rate="20/m")
+@require_safe
 def sitemap_xml(request):
     return _static_file_response("sitemap.xml", "application/xml")
 
 
+@ratelimit(key="ip", rate="20/m")
+@require_safe
 def robots_txt(request):
     return _static_file_response("robots.txt", "text/plain")
 
 
+@ratelimit(key="ip", rate="20/m")
+@require_safe
 @ensure_csrf_cookie
 def index(request):
     context = {
@@ -65,12 +69,15 @@ def _is_valid_email(subject):
         return False
 
 
+@ratelimit(key="ip", rate="5/m", block=False)
 @require_POST
 def contact(request):
+    if getattr(request, "limited", False):
+        return JsonResponse(
+            {"error": "Too many requests. Please try again later."}, status=429
+        )
     captcha_token = request.POST.get("cf-turnstile-response", "")
-    captcha_required = bool(
-        settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY
-    )
+    captcha_required = bool(settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY)
     if captcha_required and not captcha_token:
         return JsonResponse(
             {"error": "Captcha is required before submitting."}, status=400

@@ -1,5 +1,6 @@
 import logging
 import time
+from django_ratelimit.decorators import ratelimit
 
 
 request_logger = logging.getLogger("request")
@@ -24,3 +25,14 @@ class RequestLogMiddleware:
         )
 
         return response
+
+
+class AdminRateLimitMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.rate_limit = ratelimit(key="ip", rate="50/h")
+
+    def __call__(self, request):
+        if request.path.startswith("/admin/"):
+            self.rate_limit(lambda r: None)(request)  # Apply rate limit check
+        return self.get_response(request)

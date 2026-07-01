@@ -15,6 +15,7 @@ From `requirements.txt`:
 - pymysql
 - requests
 - whitenoise
+- django-ratelimit
 
 From `requirements-docker-production.txt` (includes everything in `requirements.txt`, plus):
 
