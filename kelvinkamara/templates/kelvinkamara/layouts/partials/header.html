@@ -6,7 +6,7 @@
                     class="header-content d-flex justify-content-between align-items-center py-3"
                 >
                     <div class="logo flex-3">
-                        <a class="site-logo" href="/">
+                        <a class="site-logo" href="{% url 'home' %}">
                             <h2 class="logo-text">
                                 KELVIN KAMARA
                             </h2>
@@ -36,18 +36,18 @@
     <div class="menu-content">
         <ul>
             <li class="nav-home nav-current" role="presentation">
-                <a href="#home">Home</a>
+                <a href="{% url 'home' %}#home">Home</a>
             </li>
             <li class="nav-award-how" role="presentation">
-                <a href="#award-how">
+                <a href="{% url 'home' %}#award-how">
                     How I earned a government programming award
                 </a>
             </li>
             <li class="nav-recommendations" role="presentation">
-                <a href="#recommendations">Recommendations</a>
+                <a href="{% url 'home' %}#recommendations">Recommendations</a>
             </li>
             <li class="nav-work" role="presentation">
-                <a href="#work">Work</a>
+                <a href="{% url 'home' %}#work">Work</a>
             </li>
         </ul>
     </div>
