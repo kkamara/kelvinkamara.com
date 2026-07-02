@@ -41,9 +41,10 @@ With a particular strength in back-end and server-side development, Kel received
 ```bash
 cp .env.example .env
 
-pip install virtualenv && \
-  virtualenv env && \
-  source env/bin/activate
+python -m venv env
+source env/bin/activate
+
+pip install -r requirements.txt
 
 python manage.py makemigrations
 python manage.py migrate
