@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = "kelvinkamara"
+
 urlpatterns = [
     path("", view=views.index, name="home"),
     path("sitemap.xml", view=views.sitemap_xml, name="sitemap"),
