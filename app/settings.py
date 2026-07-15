@@ -90,6 +90,8 @@ CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS", cast=lambda value: value.spli
 
 ROOT_URLCONF = "app.urls"
 
+CORS_URLS_REGEX = r"^/api/.*$"
+
 KELVINKAMARA_DIR = os.path.join(
     BASE_DIR,
     "kelvinkamara",
