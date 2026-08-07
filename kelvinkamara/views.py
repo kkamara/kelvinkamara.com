@@ -1,18 +1,22 @@
+import logging
+import smtplib
 from pathlib import Path
+
+import requests
+from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.core.exceptions import ValidationError
+from django.core.mail import EmailMultiAlternatives
+from django.core.validators import validate_email
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import render
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils.html import strip_tags
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
-from django.contrib.staticfiles import finders
 from django.views.decorators.csrf import ensure_csrf_cookie
-import logging
-import requests
-from django_ratelimit.decorators import ratelimit
 from django.views.decorators.http import require_POST, require_safe
+from django_ratelimit.decorators import ratelimit
+
+logger = logging.getLogger(__name__)
 
 
 def _static_file_response(filename, content_type):
@@ -65,7 +69,7 @@ def _is_valid_email(subject):
         validate_email(subject)
         return True
     except ValidationError as exception:
-        logging.info(str(exception))
+        logger.info(str(exception))
         return False
 
 
@@ -98,7 +102,7 @@ def contact(request):
             captcha_response.raise_for_status()
             captcha_result = captcha_response.json()
         except (requests.RequestException, ValueError) as exc:
-            logging.error("Turnstile verification failed: %s", str(exc))
+            logger.error("Turnstile verification failed: %s", str(exc))
             return JsonResponse({"error": "Internal Server Error."}, status=500)
 
     if captcha_required and not captcha_result.get("success"):
@@ -107,7 +111,7 @@ def contact(request):
             status=400,
         )
 
-    errors = list()
+    errors = []
     name = request.POST.get("name", False)
     email = request.POST.get("email", False)
     message = request.POST.get("message", False)
@@ -161,10 +165,10 @@ def contact(request):
                 timeout=10,
             )
         except requests.RequestException as exc:
-            logging.error("Mailgun request failed: %s", str(exc))
+            logger.error("Mailgun request failed: %s", str(exc))
             return JsonResponse({"error": "Internal Server Error."}, status=500)
         if send_mail.status_code != 200:
-            logging.error(
+            logger.error(
                 "Mailgun send failed. status=%s body=%s",
                 send_mail.status_code,
                 send_mail.text,
@@ -182,7 +186,7 @@ def contact(request):
             )
             send_mail.attach_alternative(html_content, "text/html")
             send_mail.send(fail_silently=False)
-        except Exception as e:
-            logging.error("Email send failed: %s", str(e))
+        except smtplib.SMTPException as e:
+            logger.error("Email send failed: %s", str(e))
             return JsonResponse({"error": "Internal Server Error."}, status=500)
     return JsonResponse({"message": "Success"}, status=200)
