@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import environ
-from pathlib import Path
-import os
 import logging
 import logging.config
+import os
 import time
+from pathlib import Path
+
+import environ
 
 env = environ.Env(
     DEBUG=(bool, False),
