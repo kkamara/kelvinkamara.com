@@ -1,9 +1,14 @@
 import sys
-from django.contrib.staticfiles.management.commands.runserver import Command as RunserverCommand
+
+from django.contrib.staticfiles.management.commands.runserver import (
+    Command as RunserverCommand,
+)
 from django.db import connections
 from django.db.utils import OperationalError
 
+
 class Command(RunserverCommand):
+    """Custom runserver command that tests database connections before starting the server."""
     help = "Starts the development server after testing the database connection."
 
     def execute(self, *args, **options):
