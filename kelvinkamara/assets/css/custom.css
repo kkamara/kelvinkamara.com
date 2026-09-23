@@ -170,6 +170,14 @@ footer.site-footer .footer-icon-container > .footer-icon {
   color: #fff;
 }
 
+.footer-link {
+  color: blue;
+}
+.footer-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
 /* Phones dimensions */
 @media only screen and (max-width: 431px) {
   .publication-cover {
@@ -177,6 +185,9 @@ footer.site-footer .footer-icon-container > .footer-icon {
   }
   .post-loop-container {
     margin-top: 1px;
+  }
+  .footer-link {
+    display: inline-block;
   }
 }
 
