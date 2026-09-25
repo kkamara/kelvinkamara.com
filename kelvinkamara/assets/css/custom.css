@@ -179,6 +179,12 @@ footer.site-footer .footer-icon-container > .footer-icon {
   text-decoration: none;
 }
 
+.award-evidence-section ul li {
+  list-style-type: disc;
+  margin-left: 26px;
+  font-size: 1.4em;
+}
+
 /* Phones dimensions */
 @media only screen and (max-width: 431px) {
   .publication-cover {
