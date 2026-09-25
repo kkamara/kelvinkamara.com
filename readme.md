@@ -7,7 +7,7 @@
 ## Evidence Supporting I Achieved the Govt. Award
 
 * [award-evidence.png](https://github.com/kkamara/kelvinkamara.com/blob/main/kelvinkamara/assets/img/award-evidence.png)
-* [award-evidence.mp4](https://github.com/kkamara/useful/blob/main/award-evidence.mp4)
+* [award-evidence.mp4](https://github.com/kkamara/kelvinkamara.com/tree/main/kelvinkamara/assets/videos)
 
 ## Table of Contents
 
