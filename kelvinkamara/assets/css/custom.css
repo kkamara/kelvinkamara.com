@@ -173,9 +173,16 @@ footer.site-footer .footer-icon-container > .footer-icon {
 .footer-link {
   color: blue;
 }
+
 .footer-link:hover {
   color: red;
   text-decoration: none;
+}
+
+.award-evidence-section ul li {
+  list-style-type: disc;
+  margin-left: 26px;
+  font-size: 1.4em;
 }
 
 /* Phones dimensions */
