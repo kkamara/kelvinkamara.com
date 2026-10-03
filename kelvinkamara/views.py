@@ -114,8 +114,14 @@ def contact(request):
         and captcha_result.get("success")
         and (
             captcha_result.get("action") != "contact"
-            or not validate_host(
-                captcha_result.get("hostname", ""), settings.ALLOWED_HOSTS
+            and (
+                not validate_host(
+                    captcha_result.get("hostname", ""), settings.ALLOWED_HOSTS
+                )
+                and (
+                    "local" == settings.APP_ENV
+                    and "example.com" != captcha_result.get("hostname", "")
+                )
             )
         )
     ):
