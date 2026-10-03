@@ -81,7 +81,10 @@ def contact(request):
             {"error": "Too many requests. Please try again later."}, status=429
         )
     captcha_token = request.POST.get("cf-turnstile-response", "")
-    captcha_required = bool(settings.TURNSTILE_SECRET and settings.TURNSTILE_SITEKEY)
+    captcha_required = bool(settings.TURNSTILE_SECRET or settings.TURNSTILE_SITEKEY)
+    if captcha_required and not settings.TURNSTILE_SECRET:
+        logger.error("TURNSTILE_SECRET is not set; cannot verify captcha tokens.")
+        return JsonResponse({"error": "Internal Server Error."}, status=500)
     if captcha_required and not captcha_token:
         return JsonResponse(
             {"error": "Captcha is required before submitting."}, status=400
