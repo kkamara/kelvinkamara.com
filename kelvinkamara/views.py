@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.core.validators import validate_email
 from django.http import FileResponse, Http404, JsonResponse
+from django.http.request import validate_host
 from django.shortcuts import render
 from django.template.loader import get_template
 from django.utils.html import strip_tags
@@ -107,6 +108,18 @@ def contact(request):
         except (requests.RequestException, ValueError) as exc:
             logger.error("Turnstile verification failed: %s", str(exc))
             return JsonResponse({"error": "Internal Server Error."}, status=500)
+
+    if (
+        captcha_required
+        and captcha_result.get("success")
+        and (
+            captcha_result.get("action") != "contact"
+            or not validate_host(
+                captcha_result.get("hostname", ""), settings.ALLOWED_HOSTS
+            )
+        )
+    ):
+        captcha_result = {"success": False}
 
     if captcha_required and not captcha_result.get("success"):
         return JsonResponse(
