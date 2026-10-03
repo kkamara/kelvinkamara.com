@@ -185,6 +185,11 @@ footer.site-footer .footer-icon-container > .footer-icon {
   font-size: 1.4em;
 }
 
+#contact-form button#submit:focus {
+  background-color: blue;
+  border-color: blue;
+}
+
 /* Phones dimensions */
 @media only screen and (max-width: 431px) {
   .publication-cover {
