@@ -1,13 +1,14 @@
 services:
   django:
+    container_name: kkamara_local_django
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
     image: kkamara_local_django
-    container_name: kkamara_local_django
+    restart: unless-stopped
     platform: linux/x86_64
     depends_on:
-      - mariadb
+      - mysql
       - mailhog
     volumes:
       - .:/app:z
@@ -18,20 +19,24 @@ services:
     command: /start
     networks:
       - kkamara_app
-
-  mariadb:
-    container_name: kkamara_local_mariadb
-    image: 'mariadb:10.7'
+  mysql:
+    container_name: kkamara_local_mysql
+    image: 'mysql:8.0'
+    restart: unless-stopped
     ports:
-      - '3306:3306'
+      - '${DB_PORT:-3306}:${DB_PORT:-3306}'
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-secret}
-      MARIADB_DATABASE: ${MARIADB_DATABASE:-kelvinkamara}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - 'localmariadb:/var/lib/mysql'
+      - "mysql:/var/lib/mysql"
     networks:
       - kkamara_app
-
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASS}"]
   mailhog:
     container_name: kkamara_local_mailhog
     restart: unless-stopped
@@ -47,5 +52,5 @@ networks:
     driver: bridge
 
 volumes:
-  localmariadb:
+  mysql:
     driver: local

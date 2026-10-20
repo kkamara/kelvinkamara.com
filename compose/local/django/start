@@ -9,8 +9,8 @@ export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-secret}"
 python - <<'EOF'
 import os, socket, sys, time
 
-host = os.environ.get("MARIADB_HOST")
-port = int(os.environ.get("MARIADB_PORT") or 3306)
+host = os.environ.get("DB_HOST")
+port = int(os.environ.get("DB_PORT") or 3306)
 if host:
     for _ in range(60):
         try:
@@ -19,7 +19,7 @@ if host:
         except OSError:
             time.sleep(2)
     else:
-        sys.exit("MariaDB not reachable")
+        sys.exit("MYSQL not reachable")
 EOF
 
 rm -rf static 2>/dev/null || true
