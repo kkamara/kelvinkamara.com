@@ -166,10 +166,6 @@ footer.site-footer .footer-icon-container > .footer-icon {
   margin-bottom: 13px;
 }
 
-.header-area .logo h2 {
-  color: #fff;
-}
-
 .footer-link {
   color: blue;
 }
@@ -215,11 +211,16 @@ footer.site-footer .footer-icon-container > .footer-icon {
   }
 }
 
-/* iPad Pro and Nest Hub dimension */
-@media only screen and (width: 1024px) {
+/* iPad Pro and iPad-like dimension */
+@media only screen and (width: 1032px) {
   .publication-cover {
-    background-position: -198px 0px !important;
+    background-position: -267px 0px !important;
     background-repeat: no-repeat; /* Nest Hub-specific */
+  }
+}
+@media only screen and (width: 960px) and (height: 1440px) {
+  .publication-cover {
+    background-position: -22px -113px !important;
   }
 }
 
