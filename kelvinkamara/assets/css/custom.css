@@ -48,7 +48,6 @@ footer.site-footer .footer-icon-container:hover {
 }
 
 .hero-menu-link > a:first-child > .header-icon {
-  margin-right: -2.5px;
   margin-left: 0px !important; /* first item to have 0px left-margin */
 }
 
@@ -173,6 +172,10 @@ footer.site-footer .footer-icon-container > .footer-icon {
 .footer-link:hover {
   color: red;
   text-decoration: none;
+}
+
+.cv-file-icon {
+  height: 33px !important;
 }
 
 .award-evidence-section ul li {
