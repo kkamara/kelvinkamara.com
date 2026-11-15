@@ -1,5 +1,4 @@
-.gitattributes
-.github
+node_modules
 .gitignore
-.venv
+vendor
 tmp

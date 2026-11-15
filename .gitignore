@@ -1,47 +1,10 @@
-# Python Django (old)
-__pycache__/
-db.sqlite3
-/env
-/static
-
-# Environment
+/node_modules
 .env
-.env.local
-.env.*.local
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Session files
-sessions/*
-!sessions/.gitkeep
-
-# Logs
-logs/
-*.log
-
-# Uploads
-uploads/
-
-# Temp files
-/tmp
-*.tmp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Testing
-coverage/
-.nyc_output/
-
+yarn-error.log
+/.DB_Store
+database.sqlite
+db.sqlite
+tmp
+config.json
+.env.dev
+.env.production
