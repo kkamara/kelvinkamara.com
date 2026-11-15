@@ -1,7 +1,6 @@
 {
   "name": "kelvinkamara",
   "version": "1.0.0",
-  "description": "Award-Winning Software Developer Portfolio",
   "main": "src/app.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha tests/**/{,**/}*.js",
