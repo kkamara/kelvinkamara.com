@@ -5,6 +5,7 @@ const axios = require('axios');
 const { status } = require('http-status');
 const { sendContactEmail } = require('../services/email');
 const { message500 } = require('../utils/httpResponses');
+const contactValidator = require('../utils/contactValidator');
 
 const verifyTurnstile = async (captchaToken) => {
   if (!config.turnstileSecret) {
@@ -63,7 +64,6 @@ const contact = asyncHandler(async (req, res) => {
   }
 
   // Validate input using contact validator
-  const contactValidator = require('../../utils/contactValidator');
   const validation = contactValidator.validateContactForm(name, email, message);
   if (!validation.valid) {
     return res.status(status.BAD_REQUEST).json({
@@ -71,20 +71,22 @@ const contact = asyncHandler(async (req, res) => {
     });
   }
 
-  try {
-    await sendContactEmail({
-      name,
-      email,
-      message,
-      to: config.mailTo,
-      appUrl: config.appURL,
-    });
+  const sendEmail = await sendContactEmail({
+    name,
+    email,
+    message,
+    to: config.mailTo,
+    appUrl: config.appURL,
+  });
 
-    return res.json({ message: 'Success' });
-  } catch (error) {
-    res.status(status.INTERNAL_SERVER_ERROR)
-    throw new Error(message500);
+  if (false === sendEmail) {
+    res.status(status.INTERNAL_SERVER_ERROR);
+    throw new Error(
+      "Error encountered when attempting to send email.",
+    );
   }
+
+  return res.json({ message: 'Success' });
 });
 
 
