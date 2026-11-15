@@ -57,16 +57,21 @@ footer.site-footer .footer-icon-container > a:hover {
 }
 
 footer.site-footer .footer-icon-container > .footer-icon {
-  margin-left: 2.5px;
-  margin-right: 2.5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-footer.site-footer .footer-icon-container:first-of-type > .footer-icon {
-  margin-left: 4px;
+footer.site-footer .footer-icon-container > .theme-toggle-icon {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-footer.site-footer .footer-icon-container:last-of-type > .footer-icon {
-  margin-right: 10px;
+footer.site-footer p span {
+  margin-right: 5px;
+}
+
+footer.site-footer .footer-link {
+  margin-left: 5px;
 }
 
 .publication-cover {
