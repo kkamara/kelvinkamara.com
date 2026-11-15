@@ -1,5 +1,5 @@
-'use strict';
-const minifyHTML = require('express-minify-html');
+"use strict";
+const minifyHTML = require("express-minify-html");
 
 module.exports.minifyHTML = minifyHTML({
   override: true,
@@ -8,7 +8,8 @@ module.exports.minifyHTML = minifyHTML({
     removeComments: true,
     collapseWhitespace: true,
     collapseBooleanAttributes: true,
-    removeAttributeQuotes: false,
+    removeAttributeQuotes: true,
+    removeEmptyAttributes: true,
     minifyJS: true,
   },
 });

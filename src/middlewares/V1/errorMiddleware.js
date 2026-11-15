@@ -1,6 +1,7 @@
-'use strict';
-const { status } = require('http-status');
-const asyncHandler = require('express-async-handler');
+"use strict";
+const { nodeEnv } = require('../../config');
+const { status, } = require('http-status');
+const asyncHandler = require("express-async-handler");
 
 module.exports.notFound = asyncHandler((req, res, next) => {
   const error = new Error(`Not found: ${req.originalUrl}`);
@@ -9,14 +10,12 @@ module.exports.notFound = asyncHandler((req, res, next) => {
 });
 
 module.exports.jsonError = (err, req, res, next) => {
-  const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local';
-  
-  if (isDevelopment) {
-    console.error(err);
+  if ("production" !== nodeEnv) {
+    console.log(err);
   }
-
-  return res.status(res.statusCode || status.INTERNAL_SERVER_ERROR).json({
-    message: err.message,
-    stack: isDevelopment ? err.stack : null,
-  });
+  return res.status(res.statusCode || status.INTERNAL_SERVER_ERROR)
+    .send({
+      message: err.message,
+      stack: "production" === nodeEnv ? null : err.stack,
+    });
 };
