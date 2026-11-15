@@ -1,24 +1,25 @@
-'use strict';
-const morgan = require('morgan');
-const fs = require('fs');
-const path = require('node:path');
+"use strict";
+const fs = require("node:fs");
+const morgan = require("morgan");
+const config = require("../../config");
+const moment = require("moment-timezone");
+const path = require("node:path");
 
-const logDir = path.join(__dirname, '../../..', 'logs');
-
-// Ensure logs directory exists
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
-
+const logFileName = "kelvin-kamara.log";
 const accessLogStream = fs.createWriteStream(
-  path.join(logDir, 'access.log'),
-  { flags: 'a' }
+  path.join(__dirname, "../../..", "logs", logFileName), 
+  { flags: "a" },
+);
+morgan.token("date", (req, res, tz) => {
+  return moment().tz(tz).format("YYYY-MM-DD HH:mm:ss");
+});
+const logName = "kelvin-kamara-request-log-format";
+morgan.format(
+  logName,
+  `:remote-addr - :remote-user [:date[${config.appTimezone}]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"`,
 );
 
-const requestLogFormat = ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - :response-time ms';
-
-module.exports.requestLog = morgan(requestLogFormat, {
-  stream: accessLogStream,
-});
-
-module.exports.consoleLog = morgan(requestLogFormat);
+module.exports.requestLog = morgan(
+  logName,  
+  { stream: accessLogStream, },
+);
