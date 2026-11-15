@@ -29,7 +29,7 @@ const config = {
   mailUser: process.env.MAIL_USER,
   mailPass: process.env.MAIL_PASS,
   mailFrom: process.env.MAIL_FROM || '"No Reply" <noreply@kelvinkamara.com>',
-  mailToAddress: process.env.MAIL_TO_ADDRESS || 'kamaracomputers@gmail.com',
+  mailTo: process.env.MAIL_TO || 'kamaracomputers@gmail.com',
   mailSubject: process.env.MAIL_SUBJECT || 'KelvinKamara.com Message Received',
   mailgunDomain: process.env.MAILGUN_DOMAIN,
   mailgunSecret: process.env.MAILGUN_SECRET,

@@ -19,7 +19,7 @@ Before deploying to production, verify all items below are complete:
 - [ ] `APP_KEY` is a unique, strong random string (32+ characters)
 - [ ] `NODE_ENV=production`
 - [ ] `APP_URL` matches your production domain
-- [ ] `MAIL_TO_ADDRESS` is your inbox email
+- [ ] `MAIL_TO` is your inbox email
 
 ### ✅ Security Configuration
 
@@ -195,7 +195,7 @@ heroku config:set MAILGUN_DOMAIN=your-domain
 heroku config:set MAILGUN_SECRET=your-secret
 heroku config:set TURNSTILE_SITEKEY=your-sitekey
 heroku config:set TURNSTILE_SECRET=your-secret
-heroku config:set MAIL_TO_ADDRESS=your-email@example.com
+heroku config:set MAIL_TO=your-email@example.com
 
 # 4. Deploy
 git push heroku main
@@ -351,7 +351,7 @@ MAIL_DRIVER=mailgun
 MAIL_HOST=smtp.mailgun.org
 MAIL_PORT=587
 MAIL_FROM=noreply@kelvinkamara.com
-MAIL_TO_ADDRESS=your-email@example.com
+MAIL_TO=your-email@example.com
 
 MAILGUN_DOMAIN=mail.kelvinkamara.com
 MAILGUN_SECRET=key-xxx

@@ -49,7 +49,7 @@ const sendContactEmail = async ({ name, email, message, appUrl }) => {
 
     await transporter.sendMail({
       from: config.mailFrom,
-      to: config.mailToAddress,
+      to: config.mailTo,
       subject: config.mailSubject,
       html: htmlTemplate,
       replyTo: email,
