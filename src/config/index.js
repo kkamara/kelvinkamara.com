@@ -35,11 +35,6 @@ const config = {
   mailgunSecret: process.env.MAILGUN_SECRET,
   turnstileSitekey: process.env.TURNSTILE_SITEKEY,
   turnstileSecret: process.env.TURNSTILE_SECRET,
-  secureSSLRedirect: process.env.SECURE_SSL_REDIRECT === 'true',
-  sessionCookieSecure: process.env.SESSION_COOKIE_SECURE === 'true',
-  csrfCookieSecure: process.env.CSRF_COOKIE_SECURE === 'true',
-  csrfTrustedOrigins: process.env.CSRF_TRUSTED_ORIGINS || 'http://localhost',
-  useXForwardedProto: process.env.USE_X_FORWARDED_PROTO === 'true',
 };
 
 module.exports = config;
