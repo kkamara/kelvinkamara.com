@@ -1,25 +1,15 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
+
+FROM node:24
+
+ENV NODE_ENV=development
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+COPY ["package.json", "yarn.lock*", "./"]
 
-# Install dependencies
-RUN npm ci --only=production
+RUN yarn install
 
-# Copy application code
 COPY . .
 
-# Create directories for runtime data
-RUN mkdir -p sessions logs
-
-# Expose port
-EXPOSE 8000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:8000', (r) => {if (r.statusCode !== 404) throw new Error(r.statusCode)})"
-
-# Start application
-CMD ["npm", "run", "start"]
+CMD ["yarn", "run", "dev"]

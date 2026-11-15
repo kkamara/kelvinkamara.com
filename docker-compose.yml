@@ -1,42 +1,58 @@
-version: '3.8'
-
 services:
   app:
-    build: .
-    container_name: kelvinkamara
-    ports:
-      - "8000:8000"
+    container_name: kk-app
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
-      NODE_ENV: development
-      APP_KEY: ${APP_KEY}
-      APP_URL: http://localhost:8000
-      MAIL_HOST: mailhog
-      MAIL_PORT: 1025
-      MAIL_TO_ADDRESS: ${MAIL_TO_ADDRESS}
-      TURNSTILE_SITEKEY: ${TURNSTILE_SITEKEY}
-      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+      DATABASE_URL: "mysql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+      PORT: "${PORT:-8000}"
+      MAIL_FROM: "${MAIL_FROM}"
+      MAIL_TO: "${MAIL_TO}"
     volumes:
-      - ./src:/app/src
-      - ./logs:/app/logs
-      - ./sessions:/app/sessions
+      - .:/app/
+      - /app/node_modules
+    ports:
+      - "${PORT:-8000}:${PORT:-8000}"
+    restart: unless-stopped
     depends_on:
+      - mysql
       - mailhog
     networks:
-      - kelvinkamara-network
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: kelvinkamara-mailhog
+      - app
+  mysql:
+    container_name: kk-db
+    image: 'mysql:8.0'
+    command: ["--port=${DB_PORT:-3306}"]
+    restart: unless-stopped
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - '${DB_PORT:-3306}:${DB_PORT:-3306}'
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - "mysql:/var/lib/mysql"
     networks:
-      - kelvinkamara-network
-
-networks:
-  kelvinkamara-network:
-    driver: bridge
+      - app
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASS}"]
+  mailhog:
+    container_name: kk-mailhog
+    image: 'mailhog/mailhog:latest'
+    restart: unless-stopped
+    ports:
+      - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+      - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - app
 
 volumes:
-  logs:
-  sessions:
+  mysql:
+    driver: local
+
+networks:
+  app:
+    driver: bridge
