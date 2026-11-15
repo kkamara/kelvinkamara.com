@@ -19,7 +19,7 @@ html
     br
     p
       strong Message:
-    p= message
+    p!= message.replace(/\n/g, '<br>')
     br
     p Thanks,
     p Kelvin Kamara
