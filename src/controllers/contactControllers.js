@@ -1,9 +1,9 @@
 'use strict';
-const config = require('../../config');
+const config = require('../config');
 const asyncHandler = require('express-async-handler');
 const axios = require('axios');
 const { status } = require('http-status');
-const mailService = require('../../services/mailService');
+const mailService = require('../services/mailService');
 
 const verifyTurnstile = async (captchaToken) => {
   if (!config.turnstileSecret) {
