@@ -4,6 +4,7 @@ const path = require("node:path");
 const pug = require("pug");
 const config = require("../config/index");
 const Mailgun = require("mailgun.js");
+const FormData = require("form-data");
 
 /**
  * @param {Object} obj
