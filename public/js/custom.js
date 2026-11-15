@@ -120,7 +120,7 @@ $(document).ready(function() {
             global: false,
             type: "POST",
             headers: {
-                "X-CSRFToken": $("input[name=csrfmiddlewaretoken]").val()
+                "X-CSRFToken": $("input[name=_csrf]").val()
             }
         });
         $.ajax({

@@ -34,16 +34,22 @@ const getTransporter = async () => {
 
 const sendContactEmail = async ({ name, email, message, appUrl }) => {
   try {
-    const htmlTemplate = pug.renderFile(
-      path.join(__dirname, '../views/emails/contact.pug'),
-      {
-        name,
-        email,
-        message,
-        appUrl,
-        currentYear: new Date().getFullYear(),
-      }
-    );
+    let htmlTemplate;
+    try {
+      htmlTemplate = pug.renderFile(
+        path.join(__dirname, '../views/emails/contact.pug'),
+        {
+          name,
+          email,
+          message,
+          appUrl,
+          currentYear: new Date().getFullYear(),
+        }
+      );
+    } catch (renderError) {
+      console.error('Failed to render email template:', renderError.message);
+      throw new Error(`Email template rendering failed: ${renderError.message}`);
+    }
 
     const transporter = await getTransporter();
 

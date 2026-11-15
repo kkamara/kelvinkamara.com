@@ -12,6 +12,7 @@ const index = asyncHandler(async (req, res) => {
       appName: config.appName,
     },
     turnstile_sitekey: config.turnstileSitekey,
+    csrfToken: req.csrfToken(),
   });
 });
 
