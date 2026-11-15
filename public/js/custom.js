@@ -118,10 +118,7 @@ $(document).ready(function() {
         $.ajaxSetup({
             url: "/api/contact",
             global: false,
-            type: "POST",
-            headers: {
-                "X-CSRFToken": $("input[name=_csrf]").val()
-            }
+            type: "POST"
         });
         $.ajax({
             data
