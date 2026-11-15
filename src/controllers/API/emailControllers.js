@@ -1,12 +1,14 @@
 'use strict';
 const { status, } = require("http-status");
-const { testSendEmail, } = require("../../services/email");
+const { sendContactEmail, } = require("../../services/mailService");
 const asyncHandler = require("express-async-handler");
 
 const sendEmailRoute = asyncHandler(async (req, res) => {
-  const sendEmail = await testSendEmail({
-    subject: "Test Email ✔",
+  const sendEmail = await sendContactEmail({
+    name: "Test User",
+    email: "test@example.com",
     message: "This is a test email sent during development.",
+    appUrl: process.env.APP_URL || "https://kelvinkamara.com",
   });
   if (false === sendEmail) {
     res.status(status.INTERNAL_SERVER_ERROR);
@@ -22,3 +24,4 @@ const sendEmailRoute = asyncHandler(async (req, res) => {
 });
 
 module.exports = { sendEmailRoute };
+
