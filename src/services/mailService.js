@@ -2,7 +2,6 @@
 const nodemailer = require('nodemailer');
 const path = require('node:path');
 const pug = require('pug');
-const axios = require('axios');
 const config = require('../config');
 
 const getTransporter = async () => {
