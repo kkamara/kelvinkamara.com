@@ -1,0 +1,16 @@
+.award-how-inner-container p {
+    font-size: 1.4em;
+}
+
+.award-how-container {
+    margin-top: 102px;
+}
+
+.award-how-inner-container a {
+    color: blue;
+}
+
+.award-how-inner-container a:hover {
+    color: red;
+    text-decoration: none;
+}

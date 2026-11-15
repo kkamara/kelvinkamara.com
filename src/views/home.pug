@@ -1,0 +1,56 @@
+extends layouts/main.pug
+
+block content
+  .container.mt-5
+    .row
+      .col-lg-8.mx-auto
+        include layouts/flash
+        
+        section#hero.my-5.text-center
+          h1.display-4 Kelvin Kamara
+          p.lead Award-Winning Software Developer
+          p Specializing in websites and mobile applications
+        
+        section#about.my-5
+          h2 About
+          p I am an award-winning software developer with expertise in creating high-quality websites and mobile applications. My work spans full-stack development, cloud solutions, and innovative digital products.
+          p With a focus on clean code, scalability, and user experience, I deliver solutions that drive business growth.
+        
+        section#portfolio.my-5
+          h2 Portfolio
+          p
+            | My portfolio includes work for government contracts, sports companies, and innovative startups. 
+            | Each project demonstrates my commitment to excellence and delivering measurable results.
+          
+          .portfolio-items
+            .portfolio-item.mb-3
+              img.img-fluid(src="/assets/img/award.jpg" alt="Award" style="max-width: 150px;")
+        
+        section#contact.my-5
+          h2 Contact
+          p Get in touch for inquiries about web development, mobile apps, or consulting services.
+          
+          form#contactForm.contact-form
+            .mb-3
+              label.form-label(for="name") Name
+              input.form-control(type="text" id="name" name="name" required autocomplete="name")
+            
+            .mb-3
+              label.form-label(for="email") Email
+              input.form-control(type="email" id="email" name="email" required autocomplete="email")
+            
+            .mb-3
+              label.form-label(for="message") Message
+              textarea.form-control(id="message" name="message" rows="5" required autocomplete="off")
+            
+            if turnstile_sitekey
+              .mb-3
+                .cf-turnstile(data-sitekey=turnstile_sitekey data-action="contact")
+            
+            button.btn.btn-primary(type="submit") Send Message
+            #formMessage.mt-3
+        
+        .text-center.mt-5
+          p
+            small Have a project in mind? 
+              a(href="#contact") Get in touch

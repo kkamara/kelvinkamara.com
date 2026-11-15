@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: kelvinkamara
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: development
+      APP_KEY: ${APP_KEY}
+      APP_URL: http://localhost:8000
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_TO_ADDRESS: ${MAIL_TO_ADDRESS}
+      TURNSTILE_SITEKEY: ${TURNSTILE_SITEKEY}
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+      - ./sessions:/app/sessions
+    depends_on:
+      - mailhog
+    networks:
+      - kelvinkamara-network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: kelvinkamara-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - kelvinkamara-network
+
+networks:
+  kelvinkamara-network:
+    driver: bridge
+
+volumes:
+  logs:
+  sessions:

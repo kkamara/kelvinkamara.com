@@ -1,0 +1,249 @@
+.pub-container {
+  margin-top: 0px;
+}
+
+.pub-card-container {
+  margin-top: 35px;
+}
+
+.pub-card-container ul.list-group > li.list-group-item {
+  padding: 0px;
+  border: none;
+  font-size: 15px;
+}
+
+.pub-link {
+  color: blue;
+}
+
+.pub-link:hover {
+  color: red;
+}
+
+.pub-icon {
+  color: black;
+}
+
+.modal-icon {
+  color: #fff;
+  margin-top: 19px;
+}
+
+.subscribe_form {
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+}
+
+footer.site-footer .footer-icon-container:hover {
+  text-decoration: none;
+}
+
+.gov-award-link {
+  color: blue;
+}
+
+.gov-award-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.hero-menu-link > a:first-child > .header-icon {
+  margin-left: 0px !important; /* first item to have 0px left-margin */
+}
+
+.hero-menu-link > a > .header-icon {
+  margin-right: -2.5px;
+  margin-left: 15px; /* remaining items to have 15px left-margin */
+}
+
+footer.site-footer .footer-icon-container > .footer-icon {
+  margin-left: 2.5px;
+  margin-right 10px;
+}
+
+.publication-cover {
+  background-position: 0px -28px !important;
+}
+
+.paypal-donate-form {
+  position: relative;
+  margin-left: 23px;
+  margin-top: 23px;
+}
+
+.modalbox.success, .modalbox.error {
+  display: none;
+}
+
+.pub-card-container .card {
+  height: 605px;
+}
+
+#recommendations {
+  margin-top: 80px;
+}
+
+.pub-card-container:last-child {
+  margin-bottom: 35px;
+}
+
+.post-loop-container {
+  margin-top: -67px;
+}
+
+.post-card {
+  margin-bottom: -40px;
+}
+
+.post-card:last-child {
+  margin-bottom: -6px;
+}
+
+.contact-form-email-link,
+.contact-form-phone-link {
+  color: blue;
+}
+
+.contact-form-email-link:hover,
+.contact-form-phone-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.captcha-field {
+  display: inline-flex;
+  justify-content: center;
+  align-items: flex-start;
+  --captcha-scale: 0.72;
+  --captcha-base-width: 320px;
+  width: calc(var(--captcha-base-width) * var(--captcha-scale));
+  height: calc(65px * var(--captcha-scale));
+  overflow: visible;
+}
+
+.captcha-widget {
+  display: inline-block;
+  line-height: 0;
+  width: var(--captcha-base-width);
+  transform: scale(var(--captcha-scale));
+  transform-origin: top center;
+  border-radius: 0.25rem;
+}
+
+.captcha-widget iframe {
+  display: block;
+}
+
+.captcha-field.is-invalid .captcha-widget {
+  outline: 1px solid #dc3545;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+#contact-me-link {
+  color: blue;
+}
+
+#contact-me-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.bx-pager-link {
+  color: blue;
+}
+
+.bx-pager-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.award-how-img {
+  margin: 0px auto;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 13px;
+}
+
+.footer-link {
+  color: blue;
+}
+
+.footer-link:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.cv-file-icon {
+  height: 33px !important;
+}
+
+.award-evidence-section ul li {
+  list-style-type: disc;
+  margin-left: 26px;
+  font-size: 1.4em;
+}
+
+#contact-form button#submit:focus {
+  background-color: blue;
+  border-color: blue;
+}
+
+/* Phones dimensions */
+@media only screen and (max-width: 431px) {
+  .publication-cover {
+    background-position: 0px 80px !important;
+  }
+  .post-loop-container {
+    margin-top: 1px;
+  }
+  .footer-link {
+    display: inline-block;
+  }
+}
+
+/* Responsive dimensions */
+@media only screen and (min-width: 432px) and (max-width: 991px) {
+  .publication-cover {
+    background-position: 0px 25px !important;
+  }
+}
+@media only screen and (min-width: 432px) {
+  .award-how-img {
+    max-width: 50%;
+  }
+}
+
+/* iPad Pro and iPad-like dimension */
+@media only screen and (width: 1032px) {
+  .publication-cover {
+    background-position: -267px 0px !important;
+    background-repeat: no-repeat; /* Nest Hub-specific */
+  }
+}
+@media only screen and (width: 960px) and (height: 1440px) {
+  .publication-cover {
+    background-position: -22px -113px !important;
+  }
+}
+
+/* Elements that responsively break */
+@media only screen and (max-width: 750px) {
+  .featured-text {
+    display: none;
+  }
+  .pub-link-tel {
+    display: block;
+    margin-left: 0px !important;
+  }
+  .post-card {
+    margin-bottom: 70px;
+  }
+}
+
+/* iPad Pro and phones dimensions */
+@media only screen and (max-width: 1024px) {
+  .captcha-field {
+    --captcha-scale: 0.77;
+  }
+}
