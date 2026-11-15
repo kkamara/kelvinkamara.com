@@ -1,17 +1,11 @@
 doctype html
-html(lang="en")
+html
   head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title New Contact Form Submission
-    style
-      :css
-        body {
-          font-family: Arial, sans-serif;
-          line-height: 1.6;
-          color: #333;
-        }
-
+    style.
+      .lead {
+        font-size: 18px;
+        color: red;
+      }
   body
     h1 We received an email
     br
@@ -25,10 +19,9 @@ html(lang="en")
     br
     p
       strong Message:
-    p= message.replace(/\n/g, '\n')
+    p= message
     br
     p Thanks,
     p Kelvin Kamara
-    small © 2026 
-      a(href=appUrl) Kelvin Kamara
-      | . All rights reserved.
+    br
+    footer #{appName} &copy; #{footerYear}.

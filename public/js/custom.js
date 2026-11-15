@@ -135,8 +135,8 @@ $(document).ready(function() {
             })
             .fail(function(xhr) {
                 const errorMsg =
-                    xhr && xhr.responseJSON && xhr.responseJSON.error
-                        ? xhr.responseJSON.error.toLowerCase()
+                    xhr && xhr.responseJSON && xhr.responseJSON.message
+                        ? xhr.responseJSON.message.toLowerCase()
                         : "";
                 const isCaptchaError = errorMsg.includes("captcha");
 

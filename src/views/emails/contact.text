@@ -1,0 +1,15 @@
+| We received an email
+|
+| Name:
+| !{name}
+|
+| Email:
+!{email}
+|
+| Message:
+!{message}
+|
+| Thanks,
+| Kelvin Kamara
+|
+| !{appName} © !{footerYear}.

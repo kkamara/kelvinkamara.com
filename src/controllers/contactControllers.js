@@ -3,7 +3,8 @@ const config = require('../config');
 const asyncHandler = require('express-async-handler');
 const axios = require('axios');
 const { status } = require('http-status');
-const mailService = require('../services/mailService');
+const { sendContactEmail } = require('../services/email');
+const { message500 } = require('../utils/httpResponses');
 
 const verifyTurnstile = async (captchaToken) => {
   if (!config.turnstileSecret) {
@@ -28,24 +29,24 @@ const verifyTurnstile = async (captchaToken) => {
 };
 
 const contact = asyncHandler(async (req, res) => {
-  const { name, email, message } = req.body;
+  const name = req.bodyString("name");
+  const email = req.bodyString("email");
+  const message = req.bodyString("message");
   const captchaToken = req.body['cf-turnstile-response'] || '';
 
   // CAPTCHA verification
   if (config.turnstileSitekey && config.turnstileSecret) {
     if (!captchaToken) {
-      return res.status(status.BAD_REQUEST).json({
-        error: 'Captcha is required before submitting.',
-      });
+      res.status(status.BAD_REQUEST);
+      throw new Error("Captcha is required before submitting.");
     }
 
     try {
       const captchaResult = await verifyTurnstile(captchaToken);
 
       if (!captchaResult.success) {
-        return res.status(status.BAD_REQUEST).json({
-          error: 'Captcha verification failed. Please try again.',
-        });
+        res.status(status.BAD_REQUEST);
+        throw new Error("Captcha verification failed. Please try again.");
       }
 
       // Validate hostname for non-production environments
@@ -56,10 +57,8 @@ const contact = asyncHandler(async (req, res) => {
         }
       }
     } catch (error) {
-      console.error('CAPTCHA verification error:', error.message);
-      return res.status(status.INTERNAL_SERVER_ERROR).json({
-        error: 'Internal Server Error.',
-      });
+      res.status(status.INTERNAL_SERVER_ERROR)
+      throw new Error(message500);
     }
   }
 
@@ -72,23 +71,19 @@ const contact = asyncHandler(async (req, res) => {
     });
   }
 
-  // Send email
   try {
-    await mailService.sendContactEmail({
+    await sendContactEmail({
       name,
       email,
       message,
+      to: config.mailTo,
       appUrl: config.appURL,
     });
 
-    return res.status(status.OK).json({
-      message: 'Success',
-    });
+    return res.json({ message: 'Success' });
   } catch (error) {
-    console.error('Email send failed:', error.message);
-    return res.status(status.INTERNAL_SERVER_ERROR).json({
-      error: 'Internal Server Error.',
-    });
+    res.status(status.INTERNAL_SERVER_ERROR)
+    throw new Error(message500);
   }
 });
 
