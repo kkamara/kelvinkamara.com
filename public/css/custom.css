@@ -34,7 +34,7 @@
   padding-top: 0px !important;
 }
 
-footer.site-footer .footer-icon-container:hover {
+footer.site-footer .footer-icon-container > a:hover {
   text-decoration: none;
 }
 
@@ -58,6 +58,14 @@ footer.site-footer .footer-icon-container:hover {
 
 footer.site-footer .footer-icon-container > .footer-icon {
   margin-left: 2.5px;
+  margin-right: 2.5px;
+}
+
+footer.site-footer .footer-icon-container:first-of-type > .footer-icon {
+  margin-left: 4px;
+}
+
+footer.site-footer .footer-icon-container:last-of-type > .footer-icon {
   margin-right: 10px;
 }
 
