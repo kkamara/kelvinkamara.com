@@ -1,0 +1,53 @@
+// ======================================
+// Site Scripts
+// ======================================
+script(src="/plugins/recommendations/jquery-3-2-1.min.js")
+script(src="/plugins/owl-carousel/owl.carousel.min.js")
+script(src="/plugins/isotope.min.js")
+script(src="/plugins/imagesloaded.pkgd.min.js")
+script(src="/plugins/magnific-popup/jquery.magnific-popup.min.js")
+script(src="/plugins/highlight.min.js")
+script(src="/plugins/jquery.fitvids.js")
+
+script.
+  $(document).ready(function(){
+    // fitvids
+    $("body").fitVids();
+  });
+  var images = document.querySelectorAll('.kg-gallery-image img');
+  images.forEach(function (image) {
+    var container = image.closest('.kg-gallery-image');
+    var width = image.attributes.width.value;
+    var height = image.attributes.height.value;
+    var ratio = width / height;
+    container.style.flex = ratio + ' 1 0%';
+  });
+  var activateHighlight = function () {
+    document.querySelectorAll("pre code").forEach(
+      function (currentValue, currentIndex, listObj) {
+        hljs.highlightBlock(currentValue);
+      }
+    );
+  };
+  if (window.attachEvent) {
+    window.attachEvent('onload', activateHighlight);
+  } else {
+    if (window.onload) {
+      var originalOnload = window.onload;
+      var newOnload = function (evt) {
+        originalOnload(evt);
+        activateHighlight(evt);
+      }
+      window.onload = newOnload;
+    } else {
+      window.onload = activateHighlight;
+    }
+  }
+
+script(src="/plugins/recommendations/jquery.bxslider.min.js")
+script(src="/js/main.js")
+script(src="/js/bootstrap.min.js")
+script(src="/js/all.min.js")
+script(src="/js/custom.js")
+script(src="/js/fontawesome.min.js")
+script(src="/js/recommendations.js")
