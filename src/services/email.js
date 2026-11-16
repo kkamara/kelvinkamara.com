@@ -143,29 +143,30 @@ exports.sendContactEmail = async ({
   name,
   email,
 }) => {
+  const textContent = pug.renderFile(
+    path.join(__dirname, "../views/emails/contact.text"),
+    {
+      name: name,
+      email: email,
+      message: message,
+      appName: config.appName,
+      footerYear: 2027,
+    },
+  );
+
+  const htmlContent = pug.renderFile(
+    path.join(__dirname, "../views/emails/contact.pug"),
+    {
+      name: name,
+      email: email,
+      message: message,
+      appName: config.appName,
+      footerYear: 2027,
+    },
+  );
+
   try {
     if (config.mailHost === "mailgun" && config.mailPass) {
-      const textContent = pug.renderFile(
-        path.join(__dirname, "../views/emails/contact.text"),
-        {
-          name: name,
-          email: email,
-          message: message,
-          appName: config.appName,
-          footerYear: 2027,
-        },
-      );
-
-      const htmlContent = pug.renderFile(
-        path.join(__dirname, "../views/emails/contact.pug"),
-        {
-          name: name,
-          email: email,
-          message: message,
-          appName: config.appName,
-          footerYear: 2027,
-        },
-      );
 
       const domain = config.mailgunDomain;
       const apiKey = config.mailPass;
@@ -206,26 +207,8 @@ exports.sendContactEmail = async ({
         from: config.mailFrom,
         to: config.mailTo,
         subject: config.mailSubject,
-        text: pug.renderFile(
-          path.join(__dirname, "../views/emails/contact.text"),
-          {
-            name: name,
-            email: email,
-            message: message,
-            appName: config.appName,
-            footerYear: 2027,
-          },
-        ),
-        html: pug.renderFile(
-          path.join(__dirname, "../views/emails/contact.pug"),
-          {
-            name: name,
-            email: email,
-            message: message,
-            appName: config.appName,
-            footerYear: 2027,
-          },
-        ),
+        text: textContent,
+        html: htmlContent,
         replyTo: email,
       });
     }

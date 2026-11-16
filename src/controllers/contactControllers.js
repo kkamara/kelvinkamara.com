@@ -75,8 +75,6 @@ const contact = asyncHandler(async (req, res) => {
     name,
     email,
     message,
-    to: config.mailTo,
-    appUrl: config.appURL,
   });
 
   if (false === sendEmail) {
