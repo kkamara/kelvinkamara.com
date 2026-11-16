@@ -1,27 +1,37 @@
-doctype html
-html
-  head
-    style.
-      .lead {
-        font-size: 18px;
-        color: red;
-      }
-  body
-    h1 We received an email
+extends ./layout.pug
+
+block title
+  | New contact message
+
+block preheader
+  | A new message was sent through the contact form.
+
+block content
+  h1(style="margin:0 0 12px;color:#172b4d;font-size:24px;line-height:32px;")
+    | We received an email
+  p(style="margin:0 0 28px;color:#526176;font-size:15px;line-height:24px;")
+    | A new message was sent through the contact form.
+  table(role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;")
+    tr
+      td(style="padding:0 0 18px;border-bottom:1px solid #e8edf3;")
+        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+          | Name
+        p(style="margin:0;color:#243247;font-size:15px;line-height:24px;")
+          = name
+    tr
+      td(style="padding:18px 0;border-bottom:1px solid #e8edf3;")
+        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+          | Email
+        p(style="margin:0;font-size:15px;line-height:24px;")
+          a(href="mailto:" + email style="color:#176b87;text-decoration:underline;")
+            = email
+    tr
+      td(style="padding:18px 0 0;")
+        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+          | Message
+        p(style="margin:0;color:#243247;font-size:15px;line-height:24px;white-space:pre-line;")
+          = message
+  p(style="margin:32px 0 0;color:#526176;font-size:15px;line-height:24px;")
+    | Thanks,
     br
-    p
-      strong Name:
-    p= name
-    br
-    p
-      strong Email:
-    p= email
-    br
-    p
-      strong Message:
-    p!= message.replace(/\n/g, '<br>')
-    br
-    p Thanks,
-    p Kelvin Kamara
-    br
-    footer #{appName} &copy; #{footerYear}.
+    strong(style="color:#172b4d;") Kelvin Kamara
