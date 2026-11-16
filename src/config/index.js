@@ -34,6 +34,7 @@ const config = {
   mailSubject: process.env.MAIL_SUBJECT,
   turnstileSitekey: process.env.TURNSTILE_SITEKEY,
   turnstileSecret: process.env.TURNSTILE_SECRET,
+  adminPassword: process.env.ADMIN_PASSWORD,
 };
 
 module.exports = config;

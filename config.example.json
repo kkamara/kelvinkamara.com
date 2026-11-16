@@ -2,7 +2,7 @@
   "development": {
     "username": "user",
     "password": "secret",
-    "database": "boilerplate",
+    "database": "kelvinkamara",
     "host": "mysql",
     "dialect": "mysql"
   },
@@ -10,7 +10,7 @@
     "port": 3306,
     "username": "user",
     "password": "secret",
-    "database": "boilerplate",
+    "database": "kelvinkamara",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
