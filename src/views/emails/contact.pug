@@ -7,31 +7,31 @@ block preheader
   | A new message was sent through the contact form.
 
 block content
-  h1(style="margin:0 0 12px;color:#172b4d;font-size:24px;line-height:32px;")
+  h1
     | We received an email
-  p(style="margin:0 0 28px;color:#526176;font-size:15px;line-height:24px;")
+  p.email-intro
     | A new message was sent through the contact form.
-  table(role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;")
-    tr
-      td(style="padding:0 0 18px;border-bottom:1px solid #e8edf3;")
-        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+  table.email-details(role="presentation" cellspacing="0" cellpadding="0" border="0")
+    tr.email-detail-first
+      td
+        p.email-label
           | Name
-        p(style="margin:0;color:#243247;font-size:15px;line-height:24px;")
+        p
           = name
     tr
-      td(style="padding:18px 0;border-bottom:1px solid #e8edf3;")
-        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+      td
+        p.email-label
           | Email
-        p(style="margin:0;font-size:15px;line-height:24px;")
-          a(href="mailto:" + email style="color:#176b87;text-decoration:underline;")
+        p
+          a(href="mailto:" + email)
             = email
     tr
-      td(style="padding:18px 0 0;")
-        p(style="margin:0 0 6px;color:#68778d;font-size:12px;font-weight:bold;letter-spacing:0.06em;text-transform:uppercase;")
+      td
+        p.email-label
           | Message
-        p(style="margin:0;color:#243247;font-size:15px;line-height:24px;white-space:pre-line;")
+        p.email-message
           = message
-  p(style="margin:32px 0 0;color:#526176;font-size:15px;line-height:24px;")
+  p.email-signoff
     | Thanks,
     br
-    strong(style="color:#172b4d;") Kelvin Kamara
+    strong Kelvin Kamara
