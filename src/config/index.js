@@ -6,8 +6,8 @@ const parseEnvFile = dotenv.config({
   path: path.join(__dirname, '../../.env')
 });
 
-if (parseEnvFile.error && process.env.NODE_ENV !== 'production') {
-  console.warn('Warning: .env file not found, using environment variables');
+if (parseEnvFile.error) {
+  throw parseEnvFile.error;
 }
 
 const config = {
