@@ -77,8 +77,8 @@ yarn dev:frontend
 <a name="using-docker"></a>
 ## Using docker?
 
-* [Docker](https://docs.docker.com/engine/install/) 
-* [Docker Compose](https://docs.docker.com/compose/install/).
+* [Docker](https://docs.docker.com/engine/install/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
 ```bash
 cp config.example.json config.json
