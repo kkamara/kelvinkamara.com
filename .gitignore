@@ -1,6 +1,11 @@
-__pycache__/
-db.sqlite3
-/tmp
-/env
-/static
+/node_modules
 .env
+yarn-error.log
+/.DB_Store
+database.sqlite
+db.sqlite
+tmp
+config.json
+.env.dev
+.env.production
+config.production.json

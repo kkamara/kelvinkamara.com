@@ -1,0 +1,136 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    title
+      block title
+        = appName
+    style.
+      body.email-body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f5f8;
+        color: #243247;
+        font-family: Arial, Helvetica, sans-serif;
+        -webkit-text-size-adjust: 100%;
+      }
+      .email-preheader {
+        display: none;
+        font-size: 1px;
+        color: #f3f5f8;
+        line-height: 1px;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      .email-background {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #f3f5f8;
+      }
+      .email-wrapper {
+        padding: 36px 16px;
+      }
+      .email-container {
+        width: 600px;
+        max-width: 600px;
+        border-collapse: separate;
+      }
+      .email-header {
+        padding: 24px 32px;
+        border-radius: 10px 10px 0 0;
+        background-color: #172b4d;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .email-content {
+        padding: 36px 40px;
+        background-color: #ffffff;
+      }
+      .email-footer {
+        padding: 22px 24px;
+        color: #68778d;
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .email-content h1 {
+        margin: 0 0 12px;
+        color: #172b4d;
+        font-size: 24px;
+        line-height: 32px;
+      }
+      .email-content p {
+        margin: 0;
+        color: #243247;
+        font-size: 15px;
+        line-height: 24px;
+      }
+      .email-content .email-intro {
+        margin-bottom: 28px;
+        color: #526176;
+      }
+      .email-details {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .email-details td {
+        padding: 18px 0;
+        border-bottom: 1px solid #e8edf3;
+      }
+      .email-details .email-detail-first td {
+        padding-top: 0;
+      }
+      .email-details .email-label {
+        margin-bottom: 6px;
+        color: #68778d;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 0.06em;
+        line-height: 18px;
+        text-transform: uppercase;
+      }
+      .email-content .email-message {
+        white-space: pre-line;
+      }
+      .email-content a {
+        color: #176b87;
+        text-decoration: underline;
+      }
+      .email-content .email-signoff {
+        margin-top: 32px;
+        color: #526176;
+      }
+      .email-signoff strong {
+        color: #172b4d;
+      }
+      @media only screen and (max-width: 640px) {
+        .email-container {
+          width: 100% !important;
+        }
+        .email-content {
+          padding: 28px 20px !important;
+        }
+        .email-header {
+          padding: 20px 24px !important;
+        }
+      }
+  body.email-body
+    div.email-preheader
+      block preheader
+    table.email-background(role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0")
+      tr
+        td.email-wrapper(align="center")
+          table.email-container(role="presentation" width="600" cellspacing="0" cellpadding="0" border="0")
+            tr
+              td.email-header
+                = appName
+            tr
+              td.email-content
+                block content
+            tr
+              td.email-footer(align="center")
+                | #{appName} &copy; #{footerYear}.

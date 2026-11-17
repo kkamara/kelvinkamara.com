@@ -1,0 +1,20 @@
+extends layouts/main.pug
+
+block content
+  include layouts/partials/hero.pug
+  .container
+    .row
+      .col-md-12
+        include layouts/partials/award_how.pug
+  .container
+    .row
+      .col-md-12.recommendations-outer-container
+        include layouts/partials/recommendations.pug
+  .container.pub-container
+    .row
+      include layouts/partials/pub_card.pug
+  include layouts/partials/featured_slider.pug
+  .container.post-loop-container
+    .row
+      .col-md-12
+        include layouts/partials/loop.pug

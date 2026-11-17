@@ -1,0 +1,37 @@
+extends ./layout.pug
+
+block title
+  | New contact message
+
+block preheader
+  | A new message was sent through the contact form.
+
+block content
+  h1
+    | We received an email
+  p.email-intro
+    | A new message was sent through the contact form.
+  table.email-details(role="presentation" cellspacing="0" cellpadding="0" border="0")
+    tr.email-detail-first
+      td
+        p.email-label
+          | Name
+        p
+          = name
+    tr
+      td
+        p.email-label
+          | Email
+        p
+          a(href="mailto:" + email)
+            = email
+    tr
+      td
+        p.email-label
+          | Message
+        p.email-message
+          = message
+  p.email-signoff
+    | Thanks,
+    br
+    strong Kelvin Kamara

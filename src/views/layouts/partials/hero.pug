@@ -1,0 +1,77 @@
+.hero-area.d-flex.justify-content-between.align-items-center.flex-wrap
+  .publication-cover(style="background-image: url(/img/profile.min.jpg);")
+  .hero-right.px-2
+    .hero-content
+      h1.blog-description Award-Winning Software Engineer
+    include ./subscribe.pug
+    form.paypal-donate-form(action="https://www.paypal.com/donate" method="post" target="_top")
+      input(type="hidden" name="hosted_button_id" value="GCCWYL4HNKGQQ")
+      input(type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button")
+      img(alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1")
+    .hero-menu-link
+      a(href="/Kel-Kamara-Software-Engineer-CV.docx.pdf")
+        i.fas.fa-file-alt.fa-2x.header-icon.cv-file-icon
+      a(href="https://github.com/kkamara")
+        i.fab.fa-github-square.fa-2x.header-icon
+      a(href="https://www.linkedin.com/in/kelvin-kamara")
+        i.fab.fa-linkedin.fa-2x.header-icon
+      a(href="https://www.facebook.com/realkelvinkamara")
+        i.fab.fa-facebook-square.fa-2x.header-icon
+      | &nbsp; &nbsp;
+      a#contact-me-link.d-flex.align-items-center(href="#" data-toggle="modal" data-target="#contactMeModal")
+        span.pr-2 contact ME
+        i.arrow_right.feature-post-arrow
+  i.arrow_down.hero-bottom-arrow.arrow-down-icon
+
+.modal.hero-modal.left#contactMeModal(tabindex="-1" role="dialog" aria-labelledby="contactMeModalTitle" aria-hidden="true")
+  .modal-dialog.modal-dialog-centered(role="document")
+    .modal-content
+      .modal-header
+        h5#exampleModalLongTitle.modal-title Contact me
+        button.close(type="button" data-dismiss="modal" aria-label="Close")
+          span(aria-hidden="true") ×
+      .modal-body
+        form#contact-form.container
+          .col-md-12
+            p Let's discuss how I can help meet your requirements.
+            a.contact-form-email-link(href="mailto:kamaracomputers@gmail.com")
+              | Send me an email 
+              i.far.fa-envelope.pub-icon.fa-2x
+            br
+            a.contact-form-phone-link(href="tel:+447956694595")
+              | Give me a call 
+              i.fas.fa-phone.pub-icon.fa-2x
+          br
+          .col-md-12
+            .form-group
+              label(for="name") Name&nbsp;
+              input#name.form-control(name="name" type="text" required)
+            .form-group
+              label(for="email") Email&nbsp;
+              input#email.form-control(name="email" type="email" required)
+            .form-group
+              label(for="message") Message
+              textarea#message.form-control(name="message")
+            if turnstile_sitekey
+              .form-group.d-flex.justify-content-center
+                .captcha-field
+                  .cf-turnstile.captcha-widget(data-sitekey=turnstile_sitekey data-action="contact" data-callback="onContactCaptchaSolved" data-expired-callback="onContactCaptchaExpired" data-error-callback="onContactCaptchaError")
+            .form-group.text-center
+              button#submit.btn.btn-primary(name="submit") Submit
+
+if turnstile_sitekey
+  script(src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer)
+
+.modalbox.success.col-sm-8.col-md-6.col-lg-5.center.animate
+  .icon
+    i.fas.fa-check.fa-4x.modal-icon
+  h1 Success!
+  p Your message has been sent.
+  button.close-success.btn(type="button") Ok
+
+.modalbox.error.col-sm-8.col-md-6.col-lg-5.center.animate
+  .icon
+    i.far.fa-thumbs-down.fa-4x.modal-icon
+  h1 Oh no!
+  p Oops! Something went wrong, you should try again.
+  button.close-error.btn(type="button") Try again
