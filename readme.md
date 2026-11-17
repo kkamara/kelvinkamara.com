@@ -58,10 +58,8 @@ yarn seed:generate --name create-admin-user
 ## Usage
 
 ```bash
-yarn start # Runs Start-script `yarn node src/app.js`
-# Serves app to http://localhost:8000 .
-# Serves API to http://localhost:8000/api/v1 .
-#   Example API route: http://localhost:8000/api/health .
+yarn start
+# Serves app to http://localhost:8000
 ```
 
 #### Reload server on project files change
