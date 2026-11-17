@@ -23,12 +23,12 @@
 
 ## Installation
 
-* [NodeJS](https://nodejs.org/en/).
+* [NodeJS](https://nodejs.org/en/)
 
 ```bash
 # Configure your database credentials in config.json
 # (and also .env for Docker)
-cp .config.example.json config.json
+cp config.example.json config.json
 cp .env.example .env
 npm install --global yarn
 yarn
