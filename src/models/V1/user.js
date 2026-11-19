@@ -64,8 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
-              password, passwordSalt, avatarName, createdAt,
-              updatedAt
+              password, passwordSalt, createdAt, updatedAt
             FROM ${this.getTableName()}
             WHERE ${this.getTableName()}.id=? AND ${this.getTableName()}.deletedAt IS NULL
             LIMIT 1`, 
@@ -95,8 +94,7 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
-              password, passwordSalt, avatarName, createdAt,
-              updatedAt
+              password, passwordSalt, createdAt, updatedAt
             FROM ${this.getTableName()}
             WHERE ${this.getTableName()}.id=? AND ${this.getTableName()}.deletedAt IS NULL
             LIMIT 1`, 
@@ -127,8 +125,7 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
-              password, passwordSalt, avatarName, createdAt,
-              updatedAt
+              password, passwordSalt, createdAt, updatedAt
             FROM ${this.getTableName()}
             LEFT JOIN ${sequelize.models.userToken.getTableName()} ON ${sequelize.models.userToken.getTableName()}.usersId = ${this.getTableName()}.id
             WHERE ${sequelize.models.userToken.getTableName()}.token=? AND
@@ -165,8 +162,7 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const result = await sequelize.query(
           `SELECT id, firstName, lastName, email,
-              password, passwordSalt, avatarName, createdAt,
-              updatedAt
+              password, passwordSalt, createdAt, updatedAt
             FROM ${this.getTableName()}
             WHERE ${this.getTableName()}.id=? AND ${this.getTableName()}.deletedAt IS NULL
             LIMIT 1`, 
@@ -486,9 +482,6 @@ module.exports = (sequelize, DataTypes) => {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        avatarPath: data.avatarName ?
-          appURL+"/images/profile/"+data.avatarName :
-          appURL+"/images/profile/default-avatar.webp",
         createdAt: moment(data.createdAt)
           .tz(timezone)
           .format(mysqlTimeFormat),
@@ -737,7 +730,6 @@ module.exports = (sequelize, DataTypes) => {
               email = COALESCE(:email, email),
               password = COALESCE(:password, password),
               passwordSalt = COALESCE(:passwordSalt, passwordSalt),
-              avatarName = COALESCE(:avatarName, avatarName),
               updatedAt = COALESCE(:updatedAt, updatedAt)
             WHERE id = :userId`,
           {
@@ -747,7 +739,6 @@ module.exports = (sequelize, DataTypes) => {
               email: payload.email || null,
               password: payload.password || null,
               passwordSalt: payload.passwordSalt || null,
-              avatarName: payload.avatarName || null,
               updatedAt: moment()
                 .utc()
                 .format(mysqlTimeFormat),
@@ -860,40 +851,6 @@ module.exports = (sequelize, DataTypes) => {
       }
       return result;
     }
-
-    /**
-     * @param {number} userId
-     * @returns {boolean}
-     */
-    static async resetAvatar(userId) {
-      try {
-        const result = await sequelize.query(
-          `UPDATE ${this.getTableName()}
-            SET avatarName = null,
-              updatedAt = :updatedAt
-            WHERE id = :userId`,
-          {
-            replacements: {
-              updatedAt: moment()
-                .utc()
-                .format(mysqlTimeFormat),
-              userId,
-            },
-            type: sequelize.QueryTypes.UPDATE,
-          },
-        );
-        const rowsUpdated = result[1];
-        if (0 === rowsUpdated) {
-          return false;
-        }
-        return true;
-      } catch(err) {
-        if ("production" !== nodeEnv) {
-          console.log(err);
-        }
-        return false;
-      }
-    }
   }
   
   User.init({
@@ -911,10 +868,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     passwordSalt: {
       type: DataTypes.STRING,
-    },
-    avatarName: {
-      type: DataTypes.STRING,
-      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,

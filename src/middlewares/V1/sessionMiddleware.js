@@ -5,9 +5,10 @@ const path = require('node:path');
 const config = require('../../config');
 
 const sessionConfig = {
-  store: new FileStore({
-    path: path.join(__dirname, '../../..', 'sessions'),
-  }),
+  store: "production" === config.nodeEnv ? 
+    new (FileStore(session))({
+      path: path.join(__dirname, "../../..", "sessions"),
+    }) : undefined,
   secret: config.appKey || 'fallback-secret-key',
   resave: false,
   saveUninitialized: false,

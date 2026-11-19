@@ -31,6 +31,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/admin/assets', express.static("frontend/dist/assets"));
+app.get('/admin/*', express.static('frontend/dist'));
 
 // HTML minification in production
 if (config.nodeEnv === 'production') {
@@ -51,6 +53,11 @@ app.use(cors);
 
 // Routes
 app.use('/', routes);
+
+// Serve React app routes
+app.get(["/admin", "/admin/*"], (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+});
 
 // Error handling
 app.use(notFound);
