@@ -81,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .user
     .getCleanLoginData(
       req.bodyEmail("email"),
-      req.bodyString("password"),
+      req.body.password,
     );
   if (false === cleanData) {
     res.status(status.BAD_REQUEST);
@@ -191,7 +191,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     throw new Error(message500);
   }
   
-  const logoutUser = db.sequelize.models.userToken.logoutUser(
+  const logoutUser = await db.sequelize.models.userToken.logoutUser(
     user.id,
     req.session.extractedToken,
   );
@@ -211,6 +211,23 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
+  const currentUser = await db.sequelize.models.user.getUserByIdRaw(req.session.userId);
+  if (!currentUser) {
+    res.status(status.UNAUTHORIZED);
+    throw new Error("User not found.");
+  }
+  const adminEmail = "kamaracomputers@gmail.com";
+  if (typeof req.body.email === "string" &&
+      req.body.email.toLowerCase() === adminEmail &&
+      currentUser.email.toLowerCase() !== adminEmail) {
+    res.status(status.FORBIDDEN);
+    throw new Error("This email is reserved.");
+  }
+  if (currentUser.email.toLowerCase() === adminEmail &&
+      typeof req.body.email === "string" && req.body.email.toLowerCase() !== adminEmail) {
+    res.status(status.FORBIDDEN);
+    throw new Error("The administrator email cannot be changed here.");
+  }
   const inputError = await db.sequelize.models
     .user
     .getUpdateUserError(

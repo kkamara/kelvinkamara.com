@@ -4,7 +4,6 @@ describe("redux store", () => {
   it("creates the expected reducer slices", () => {
     expect(Object.keys(store.getState())).toEqual([
       "auth",
-      "users",
       "updateUserSettings",
     ])
   })

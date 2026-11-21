@@ -35,6 +35,7 @@ const config = {
   turnstileSitekey: process.env.TURNSTILE_SITEKEY,
   turnstileSecret: process.env.TURNSTILE_SECRET,
   adminPassword: process.env.ADMIN_PASSWORD,
+  stripeSecret: process.env.STRIPE_SECRET,
 };
 
 module.exports = config;

@@ -5,7 +5,6 @@ const Sequelize = require('sequelize');
 const process = require('node:process');
 const basename = path.basename(__filename);
 const config = require('../../config/index.js');
-const { log, } = require('node:console');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -20,12 +19,6 @@ try {
 const db = {};
 
 let sequelize;
-let logging = false;
-
-if ('production' !== config.nodeEnv) {
-  logging = log;
-}
-
 const sequelizeOptions = {
      port: seqConfig.port || 3306,
      dialect: seqConfig.dialect, /* 'mysql' | 'postgres' | 'sqlite' | 'mariadb' */
@@ -34,7 +27,7 @@ const sequelizeOptions = {
         timestamps: false,
         paranoid: true,
      },
-     logging,
+     logging: false,
      pool: {
         max: 5,
         min: 0,

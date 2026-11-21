@@ -13,6 +13,7 @@ const { limiter } = require('./middlewares/V1/throttleMiddleware');
 const { cors } = require('./middlewares/V1/corsMiddleware');
 
 const app = express();
+const adminDist = process.env.ADMIN_DIST_PATH || path.join(__dirname, '../frontend/dist');
 
 // Trust proxy in production
 if (config.nodeEnv === 'production') {
@@ -31,8 +32,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/admin/assets', express.static("frontend/dist/assets"));
-app.get('/admin/*', express.static('frontend/dist'));
+app.use('/admin/assets', express.static(path.join(adminDist, 'assets'), { fallthrough: false }));
+app.use('/admin', express.static(adminDist, { index: false, redirect: false }));
 
 // HTML minification in production
 if (config.nodeEnv === 'production') {
@@ -56,7 +57,7 @@ app.use('/', routes);
 
 // Serve React app routes
 app.get(["/admin", "/admin/*"], (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+  res.sendFile(path.join(adminDist, "index.html"));
 });
 
 // Error handling

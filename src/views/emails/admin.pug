@@ -1,0 +1,19 @@
+extends ./layout.pug
+
+block title
+  = subject
+
+block preheader
+  = subject
+
+block content
+  h1= subject
+  p.email-intro Hello #{firstName},
+  p.email-message= message
+  if paymentLink
+    p
+      a(href=paymentLink) Pay online
+  p.email-signoff
+    | Thanks,
+    br
+    strong Kel Kamara
