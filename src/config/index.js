@@ -30,6 +30,7 @@ const config = {
   mailUser: process.env.MAIL_USER,
   mailPass: process.env.MAIL_PASS,
   mailFrom: process.env.MAIL_FROM,
+  mailReplyTo: 'kamaracomputers@gmail.com',
   mailTo: process.env.MAIL_TO,
   mailSubject: process.env.MAIL_SUBJECT,
   turnstileSitekey: process.env.TURNSTILE_SITEKEY,

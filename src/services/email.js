@@ -40,6 +40,7 @@ exports.testSendEmail = async ({
     await transporter.sendMail({
       from: config.mailFrom,
       to: to || config.mailTo,
+      replyTo: config.mailReplyTo,
       subject: subject || "Hello ✔",
       text: plainText || pug.renderFile(
         path.join(__dirname, "../views/emails/test-email.text"),
@@ -103,6 +104,7 @@ exports.sendEmail = async ({
     await transporter.sendMail({
       from: config.mailFrom,
       to: to || config.mailTo,
+      replyTo: config.mailReplyTo,
       subject: subject || "Hello ✔",
       text: plainText || pug.renderFile(
         path.join(__dirname, "../views/emails/test-email.text"),
@@ -182,7 +184,7 @@ exports.sendContactEmail = async ({
       data.append("subject", config.mailSubject);
       data.append("text", textContent);
       data.append("html", htmlContent);
-      data.append("h:Reply-To", email);
+      data.append("h:Reply-To", config.mailReplyTo);
 
       await axios.post(url, data, { auth });
 
@@ -209,7 +211,7 @@ exports.sendContactEmail = async ({
         subject: config.mailSubject,
         text: textContent,
         html: htmlContent,
-        replyTo: email,
+        replyTo: config.mailReplyTo,
       });
     }
 

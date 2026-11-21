@@ -24,6 +24,7 @@ test('development email goes to isolated MailHog with the document attached', as
   assert.equal(messages.total, 1);
   assert.match(messages.items[0].Raw.Data, /invoice\.pdf/);
   assert.match(messages.items[0].Raw.Data, /Please pay by bank transfer/);
+  assert.equal(messages.items[0].Content.Headers['Reply-To'][0], 'kamaracomputers@gmail.com');
 });
 
 test('production uses Mailgun and fails closed if credentials are missing', async () => {
@@ -41,6 +42,7 @@ test('production uses Mailgun and fails closed if credentials are missing', asyn
     });
     assert.equal(call[0], 'https://api.eu.mailgun.net/v3/example.test/messages');
     assert.equal(call[1].get('to'), 'client@example.test');
+    assert.equal(call[1].get('h:Reply-To'), 'kamaracomputers@gmail.com');
     assert.equal(call[1].get('attachment').name, 'invoice.pdf');
     assert.equal(call[2].auth.password, 'test-key');
     axios.post = async () => {

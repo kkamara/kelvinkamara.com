@@ -20,6 +20,7 @@ async function sendAdminEmail({ to, firstName, subject, message, paymentLink, at
     }
     const data = new FormData();
     for (const [key, value] of Object.entries({ from: config.mailFrom, to, subject, text, html })) data.append(key, value);
+    data.append('h:Reply-To', config.mailReplyTo);
     for (const attachment of attachments) {
       data.append('attachment', new Blob([attachment.content], { type: attachment.contentType }), attachment.filename);
     }
@@ -38,7 +39,7 @@ async function sendAdminEmail({ to, firstName, subject, message, paymentLink, at
       host: process.env.MAILHOG_HOST || 'mailhog', port: Number(process.env.MAILHOG_PORT || 1025), secure: false,
       connectionTimeout: 5000, greetingTimeout: 5000,
     });
-    await transporter.sendMail({ from: config.mailFrom, to, subject, text, html, attachments });
+    await transporter.sendMail({ from: config.mailFrom, to, replyTo: config.mailReplyTo, subject, text, html, attachments });
   } else {
     throw exposableError('Admin email delivery is not configured for this environment.', status.SERVICE_UNAVAILABLE);
   }

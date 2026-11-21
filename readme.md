@@ -93,6 +93,9 @@ host is `mailhog`; for a backend running on the host set `MAILHOG_HOST=127.0.0.1
 and use the published `MAILHOG_PORT`. Production admin email uses the Mailgun EU
 API only: configure `MAILGUN_DOMAIN`, `MAIL_PASS` (Mailgun API key), and
 `MAIL_FROM`. There is no fallback to another mail provider.
+All outgoing emails use `kamaracomputers@gmail.com` as their reply-to address.
+For contact form emails, the visitor's address remains in the message body;
+replying directly addresses Kel, not the visitor.
 
 Invoices use GBP and do not depend on Stripe. Payment instructions can include
 bank-transfer details, and an HTTPS payment link can optionally be supplied or
