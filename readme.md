@@ -96,6 +96,10 @@ API only: configure `MAILGUN_DOMAIN`, `MAIL_PASS` (Mailgun API key), and
 All outgoing emails use `kamaracomputers@gmail.com` as their reply-to address.
 For contact form emails, the visitor's address remains in the message body;
 replying directly addresses Kel, not the visitor.
+CI runs the email tests with a dedicated MailHog service. To run them locally,
+start an isolated MailHog, set `ADMIN_TEST_MAILHOG_SMTP_PORT` and
+`ADMIN_TEST_MAILHOG_API_PORT` to its published ports, then run
+`node --test tests/admin-email.cjs tests/email-reply-to.cjs`.
 
 Invoices use GBP and do not depend on Stripe. Payment instructions can include
 bank-transfer details, and an HTTPS payment link can optionally be supplied or
