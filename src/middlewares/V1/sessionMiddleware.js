@@ -1,6 +1,6 @@
 'use strict';
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const FileStore = require('session-file-store');
 const path = require('node:path');
 const config = require('../../config');
 

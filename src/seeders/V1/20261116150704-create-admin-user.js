@@ -1,6 +1,5 @@
 'use strict';
 const moment = require("moment-timezone");
-const { faker, } = require('@faker-js/faker');
 const { mysqlTimeFormat, } = require("../../utils/time");
 const { encrypt, } = require("../../utils/tokens");
 const config = require("../../config");
@@ -10,7 +9,13 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      const pwd = encrypt(config.adminPassword || "secret");
+      if (!config.adminPassword) {
+        throw new Error("ADMIN_PASSWORD must be set before seeding the administrator.");
+      }
+      if (config.adminPassword.length < 6 || config.adminPassword.length > 20) {
+        throw new Error("ADMIN_PASSWORD must be between 6 and 20 characters.");
+      }
+      const pwd = encrypt(config.adminPassword);
       const user = {
         email: "kamaracomputers@gmail.com",
         firstName: "Kel",
@@ -25,11 +30,10 @@ module.exports = {
           .format(mysqlTimeFormat),
       };
 
-      await queryInterface.insert(
-        queryInterface.sequelize.models.user,
+      await queryInterface.bulkInsert(
         'users',
-        user,
-        { transaction },
+        [user],
+        { transaction, logging: false },
       );
       await transaction.commit();
     } catch (err) {
@@ -40,7 +44,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.bulkDelete('users', null, { transaction, });
+      await queryInterface.bulkDelete('users', { email: "kamaracomputers@gmail.com" }, { transaction, });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

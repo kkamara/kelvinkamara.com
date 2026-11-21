@@ -1,4 +1,16 @@
 node_modules
+.git
 .gitignore
 vendor
 tmp
+frontend/node_modules
+frontend/dist
+.env*
+frontend/.env*
+frontend/.env.dev
+frontend/.env.production
+config.json
+config.production.json
+logs
+sessions
+uploads
