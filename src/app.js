@@ -11,6 +11,7 @@ const { minifyHTML } = require('./middlewares/V1/minifyHTMLMiddleware');
 const { requestLog } = require('./middlewares/V1/loggingMiddleware');
 const { limiter } = require('./middlewares/V1/throttleMiddleware');
 const { cors } = require('./middlewares/V1/corsMiddleware');
+const agreementJson = require('./middlewares/V1/agreementJsonMiddleware');
 
 const app = express();
 const adminDist = process.env.ADMIN_DIST_PATH || path.join(__dirname, '../frontend/dist');
@@ -46,6 +47,7 @@ app.use(cookieParser(config.appKey));
 
 // Body parsing
 app.use(express.urlencoded({ extended: false }));
+app.use(['/api/v1/web/admin/agreements', '/api/v1/web/admin/agreement-templates'], agreementJson);
 app.use(express.json());
 
 // Security middleware

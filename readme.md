@@ -120,7 +120,17 @@ existing Stripe link in the Stripe dashboard to avoid duplicate or incorrect
 charges. Creating a Stripe link is blocked if a payment is already recorded
 against the invoice. Agreements contain the terms you
 provide and are signed outside the app; the signed marker is a manual record,
-not proof of signature. Payment exports are CSV files for the selected client.
+not proof of signature. On the Agreements page, save reusable templates for
+initial project work or ongoing plans and select one when creating an agreement.
+The title and text are copied and can be tailored before creation; changing or
+deleting a template does not alter existing agreements. Deleting an agreement
+permanently removes its record and signed marker, but does not recall emails
+already sent. Agreement PDFs currently support Western European characters;
+other characters are preserved in storage but rejected when generating a PDF
+or sending an agreement, to avoid producing an incorrect document.
+The agreement character-set migration cannot be rolled back safely
+once Unicode text has been saved; back up the database before applying it.
+Payment exports are CSV files for the selected client.
 Client data, financial details, and documents are sensitive: restrict database
 and server access, use HTTPS, and maintain secure backups.
 

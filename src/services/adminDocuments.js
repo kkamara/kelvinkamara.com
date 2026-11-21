@@ -2,6 +2,7 @@
 const PDFDocument = require('pdfkit');
 
 const money = pence => `GBP ${(pence / 100).toFixed(2)}`;
+const pdfCharacters = new Set(new TextDecoder('windows-1252').decode(Uint8Array.from({ length: 256 }, (_, i) => i)));
 
 function document(title, lines) {
   return new Promise((resolve, reject) => {
@@ -31,6 +32,15 @@ function invoicePdf(invoice) {
 }
 
 function agreementPdf(agreement) {
+  const text = `${agreement.title}\n${agreement.firstName} ${agreement.lastName}\n${agreement.body}`;
+  if ([...text].some(character => {
+    const code = character.codePointAt(0);
+    return !'\n\r\t'.includes(character) && (code < 32 || (code >= 127 && code <= 159) || !pdfCharacters.has(character));
+  })) {
+    const error = new Error('This agreement contains characters that cannot be rendered in a PDF. Create an agreement using supported Western European characters.');
+    error.status = 422;
+    throw error;
+  }
   return document(agreement.title, [
     `Client: ${agreement.firstName} ${agreement.lastName}`,
     agreement.body,

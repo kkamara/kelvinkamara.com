@@ -90,6 +90,38 @@ exports.updateClient = asyncHandler(async (req, res) => {
 exports.invoices = list('adminInvoices');
 exports.agreements = list('adminAgreements');
 exports.payments = list('adminPayments');
+const agreementText = (res, body) => ({
+  title: string(res, body.title, 'Title', 200),
+  body: string(res, body.body, 'Agreement text', 50000),
+});
+async function agreementTemplate(res, templateId) {
+  const rows = await query('SELECT * FROM adminAgreementTemplates WHERE id=:id', { id: templateId });
+  if (!rows.length) fail(res, status.NOT_FOUND, 'Agreement template not found.');
+  return rows[0];
+}
+exports.agreementTemplates = asyncHandler(async (req, res) => {
+  res.json({ data: await query('SELECT * FROM adminAgreementTemplates ORDER BY title, id') });
+});
+exports.createAgreementTemplate = asyncHandler(async (req, res) => {
+  const data = agreementText(res, req.body);
+  const [newId] = await insert('INSERT INTO adminAgreementTemplates (title, body, createdAt, updatedAt) VALUES (:title, :body, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
+  res.status(status.CREATED).json({ data: await agreementTemplate(res, newId) });
+});
+exports.updateAgreementTemplate = asyncHandler(async (req, res) => {
+  const templateId = id(res, req.params.id);
+  await agreementTemplate(res, templateId);
+  await update('UPDATE adminAgreementTemplates SET title=:title, body=:body, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { ...agreementText(res, req.body), id: templateId });
+  res.json({ data: await agreementTemplate(res, templateId) });
+});
+const deleteRecord = (table, label) => asyncHandler(async (req, res) => {
+  const count = await db.sequelize.query(`DELETE FROM ${table} WHERE id=:id`, {
+    replacements: { id: id(res, req.params.id) }, type: db.Sequelize.QueryTypes.BULKDELETE,
+  });
+  if (!count) fail(res, status.NOT_FOUND, `${label} not found.`);
+  res.status(status.NO_CONTENT).end();
+});
+exports.deleteAgreementTemplate = deleteRecord('adminAgreementTemplates', 'Agreement template');
+exports.deleteAgreement = deleteRecord('adminAgreements', 'Agreement');
 exports.createInvoice = asyncHandler(async (req, res) => {
   const data = {
     clientId: id(res, req.body.clientId),
@@ -149,7 +181,7 @@ exports.createStripeLink = asyncHandler(async (req, res) => {
   res.json({ data: await record(res, 'adminInvoices', invoiceId) });
 });
 exports.createAgreement = asyncHandler(async (req, res) => {
-  const data = { clientId: id(res, req.body.clientId), title: string(res, req.body.title, 'Title', 200), body: string(res, req.body.body, 'Agreement text', 50000) };
+  const data = { clientId: id(res, req.body.clientId), ...agreementText(res, req.body) };
   await client(res, data.clientId);
   const [newId] = await insert('INSERT INTO adminAgreements (clientId, title, body, signed, createdAt, updatedAt) VALUES (:clientId, :title, :body, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
   res.status(status.CREATED).json({ data: await record(res, 'adminAgreements', newId) });

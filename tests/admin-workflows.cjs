@@ -32,6 +32,7 @@ test('private admin workflows against an isolated MySQL database', async () => {
   };
   const { encrypt } = require('../src/utils/tokens');
   const app = express();
+  app.use(['/admin/agreements', '/admin/agreement-templates'], require('../src/middlewares/V1/agreementJsonMiddleware'));
   app.use(express.json(), sanitize.middleware, (req, res, next) => { req.session = {}; next(); });
   app.use('/user', require('../src/routes/API/V1/web/userRoutes'));
   app.use('/admin', require('../src/routes/API/V1/web/adminRoutes'));
@@ -56,7 +57,18 @@ test('private admin workflows against an isolated MySQL database', async () => {
       '../src/migrations/V1/20230815125410-create-user-tokens-table',
       '../src/migrations/V1/20261120235000-create-admin-tables',
       '../src/migrations/V1/20261121010000-protect-stripe-link-retries',
+      '../src/migrations/V1/20261121020000-create-agreement-templates',
     ]) await require(migration).up(qi, db.Sequelize);
+    for (const table of ['adminAgreements', 'adminAgreementTemplates']) {
+      await db.sequelize.query(`ALTER TABLE \`${table}\` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci`);
+    }
+    await db.sequelize.query("INSERT INTO adminAgreementTemplates (title, body, createdAt, updatedAt) VALUES ('Existing', :body, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", {
+      replacements: { body: 'Café terms' },
+    });
+    await require('../src/migrations/V1/20261121030000-use-utf8mb4-for-agreements').up(qi, db.Sequelize);
+    const [existingTemplates] = await db.sequelize.query("SELECT body FROM adminAgreementTemplates WHERE title='Existing'");
+    assert.equal(existingTemplates[0].body, 'Café terms');
+    await db.sequelize.query("DELETE FROM adminAgreementTemplates WHERE title='Existing'");
     const password = 'Test-only$1';
     const hashed = encrypt(password);
     require('../src/config').adminPassword = password;
@@ -65,6 +77,7 @@ test('private admin workflows against an isolated MySQL database', async () => {
     assert.equal(login.response.status, 200);
     const token = login.data.data.authToken;
     assert.equal((await request('/admin/clients')).response.status, 401);
+    assert.equal((await request('/admin/agreement-templates')).response.status, 401);
     const userId = (await db.sequelize.query(
       "INSERT INTO users (firstName, lastName, email, password, passwordSalt, createdAt, updatedAt) VALUES ('Other', 'User', 'other@example.test', :password, :salt, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
       { replacements: { password: hashed.hash, salt: hashed.salt }, type: db.Sequelize.QueryTypes.INSERT, logging: false },
@@ -115,11 +128,51 @@ test('private admin workflows against an isolated MySQL database', async () => {
     });
     assert.equal((await request(`/admin/invoices/${expiredInvoice.id}/stripe-link`, 'POST', {}, token)).response.status, 409);
     assert.equal(stripeCalls, callsBeforeBlockedRetries);
-    const agreement = await request('/admin/agreements', 'POST', { clientId, title: 'Services', body: 'The agreed terms.' }, token);
+    assert.equal((await request('/admin/agreement-templates', 'POST', { title: ' ', body: 'Terms' }, token)).response.status, 400);
+    assert.equal((await request('/admin/agreement-templates', 'POST', { title: 'Services', body: '' }, token)).response.status, 400);
+    const terms = 'Caf\u00e9 \u2014 total \u20ac20.';
+    const template = await request('/admin/agreement-templates', 'POST', { title: 'Initial website', body: terms }, token);
+    assert.equal(template.response.status, 201);
+    const templateId = template.data.data.id;
+    const ongoing = await request('/admin/agreement-templates', 'POST', { title: 'Ongoing plan', body: 'Monthly or yearly services.' }, token);
+    assert.equal(ongoing.response.status, 201);
+    assert.equal((await request('/admin/agreement-templates', 'GET', undefined, token)).data.data.length, 2);
+    const unicodeText = '服務🚀'.repeat(12500);
+    const unicodeTemplate = await request('/admin/agreement-templates', 'POST', { title: '網站 🚀', body: unicodeText }, token);
+    assert.equal(unicodeTemplate.response.status, 201);
+    assert.equal(unicodeTemplate.data.data.body, unicodeText);
+    assert.equal((await request('/admin/agreement-templates', 'POST', { title: 'Too long', body: 'x'.repeat(50001) }, token)).response.status, 400);
+    const unicodeAgreement = await request('/admin/agreements', 'POST', { clientId, title: unicodeTemplate.data.data.title, body: unicodeTemplate.data.data.body }, token);
+    assert.equal(unicodeAgreement.response.status, 201);
+    assert.equal(unicodeAgreement.data.data.title, '網站 🚀');
+    assert.equal(unicodeAgreement.data.data.body, unicodeText);
+    const unicodePdf = await request(`/admin/agreements/${unicodeAgreement.data.data.id}/document`, 'GET', undefined, token);
+    assert.equal(unicodePdf.response.status, 422);
+    assert.match(unicodePdf.data.message, /cannot be rendered in a PDF/);
+    const emailsBeforeUnicode = emails.length;
+    assert.equal((await request(`/admin/agreements/${unicodeAgreement.data.data.id}/email`, 'POST', {}, token)).response.status, 422);
+    assert.equal(emails.length, emailsBeforeUnicode);
+    const agreement = await request('/admin/agreements', 'POST', { clientId, title: template.data.data.title, body: template.data.data.body }, token);
     assert.equal(agreement.response.status, 201);
     const agreementId = agreement.data.data.id;
     assert.equal((await request(`/admin/agreements/${agreementId}`, 'PATCH', { signed: true }, token)).data.data.signed, 1);
+    assert.equal((await request(`/admin/agreements/${agreementId}/document`, 'GET', undefined, token)).response.status, 200);
     assert.equal((await request(`/admin/agreements/${agreementId}/email`, 'POST', {}, token)).response.status, 200);
+    const editedTemplate = await request(`/admin/agreement-templates/${templateId}`, 'PUT', { title: 'Revised', body: 'New terms.' }, token);
+    assert.equal(editedTemplate.data.data.body, 'New terms.');
+    assert.equal((await request(`/admin/agreement-templates/${templateId}`, 'DELETE', undefined, token)).response.status, 204);
+    assert.equal((await request(`/admin/agreement-templates/${templateId}`, 'DELETE', undefined, token)).response.status, 404);
+    assert.equal((await request(`/admin/agreement-templates/${templateId}`, 'PUT', { title: 'Missing', body: 'Terms' }, token)).response.status, 404);
+    const retainedAgreement = (await request('/admin/agreements', 'GET', undefined, token)).data.data.find(item => item.id === agreementId);
+    assert.equal(retainedAgreement.title, 'Initial website');
+    assert.equal(retainedAgreement.body, terms);
+    assert.equal(retainedAgreement.signed, 1);
+    assert.equal((await request(`/admin/agreements/${agreementId}`, 'DELETE')).response.status, 401);
+    assert.equal((await request(`/admin/agreements/${agreementId}`, 'DELETE', undefined, otherToken)).response.status, 403);
+    assert.equal((await request(`/admin/agreements/${agreementId}`, 'DELETE', undefined, token)).response.status, 204);
+    assert.equal((await request(`/admin/agreements/${agreementId}`, 'DELETE', undefined, token)).response.status, 404);
+    assert.equal((await request(`/admin/agreements/${agreementId}/document`, 'GET', undefined, token)).response.status, 404);
+    assert.equal((await request('/admin/agreement-templates', 'GET', undefined, token)).data.data.length, 2);
     const payment = { clientId, invoiceId, amountPence: 10000, paidDate: '2026-11-20', method: 'Transfer', details: '=cmd()' };
     assert.equal((await request('/admin/payments', 'POST', { ...payment, clientId: second.data.data.id }, token)).response.status, 400);
     assert.equal((await request('/admin/payments', 'POST', payment, token)).response.status, 201);
