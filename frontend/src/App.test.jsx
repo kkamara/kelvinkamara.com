@@ -88,6 +88,16 @@ describe("GBP amount entry", () => {
       expect(await screen.findByText(message)).toBeInTheDocument()
     })
 
+    it("warns when email delivery cannot be confirmed after a network failure", async () => {
+      const user = userEvent.setup()
+      api.post.mockRejectedValueOnce(new Error("Network error"))
+      render(<App />)
+      await user.click(await screen.findByRole("button", { name: "Email" }))
+      expect(api.post).toHaveBeenCalledWith("/admin/agreements/7/email", undefined, { timeout: 60000 })
+      expect(await screen.findByText(/Email delivery could not be confirmed/)).toBeInTheDocument()
+      expect(screen.getByText(/Check delivery before retrying/)).toBeInTheDocument()
+    })
+
     it("edits a template and confirms deletion without deleting on cancel or failure", async () => {
       const user = userEvent.setup()
       render(<App />)

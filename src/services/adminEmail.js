@@ -6,6 +6,7 @@ const path = require('node:path');
 const { status } = require('http-status');
 const config = require('../config');
 const { exposableError } = require('../utils/httpResponses');
+const { sendWithCopy, sendSmtp } = require('./emailCopies');
 
 async function sendAdminEmail({ to, firstName, subject, message, paymentLink, attachments = [] }) {
   const html = pug.renderFile(path.join(__dirname, '../views/emails/admin.pug'), {
@@ -18,28 +19,24 @@ async function sendAdminEmail({ to, firstName, subject, message, paymentLink, at
     if (!config.mailgunDomain || !config.mailPass || !/^[a-z0-9.-]+$/i.test(config.mailgunDomain)) {
       throw exposableError('Mailgun domain and API key must be configured.', status.SERVICE_UNAVAILABLE);
     }
-    const data = new FormData();
-    for (const [key, value] of Object.entries({ from: config.mailFrom, to, subject, text, html })) data.append(key, value);
-    data.append('h:Reply-To', config.mailReplyTo);
-    for (const attachment of attachments) {
-      data.append('attachment', new Blob([attachment.content], { type: attachment.contentType }), attachment.filename);
-    }
-    try {
+    await sendWithCopy({ from: config.mailFrom, to, subject, text, html, attachments }, async email => {
+      const data = new FormData();
+      for (const [key, value] of Object.entries({ from: email.from, to: email.to, subject: email.subject, text: email.text, html: email.html })) data.append(key, value);
+      data.append('h:Reply-To', config.mailReplyTo);
+      for (const attachment of email.attachments) {
+        data.append('attachment', new Blob([attachment.content], { type: attachment.contentType }), attachment.filename);
+      }
       await axios.post(`https://api.eu.mailgun.net/v3/${config.mailgunDomain}/messages`, data, {
         auth: { username: 'api', password: config.mailPass },
         timeout: 15000,
       });
-    } catch (error) {
-      const code = error.response?.status;
-      const detail = Number.isInteger(code) && code >= 400 && code <= 599 ? ` (HTTP ${code})` : '';
-      throw exposableError(`Mailgun could not send the email${detail}. Check delivery before retrying.`, status.BAD_GATEWAY);
-    }
+    });
   } else if (config.nodeEnv === 'development') {
     const transporter = nodemailer.createTransport({
       host: process.env.MAILHOG_HOST || 'mailhog', port: Number(process.env.MAILHOG_PORT || 1025), secure: false,
       connectionTimeout: 5000, greetingTimeout: 5000,
     });
-    await transporter.sendMail({ from: config.mailFrom, to, replyTo: config.mailReplyTo, subject, text, html, attachments });
+    await sendWithCopy({ from: config.mailFrom, to, replyTo: config.mailReplyTo, subject, text, html, attachments }, email => sendSmtp(transporter, email));
   } else {
     throw exposableError('Admin email delivery is not configured for this environment.', status.SERVICE_UNAVAILABLE);
   }

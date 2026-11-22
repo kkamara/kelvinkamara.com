@@ -96,6 +96,13 @@ API only: configure `MAILGUN_DOMAIN`, `MAIL_PASS` (Mailgun API key), and
 All outgoing emails use `kamaracomputers@gmail.com` as their reply-to address.
 For contact form emails, the visitor's address remains in the message body;
 replying directly addresses Kel, not the visitor.
+Every email except a contact form email is sent first as a forwarded copy to
+`kamaracomputers@gmail.com`, with the intended recipient identified in the
+subject, and then separately to the intended recipient. The copy has the same
+body and attachments. If the copy fails, the recipient send is not attempted.
+If the recipient send fails, the copy has already been sent; check delivery
+before retrying, as a timeout can leave delivery uncertain and retrying sends
+another copy. Provider acceptance does not guarantee delivery.
 CI runs the email tests with a dedicated MailHog service. To run them locally,
 start an isolated MailHog, set `ADMIN_TEST_MAILHOG_SMTP_PORT` and
 `ADMIN_TEST_MAILHOG_API_PORT` to its published ports, then run

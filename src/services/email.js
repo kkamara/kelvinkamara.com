@@ -4,6 +4,7 @@ const axios = require("axios");
 const path = require("node:path");
 const pug = require("pug");
 const config = require("../config/index");
+const { sendWithCopy, sendSmtp } = require("./emailCopies");
 
 /**
  * @param {Object} obj
@@ -37,7 +38,7 @@ exports.testSendEmail = async ({
   }
   const transporter = nodemailer.createTransport(options);
   try {
-    await transporter.sendMail({
+    await sendWithCopy({
       from: config.mailFrom,
       to: to || config.mailTo,
       replyTo: config.mailReplyTo,
@@ -58,10 +59,11 @@ exports.testSendEmail = async ({
           footerYear: 2027,
         },
       ),
-    });
+    }, email => sendSmtp(transporter, email));
 
     return true;
   } catch (err) {
+    if (err.expose) throw err;
     if ("production" !== config.nodeEnv) {
       console.log(err);
     }
@@ -101,7 +103,7 @@ exports.sendEmail = async ({
   }
   const transporter = nodemailer.createTransport(options);
   try {
-    await transporter.sendMail({
+    await sendWithCopy({
       from: config.mailFrom,
       to: to || config.mailTo,
       replyTo: config.mailReplyTo,
@@ -122,10 +124,11 @@ exports.sendEmail = async ({
           footerYear: 2027,
         },
       ),
-    });
+    }, email => sendSmtp(transporter, email));
 
     return true;
   } catch (err) {
+    if (err.expose) throw err;
     if ("production" !== config.nodeEnv) {
       console.log(err);
     }

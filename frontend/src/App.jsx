@@ -14,6 +14,14 @@ const theme = createTheme({
   typography: { fontFamily: '"Inter", "Segoe UI", Arial, sans-serif', h4: { fontWeight: 700 }, h6: { fontWeight: 700 } },
 })
 const api = axios.create({ baseURL: "/api/v1/web", timeout: 30000 })
+const sendEmail = async (path, data) => {
+  try {
+    return await api.post(path, data, { timeout: 60000 })
+  } catch (error) {
+    if (!error.response) throw new Error("Email delivery could not be confirmed. Check delivery before retrying; another copy may be sent.")
+    throw error
+  }
+}
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("user-token")
   if (token) config.headers.Authorization = `Bearer ${token}`
@@ -152,7 +160,7 @@ function Invoices({ clients, invoices, run, busy, download }) {
     <Panel title="Invoices" subtitle="Optional Stripe links are single-use. Record payments manually and deactivate a Stripe link in Stripe if a client pays another way.">
       {!invoices.length ? <Empty>No invoices yet.</Empty> : <DataTable headers={["Invoice", "Client", "Amount", "Due", "Actions"]} rows={invoices.map(item => <TableRow key={item.id}>
         <TableCell>#{item.id}<br />{item.description}</TableCell><TableCell>{fullName(item)}</TableCell><TableCell>{money(item.amountPence)}</TableCell><TableCell>{item.dueDate}</TableCell>
-        <TableCell><Button disabled={busy} onClick={() => download(`/admin/invoices/${item.id}/document`, `invoice-${item.id}.pdf`)}>PDF</Button><Button disabled={busy} onClick={() => run(() => api.post(`/admin/invoices/${item.id}/email`), "Invoice email sent.")}>Email</Button>{item.paymentLink ? <Chip size="small" label="Payment link added" /> : <Button disabled={busy} onClick={() => run(() => api.post(`/admin/invoices/${item.id}/stripe-link`), "Stripe payment link created.")}>Create Stripe link</Button>}</TableCell>
+        <TableCell><Button disabled={busy} onClick={() => download(`/admin/invoices/${item.id}/document`, `invoice-${item.id}.pdf`)}>PDF</Button><Button disabled={busy} onClick={() => run(() => sendEmail(`/admin/invoices/${item.id}/email`), "Invoice email sent.")}>Email</Button>{item.paymentLink ? <Chip size="small" label="Payment link added" /> : <Button disabled={busy} onClick={() => run(() => api.post(`/admin/invoices/${item.id}/stripe-link`), "Stripe payment link created.")}>Create Stripe link</Button>}</TableCell>
       </TableRow>)} />}
     </Panel>
   </Page>
@@ -201,7 +209,7 @@ function Agreements({ clients, agreements, agreementTemplates, run, busy, downlo
       {!agreements.length ? <Empty>No agreements yet.</Empty> : <DataTable headers={["Agreement", "Client", "Signed", "Actions"]} rows={agreements.map(item => <TableRow key={item.id}>
         <TableCell>{item.title}</TableCell><TableCell>{fullName(item)}</TableCell>
         <TableCell><FormControlLabel label={item.signed ? "Signed" : "Not signed"} control={<Checkbox checked={Boolean(item.signed)} disabled={busy} onChange={event => run(() => api.patch(`/admin/agreements/${item.id}`, { signed: event.target.checked }), "Agreement status updated.")} />} /></TableCell>
-        <TableCell><Button disabled={busy} onClick={() => download(`/admin/agreements/${item.id}/document`, `agreement-${item.id}.pdf`)}>PDF</Button><Button disabled={busy} onClick={() => run(() => api.post(`/admin/agreements/${item.id}/email`), "Agreement email sent.")}>Email</Button><Button color="error" disabled={busy} aria-label={`Delete agreement ${item.title}`} onClick={() => { setDeleteError(""); setDeleteTarget({ kind: "agreement", id: item.id, title: item.title, client: fullName(item) }) }}>Delete</Button></TableCell>
+        <TableCell><Button disabled={busy} onClick={() => download(`/admin/agreements/${item.id}/document`, `agreement-${item.id}.pdf`)}>PDF</Button><Button disabled={busy} onClick={() => run(() => sendEmail(`/admin/agreements/${item.id}/email`), "Agreement email sent.")}>Email</Button><Button color="error" disabled={busy} aria-label={`Delete agreement ${item.title}`} onClick={() => { setDeleteError(""); setDeleteTarget({ kind: "agreement", id: item.id, title: item.title, client: fullName(item) }) }}>Delete</Button></TableCell>
       </TableRow>)} />}
     </Panel>
     <Panel title={editingTemplate ? "Edit agreement template" : "Create agreement template"} subtitle="Save reusable terms, such as initial website work or an ongoing monthly or yearly plan.">
@@ -254,7 +262,7 @@ function Payments({ clients, invoices, payments, run, busy, download }) {
       <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ mb: 2 }}>
         <ClientSelect clients={clients} value={selected} onChange={setSelected} />
         <Button disabled={!selected || busy} onClick={() => download(`/admin/clients/${selected}/payments.csv`, `payments-${selected}.csv`)}>Export CSV</Button>
-        <Button disabled={!selected || busy} onClick={() => run(() => api.post(`/admin/clients/${selected}/payments/email`), "Payment history email sent.")}>Email CSV</Button>
+        <Button disabled={!selected || busy} onClick={() => run(() => sendEmail(`/admin/clients/${selected}/payments/email`), "Payment history email sent.")}>Email CSV</Button>
       </Stack>
       {!payments.length ? <Empty>No payments recorded yet.</Empty> : <DataTable headers={["Client", "Date", "Amount", "Method", "Details"]} rows={payments.filter(item => !selected || String(item.clientId) === selected).map(item => <TableRow key={item.id}>
         <TableCell>{fullName(item)}</TableCell><TableCell>{item.paidDate}</TableCell><TableCell>{money(item.amountPence)}</TableCell><TableCell>{item.method}</TableCell><TableCell>{item.details}{item.invoiceId ? ` (Invoice #${item.invoiceId})` : ""}</TableCell>
@@ -270,7 +278,7 @@ function Actions({ clients, run, busy }) {
   return <Page title="Actions" description="Send a welcome message, project update or payment reminder.">
     <Panel title="Email a client" subtitle="Messages are sent to the saved email address for the selected client.">
       <Form busy={busy} button="Send email" onSubmit={event => { event.preventDefault(); run(async () => {
-        await api.post(`/admin/clients/${clientId}/email`, { subject, message }); setSubject(""); setMessage("")
+        await sendEmail(`/admin/clients/${clientId}/email`, { subject, message }); setSubject(""); setMessage("")
       }, "Email sent.") }}>
         <ClientSelect clients={clients} value={clientId} onChange={setClientId} />
         <Box><Button variant="outlined" onClick={welcome}>Use welcome message</Button></Box>
