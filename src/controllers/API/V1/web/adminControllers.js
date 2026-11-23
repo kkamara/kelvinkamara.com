@@ -146,31 +146,32 @@ const deleteRecord = (table, label) => asyncHandler(async (req, res) => {
 exports.deleteAgreementTemplate = deleteRecord('adminAgreementTemplates', 'Agreement template');
 exports.deleteAgreement = deleteRecord('adminAgreements', 'Agreement');
 exports.createInvoice = asyncHandler(async (req, res) => {
-  const data = {
+  const rawData = {
     clientId: req.bodyInt("clientId"),
     description: req.bodyString("description"),
     amountPence: req.bodyInt("amountPence"),
     dueDate: req.bodyString("dueDate"),
     paymentInstructions: req.bodyString("paymentInstructions") || '',
     paymentLink: req.bodyString("paymentLink") || '',
+  };
+  
+  const data = {
+    clientId: id(res, rawData.clientId),
+    description: string(res, rawData.description, 'Description', 10000),
+    amountPence: amount(res, rawData.amountPence),
+    dueDate: date(res, rawData.dueDate, 'Due date'),
+    paymentInstructions: string(res, rawData.paymentInstructions, 'Payment instructions', 10000, false),
+    paymentLink: string(res, rawData.paymentLink, 'Payment link', 2048, false),
     stripeRequestKey: randomUUID(),
   };
-  const sanitizedData = {
-    clientId: id(res, data.clientId),
-    description: string(res, data.description, 'Description', 10000),
-    amountPence: amount(res, data.amountPence),
-    dueDate: date(res, data.dueDate, 'Due date'),
-    paymentInstructions: string(res, data.paymentInstructions, 'Payment instructions', 10000, false),
-    paymentLink: string(res, data.paymentLink, 'Payment link', 2048, false),
-    stripeRequestKey: data.stripeRequestKey,
-  };
-  if (sanitizedData.paymentLink) {
+  
+  if (data.paymentLink) {
     let url;
-    try { url = new URL(sanitizedData.paymentLink); } catch { fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.'); }
+    try { url = new URL(data.paymentLink); } catch { fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.'); }
     if (url.protocol !== 'https:' || url.username || url.password) fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.');
   }
-  await client(res, sanitizedData.clientId);
-  const [newId] = await insert('INSERT INTO adminInvoices (clientId, description, amountPence, dueDate, paymentInstructions, paymentLink, stripeRequestKey, createdAt, updatedAt) VALUES (:clientId, :description, :amountPence, :dueDate, :paymentInstructions, :paymentLink, :stripeRequestKey, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', sanitizedData);
+  await client(res, data.clientId);
+  const [newId] = await insert('INSERT INTO adminInvoices (clientId, description, amountPence, dueDate, paymentInstructions, paymentLink, stripeRequestKey, createdAt, updatedAt) VALUES (:clientId, :description, :amountPence, :dueDate, :paymentInstructions, :paymentLink, :stripeRequestKey, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
   res.status(status.CREATED).json({ data: await record(res, 'adminInvoices', newId) });
 });
 exports.createStripeLink = asyncHandler(async (req, res) => {
@@ -217,10 +218,10 @@ exports.createAgreement = asyncHandler(async (req, res) => {
     title: req.bodyString("title"),
     body: req.bodyString("body"),
   };
-  const data = { clientId: req.bodyInt("clientId"), ...agreementText(res, sanitizedData) };
-  const finalData = { clientId: id(res, data.clientId), title: data.title, body: data.body };
-  await client(res, finalData.clientId);
-  const [newId] = await insert('INSERT INTO adminAgreements (clientId, title, body, signed, createdAt, updatedAt) VALUES (:clientId, :title, :body, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', finalData);
+  const clientId = id(res, req.bodyInt("clientId"));
+  const data = { clientId, ...agreementText(res, sanitizedData) };
+  await client(res, clientId);
+  const [newId] = await insert('INSERT INTO adminAgreements (clientId, title, body, signed, createdAt, updatedAt) VALUES (:clientId, :title, :body, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
   res.status(status.CREATED).json({ data: await record(res, 'adminAgreements', newId) });
 });
 exports.updateAgreement = asyncHandler(async (req, res) => {
@@ -232,7 +233,7 @@ exports.updateAgreement = asyncHandler(async (req, res) => {
   res.json({ data: await record(res, 'adminAgreements', agreementId) });
 });
 exports.createPayment = asyncHandler(async (req, res) => {
-  const sanitizedData = {
+  const rawData = {
     clientId: req.bodyInt("clientId"),
     invoiceId: req.body.invoiceId ? req.bodyInt("invoiceId") : null,
     amountPence: req.bodyInt("amountPence"),
@@ -240,14 +241,16 @@ exports.createPayment = asyncHandler(async (req, res) => {
     method: req.bodyString("method"),
     details: req.bodyString("details") || '',
   };
+  
   const data = {
-    clientId: id(res, sanitizedData.clientId),
-    invoiceId: sanitizedData.invoiceId ? id(res, sanitizedData.invoiceId) : null,
-    amountPence: amount(res, sanitizedData.amountPence),
-    paidDate: date(res, sanitizedData.paidDate, 'Payment date'),
-    method: string(res, sanitizedData.method, 'Payment method', 100),
-    details: string(res, sanitizedData.details, 'Details', 10000, false),
+    clientId: id(res, rawData.clientId),
+    invoiceId: rawData.invoiceId ? id(res, rawData.invoiceId) : null,
+    amountPence: amount(res, rawData.amountPence),
+    paidDate: date(res, rawData.paidDate, 'Payment date'),
+    method: string(res, rawData.method, 'Payment method', 100),
+    details: string(res, rawData.details, 'Details', 10000, false),
   };
+  
   await client(res, data.clientId);
   const [newId] = await db.sequelize.transaction(async transaction => {
     if (data.invoiceId) {
