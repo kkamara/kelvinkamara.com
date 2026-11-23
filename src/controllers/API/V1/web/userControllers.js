@@ -24,7 +24,7 @@ const createUser = asyncHandler(async (req, res) => {
       firstName: req.bodyString("firstName"),
       lastName: req.bodyString("lastName"),
       email: req.bodyEmail("email"),
-      password: req.body.password, // Uncleaned password
+      password: req.bodyString("password"),
     });
   if (false === cleanData) {
     res.status(status.BAD_REQUEST);
@@ -81,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .user
     .getCleanLoginData(
       req.bodyEmail("email"),
-      req.body.password,
+      req.bodyString("password"),
     );
   if (false === cleanData) {
     res.status(status.BAD_REQUEST);
@@ -217,14 +217,15 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new Error("User not found.");
   }
   const adminEmail = "kamaracomputers@gmail.com";
-  if (typeof req.body.email === "string" &&
-      req.body.email.toLowerCase() === adminEmail &&
+  const inputEmail = req.bodyString("email");
+  if (typeof inputEmail === "string" &&
+      inputEmail.toLowerCase() === adminEmail &&
       currentUser.email.toLowerCase() !== adminEmail) {
     res.status(status.FORBIDDEN);
     throw new Error("This email is reserved.");
   }
   if (currentUser.email.toLowerCase() === adminEmail &&
-      typeof req.body.email === "string" && req.body.email.toLowerCase() !== adminEmail) {
+      typeof inputEmail === "string" && inputEmail.toLowerCase() !== adminEmail) {
     res.status(status.FORBIDDEN);
     throw new Error("The administrator email cannot be changed here.");
   }
@@ -245,7 +246,7 @@ const updateUser = asyncHandler(async (req, res) => {
       firstName: req.bodyString("firstName"),
       lastName: req.bodyString("lastName"),
       email: req.bodyString("email"),
-      password: req.body.password, // Uncleaned password
+      password: req.bodyString("password"),
     });
   
   let newPassword, newPasswordSalt;

@@ -77,14 +77,29 @@ const clientData = (res, body) => {
 };
 exports.clients = asyncHandler(async (req, res) => res.json({ data: await query('SELECT * FROM adminClients ORDER BY lastName, firstName') }));
 exports.createClient = asyncHandler(async (req, res) => {
-  const data = clientData(res, req.body);
+  const data = clientData(res, {
+    firstName: req.bodyString("firstName"),
+    lastName: req.bodyString("lastName"),
+    email: req.bodyString("email"),
+    company: req.bodyString("company") || '',
+    phone: req.bodyString("phone") || '',
+    notes: req.bodyString("notes") || '',
+  });
   const [newId] = await insert('INSERT INTO adminClients (firstName, lastName, email, company, phone, notes, createdAt, updatedAt) VALUES (:firstName, :lastName, :email, :company, :phone, :notes, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
   res.status(status.CREATED).json({ data: await client(res, newId) });
 });
 exports.updateClient = asyncHandler(async (req, res) => {
-  const clientId = id(res, req.params.id);
+  const clientId = req.paramInt("id");
   await client(res, clientId);
-  await update('UPDATE adminClients SET firstName=:firstName, lastName=:lastName, email=:email, company=:company, phone=:phone, notes=:notes, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { ...clientData(res, req.body), id: clientId });
+  const sanitizedData = {
+    firstName: req.bodyString("firstName"),
+    lastName: req.bodyString("lastName"),
+    email: req.bodyString("email"),
+    company: req.bodyString("company") || '',
+    phone: req.bodyString("phone") || '',
+    notes: req.bodyString("notes") || '',
+  };
+  await update('UPDATE adminClients SET firstName=:firstName, lastName=:lastName, email=:email, company=:company, phone=:phone, notes=:notes, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { ...clientData(res, sanitizedData), id: clientId });
   res.json({ data: await client(res, clientId) });
 });
 exports.invoices = list('adminInvoices');
@@ -103,19 +118,27 @@ exports.agreementTemplates = asyncHandler(async (req, res) => {
   res.json({ data: await query('SELECT * FROM adminAgreementTemplates ORDER BY title, id') });
 });
 exports.createAgreementTemplate = asyncHandler(async (req, res) => {
-  const data = agreementText(res, req.body);
+  const sanitizedData = {
+    title: req.bodyString("title"),
+    body: req.bodyString("body"),
+  };
+  const data = agreementText(res, sanitizedData);
   const [newId] = await insert('INSERT INTO adminAgreementTemplates (title, body, createdAt, updatedAt) VALUES (:title, :body, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
   res.status(status.CREATED).json({ data: await agreementTemplate(res, newId) });
 });
 exports.updateAgreementTemplate = asyncHandler(async (req, res) => {
-  const templateId = id(res, req.params.id);
+  const templateId = req.paramInt("id");
   await agreementTemplate(res, templateId);
-  await update('UPDATE adminAgreementTemplates SET title=:title, body=:body, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { ...agreementText(res, req.body), id: templateId });
+  const sanitizedData = {
+    title: req.bodyString("title"),
+    body: req.bodyString("body"),
+  };
+  await update('UPDATE adminAgreementTemplates SET title=:title, body=:body, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { ...agreementText(res, sanitizedData), id: templateId });
   res.json({ data: await agreementTemplate(res, templateId) });
 });
 const deleteRecord = (table, label) => asyncHandler(async (req, res) => {
   const count = await db.sequelize.query(`DELETE FROM ${table} WHERE id=:id`, {
-    replacements: { id: id(res, req.params.id) }, type: db.Sequelize.QueryTypes.BULKDELETE,
+    replacements: { id: req.paramInt("id") }, type: db.Sequelize.QueryTypes.BULKDELETE,
   });
   if (!count) fail(res, status.NOT_FOUND, `${label} not found.`);
   res.status(status.NO_CONTENT).end();
@@ -124,25 +147,34 @@ exports.deleteAgreementTemplate = deleteRecord('adminAgreementTemplates', 'Agree
 exports.deleteAgreement = deleteRecord('adminAgreements', 'Agreement');
 exports.createInvoice = asyncHandler(async (req, res) => {
   const data = {
-    clientId: id(res, req.body.clientId),
-    description: string(res, req.body.description, 'Description', 10000),
-    amountPence: amount(res, req.body.amountPence),
-    dueDate: date(res, req.body.dueDate, 'Due date'),
-    paymentInstructions: string(res, req.body.paymentInstructions || '', 'Payment instructions', 10000, false),
-    paymentLink: string(res, req.body.paymentLink || '', 'Payment link', 2048, false),
+    clientId: req.bodyInt("clientId"),
+    description: req.bodyString("description"),
+    amountPence: req.bodyInt("amountPence"),
+    dueDate: req.bodyString("dueDate"),
+    paymentInstructions: req.bodyString("paymentInstructions") || '',
+    paymentLink: req.bodyString("paymentLink") || '',
     stripeRequestKey: randomUUID(),
   };
-  if (data.paymentLink) {
+  const sanitizedData = {
+    clientId: id(res, data.clientId),
+    description: string(res, data.description, 'Description', 10000),
+    amountPence: amount(res, data.amountPence),
+    dueDate: date(res, data.dueDate, 'Due date'),
+    paymentInstructions: string(res, data.paymentInstructions, 'Payment instructions', 10000, false),
+    paymentLink: string(res, data.paymentLink, 'Payment link', 2048, false),
+    stripeRequestKey: data.stripeRequestKey,
+  };
+  if (sanitizedData.paymentLink) {
     let url;
-    try { url = new URL(data.paymentLink); } catch { fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.'); }
+    try { url = new URL(sanitizedData.paymentLink); } catch { fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.'); }
     if (url.protocol !== 'https:' || url.username || url.password) fail(res, status.BAD_REQUEST, 'Payment link must be a valid HTTPS URL.');
   }
-  await client(res, data.clientId);
-  const [newId] = await insert('INSERT INTO adminInvoices (clientId, description, amountPence, dueDate, paymentInstructions, paymentLink, stripeRequestKey, createdAt, updatedAt) VALUES (:clientId, :description, :amountPence, :dueDate, :paymentInstructions, :paymentLink, :stripeRequestKey, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
+  await client(res, sanitizedData.clientId);
+  const [newId] = await insert('INSERT INTO adminInvoices (clientId, description, amountPence, dueDate, paymentInstructions, paymentLink, stripeRequestKey, createdAt, updatedAt) VALUES (:clientId, :description, :amountPence, :dueDate, :paymentInstructions, :paymentLink, :stripeRequestKey, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', sanitizedData);
   res.status(status.CREATED).json({ data: await record(res, 'adminInvoices', newId) });
 });
 exports.createStripeLink = asyncHandler(async (req, res) => {
-  const invoiceId = id(res, req.params.id);
+  const invoiceId = req.paramInt("id");
   const fingerprint = getStripeKeyFingerprint();
   await db.sequelize.transaction(async transaction => {
     const options = { replacements: { id: invoiceId }, type: db.Sequelize.QueryTypes.SELECT, transaction };
@@ -181,26 +213,40 @@ exports.createStripeLink = asyncHandler(async (req, res) => {
   res.json({ data: await record(res, 'adminInvoices', invoiceId) });
 });
 exports.createAgreement = asyncHandler(async (req, res) => {
-  const data = { clientId: id(res, req.body.clientId), ...agreementText(res, req.body) };
-  await client(res, data.clientId);
-  const [newId] = await insert('INSERT INTO adminAgreements (clientId, title, body, signed, createdAt, updatedAt) VALUES (:clientId, :title, :body, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
+  const sanitizedData = {
+    title: req.bodyString("title"),
+    body: req.bodyString("body"),
+  };
+  const data = { clientId: req.bodyInt("clientId"), ...agreementText(res, sanitizedData) };
+  const finalData = { clientId: id(res, data.clientId), title: data.title, body: data.body };
+  await client(res, finalData.clientId);
+  const [newId] = await insert('INSERT INTO adminAgreements (clientId, title, body, signed, createdAt, updatedAt) VALUES (:clientId, :title, :body, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', finalData);
   res.status(status.CREATED).json({ data: await record(res, 'adminAgreements', newId) });
 });
 exports.updateAgreement = asyncHandler(async (req, res) => {
-  const agreementId = id(res, req.params.id);
-  if (typeof req.body.signed !== 'boolean') fail(res, status.BAD_REQUEST, 'Signed status must be true or false.');
+  const agreementId = req.paramInt("id");
+  const signedValue = req.body.signed;
+  if (typeof signedValue !== 'boolean') fail(res, status.BAD_REQUEST, 'Signed status must be true or false.');
   await record(res, 'adminAgreements', agreementId);
-  await update('UPDATE adminAgreements SET signed=:signed, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { id: agreementId, signed: req.body.signed });
+  await update('UPDATE adminAgreements SET signed=:signed, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { id: agreementId, signed: signedValue });
   res.json({ data: await record(res, 'adminAgreements', agreementId) });
 });
 exports.createPayment = asyncHandler(async (req, res) => {
+  const sanitizedData = {
+    clientId: req.bodyInt("clientId"),
+    invoiceId: req.body.invoiceId ? req.bodyInt("invoiceId") : null,
+    amountPence: req.bodyInt("amountPence"),
+    paidDate: req.bodyString("paidDate"),
+    method: req.bodyString("method"),
+    details: req.bodyString("details") || '',
+  };
   const data = {
-    clientId: id(res, req.body.clientId),
-    invoiceId: req.body.invoiceId ? id(res, req.body.invoiceId) : null,
-    amountPence: amount(res, req.body.amountPence),
-    paidDate: date(res, req.body.paidDate, 'Payment date'),
-    method: string(res, req.body.method, 'Payment method', 100),
-    details: string(res, req.body.details || '', 'Details', 10000, false),
+    clientId: id(res, sanitizedData.clientId),
+    invoiceId: sanitizedData.invoiceId ? id(res, sanitizedData.invoiceId) : null,
+    amountPence: amount(res, sanitizedData.amountPence),
+    paidDate: date(res, sanitizedData.paidDate, 'Payment date'),
+    method: string(res, sanitizedData.method, 'Payment method', 100),
+    details: string(res, sanitizedData.details, 'Details', 10000, false),
   };
   await client(res, data.clientId);
   const [newId] = await db.sequelize.transaction(async transaction => {
@@ -228,39 +274,41 @@ function download(res, item) {
   res.send(item.content);
 }
 exports.invoiceDocument = asyncHandler(async (req, res) => {
-  const invoice = await record(res, 'adminInvoices', id(res, req.params.id));
+  const invoice = await record(res, 'adminInvoices', req.paramInt("id"));
   download(res, attachment(`invoice-${invoice.id}.pdf`, await invoicePdf(invoice), 'application/pdf'));
 });
 exports.agreementDocument = asyncHandler(async (req, res) => {
-  const agreement = await record(res, 'adminAgreements', id(res, req.params.id));
+  const agreement = await record(res, 'adminAgreements', req.paramInt("id"));
   download(res, attachment(`agreement-${agreement.id}.pdf`, await agreementPdf(agreement), 'application/pdf'));
 });
 exports.exportPayments = asyncHandler(async (req, res) => {
-  const clientId = id(res, req.params.id);
+  const clientId = req.paramInt("id");
   download(res, attachment(`payments-${clientId}.csv`, paymentCsv(await paymentsForClient(res, clientId)), 'text/csv'));
 });
 exports.emailInvoice = asyncHandler(async (req, res) => {
-  const invoice = await record(res, 'adminInvoices', id(res, req.params.id));
+  const invoice = await record(res, 'adminInvoices', req.paramInt("id"));
   await sendAdminEmail({ to: invoice.email, firstName: invoice.firstName, subject: `Invoice #${invoice.id}`, message: `Please find your invoice attached. Payment is due ${invoice.dueDate}.\n\n${invoice.paymentInstructions}`, paymentLink: invoice.paymentLink, attachments: [attachment(`invoice-${invoice.id}.pdf`, await invoicePdf(invoice), 'application/pdf')] });
   res.json({ message: 'Invoice email sent.' });
 });
 exports.emailAgreement = asyncHandler(async (req, res) => {
-  const agreement = await record(res, 'adminAgreements', id(res, req.params.id));
+  const agreement = await record(res, 'adminAgreements', req.paramInt("id"));
   await sendAdminEmail({ to: agreement.email, firstName: agreement.firstName, subject: agreement.title, message: 'Please review the attached service agreement, sign it and return it to me.', attachments: [attachment(`agreement-${agreement.id}.pdf`, await agreementPdf(agreement), 'application/pdf')] });
   res.json({ message: 'Agreement email sent.' });
 });
 exports.emailPayments = asyncHandler(async (req, res) => {
-  const clientId = id(res, req.params.id);
+  const clientId = req.paramInt("id");
   const recipient = await client(res, clientId);
   const csv = paymentCsv(await paymentsForClient(res, clientId));
   await sendAdminEmail({ to: recipient.email, firstName: recipient.firstName, subject: 'Your payment history', message: 'Please find your recorded payment history attached.', attachments: [attachment(`payments-${clientId}.csv`, csv, 'text/csv')] });
   res.json({ message: 'Payment history email sent.' });
 });
 exports.emailClient = asyncHandler(async (req, res) => {
-  const recipient = await client(res, id(res, req.params.id));
-  const subject = string(res, req.body.subject, 'Subject', 200);
+  const recipient = await client(res, req.paramInt("id"));
+  const subject = req.bodyString("subject");
   if (/[\r\n]/.test(subject)) fail(res, status.BAD_REQUEST, 'Subject must be a single line.');
-  const message = string(res, req.body.message, 'Message', 10000);
-  await sendAdminEmail({ to: recipient.email, firstName: recipient.firstName, subject, message });
+  const message = req.bodyString("message");
+  const sanitizedSubject = string(res, subject, 'Subject', 200);
+  const sanitizedMessage = string(res, message, 'Message', 10000);
+  await sendAdminEmail({ to: recipient.email, firstName: recipient.firstName, subject: sanitizedSubject, message: sanitizedMessage });
   res.json({ message: 'Email sent.' });
 });
