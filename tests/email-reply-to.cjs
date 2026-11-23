@@ -16,6 +16,8 @@ test('all SMTP emails use the configured reply-to and retain the contact sender'
     config.mailHost = 'mailhog';
     config.mailFrom = 'sender@example.test';
     config.mailTo = 'recipient@example.test';
+    config.mailCopyTo = 'kamaracomputers@gmail.com';
+    config.mailReplyTo = 'kamaracomputers@gmail.com';
     config.mailSubject = 'Contact';
     config.mailUser = '';
     assert.equal(await testSendEmail({ to: 'recipient@example.test', plainText: 'Test', html: '<p>Test</p>' }), true);
@@ -59,6 +61,8 @@ test('all SMTP emails from production also use configured reply-to and preserve 
     config.mailPass = 'apikey';
     config.mailFrom = 'sender@example.test';
     config.mailTo = 'recipient@example.test';
+    config.mailCopyTo = 'kamaracomputers@gmail.com';
+    config.mailReplyTo = 'kamaracomputers@gmail.com';
     config.mailSubject = 'Contact';
     assert.equal(await sendContactEmail({ name: 'Visitor', email: 'visitor@example.test', message: 'Hello' }), true);
     await sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' });
