@@ -1,6 +1,5 @@
 "use strict";
 const nodemailer = require("nodemailer");
-const axios = require("axios");
 const path = require("node:path");
 const pug = require("pug");
 const config = require("../config/index");
@@ -87,7 +86,7 @@ exports.sendEmail = async ({
   message,
   to,
 }) => {
-  const host = config.mailHost === "mailgun" ? "mailgun.kelvinkamara.com" : (config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost));
+  const host = config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost);
   const options = {
     host,
     port: Number(config.mailPort || (host === 'mailhog' ? 1025 : 587)),
@@ -189,10 +188,10 @@ exports.sendContactEmail = async ({
     await transporter.sendMail({
       from: config.mailFrom,
       to: config.mailTo,
+      replyTo: email,
       subject: config.mailSubject,
       text: textContent,
       html: htmlContent,
-      replyTo: config.mailReplyTo,
     });
 
     return true;
