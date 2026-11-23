@@ -196,12 +196,12 @@ exports.sendContactEmail = async ({
       const host = config.mailHost === "mailgun" ? "mailgun.kelvinkamara.com" : (config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost));
       const options = {
         host,
-        port: Number(config.mailPort || (host === 'mailhog' ? 1025 : 587)),
-        secure: config.mailSecure === true,
+        port: Number(config.mailPort || ('mailhog' === host ? 1025 : 587)),
+        secure: true === config.mailSecure,
         connectionTimeout: 5000,
         greetingTimeout: 5000,
       };
-      if (config.mailUser && config.nodeEnv !== "development") {
+      if (config.mailUser && "development" !== config.nodeEnv) {
         options.auth = {
           user: config.mailUser,
           pass: config.mailPass || '',
