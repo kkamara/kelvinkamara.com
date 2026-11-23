@@ -37,21 +37,16 @@ Before deploying to production, verify all items below are complete:
 
 ### ✅ Email Configuration
 
-Choose ONE of these approaches:
+Configure SMTP for all environments:
 
-**Option 1: Mailgun (Recommended for Production)**
-- [ ] Mailgun account created at https://www.mailgun.com/
-- [x] `MAIL_DRIVER=mailgun` option implemented
-- [ ] `MAILGUN_DOMAIN` set to your Mailgun domain
-- [ ] `MAILGUN_SECRET` set to your Mailgun API key
-- [ ] Sender email verified in Mailgun
-
-**Option 2: SMTP (Alternative)**
-- [x] `MAIL_DRIVER=smtp` option implemented
-- [ ] `MAIL_HOST` points to your SMTP server
-- [ ] `MAIL_PORT` correctly set (usually 587 or 465)
-- [ ] `MAIL_USERNAME` and `MAIL_PASSWORD` configured
-- [ ] `MAIL_ENCRYPTION` set to `tls` or `ssl`
+- [x] SMTP server available from your hosting platform
+- [ ] `MAIL_HOST` set to your SMTP server hostname
+- [ ] `MAIL_PORT` set to your SMTP server port (typically 587 or 465)
+- [ ] `MAIL_SECURE` set to `true` for port 465, `false` for 587
+- [ ] `MAIL_USER` set to your SMTP authentication username
+- [ ] `MAIL_PASS` set to your SMTP authentication password
+- [ ] `MAIL_FROM` set to your outgoing email address
+- [ ] `MAIL_TO` set to your receiving email address
 
 ### ✅ Dependencies
 
@@ -190,9 +185,12 @@ heroku create kelvinkamara
 # 3. Set environment variables
 heroku config:set APP_KEY=your-random-key
 heroku config:set APP_URL=https://kelvinkamara.herokuapp.com
-heroku config:set MAIL_DRIVER=mailgun
-heroku config:set MAILGUN_DOMAIN=your-domain
-heroku config:set MAILGUN_SECRET=your-secret
+heroku config:set MAIL_HOST=your-smtp-host
+heroku config:set MAIL_PORT=587
+heroku config:set MAIL_SECURE=false
+heroku config:set MAIL_USER=your-smtp-username
+heroku config:set MAIL_PASS=your-smtp-password
+heroku config:set MAIL_FROM=noreply@your-domain.com
 heroku config:set TURNSTILE_SITEKEY=your-sitekey
 heroku config:set TURNSTILE_SECRET=your-secret
 heroku config:set MAIL_TO=your-email@example.com
@@ -347,14 +345,13 @@ APP_URL=https://kelvinkamara.com
 APP_NAME=KelvinKamara
 APP_PORT=8000
 
-MAIL_DRIVER=mailgun
-MAIL_HOST=smtp.mailgun.org
+MAIL_HOST=your-smtp-host
 MAIL_PORT=587
+MAIL_SECURE=false
+MAIL_USER=your-smtp-username
+MAIL_PASS=your-smtp-password
 MAIL_FROM=noreply@kelvinkamara.com
 MAIL_TO=your-email@example.com
-
-MAILGUN_DOMAIN=mail.kelvinkamara.com
-MAILGUN_SECRET=key-xxx
 
 TURNSTILE_SITEKEY=1x00000000000000000000BB
 TURNSTILE_SECRET=1x0000000000000000000000000000000AA
@@ -387,9 +384,9 @@ RATE_LIMIT_MAX=10000   # requests per window
 
 ### Email Not Sending
 
-1. Verify MAIL_* variables in `.env`
-2. Check Mailgun credentials are correct
-3. Verify sender email is authorized in Mailgun
+1. Verify MAIL_HOST, MAIL_PORT, MAIL_USER, and MAIL_PASS in `.env`
+2. Check SMTP credentials are correct
+3. Verify sender email is authorized on your SMTP server
 4. Check logs for error details
 5. Test with `curl`:
    ```bash

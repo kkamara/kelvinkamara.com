@@ -1,7 +1,7 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const axios = require('axios');
+const nodemailer = require('nodemailer');
 const config = require('../src/config');
 const { sendAdminEmail } = require('../src/services/adminEmail');
 
@@ -11,8 +11,10 @@ test('development email goes to isolated MailHog with the document attached', as
   if (!smtpPort || !apiPort) throw new Error('Isolated MailHog SMTP and API ports are required.');
   config.nodeEnv = 'development';
   config.mailFrom = 'Kel Kamara <sender@example.test>';
-  process.env.MAILHOG_HOST = '127.0.0.1';
-  process.env.MAILHOG_PORT = smtpPort;
+  config.mailHost = '127.0.0.1';
+  config.mailPort = smtpPort;
+  config.mailSecure = false;
+  config.mailUser = '';
   await sendAdminEmail({
     to: 'client@example.test', firstName: 'Ava', subject: 'Invoice',
     message: 'Please pay by bank transfer.', paymentLink: '',
@@ -33,39 +35,82 @@ test('development email goes to isolated MailHog with the document attached', as
   }
 });
 
-test('production uses Mailgun and fails closed if credentials are missing', async () => {
-  config.nodeEnv = 'production';
-  config.mailFrom = 'Kel Kamara <sender@example.test>';
-  config.mailgunDomain = 'example.test';
-  config.mailPass = 'test-key';
-  const originalPost = axios.post;
-  const calls = [];
-  axios.post = async (...args) => { calls.push(args); return { status: 200 }; };
+test('production email via SMTP with authentication and document attachment', async () => {
+  const originalTransport = nodemailer.createTransport;
+  const originalConfig = { ...config };
+  const messages = [];
+  nodemailer.createTransport = () => ({ sendMail: async message => messages.push(message) });
   try {
+    config.nodeEnv = 'production';
+    config.mailFrom = 'Kel Kamara <sender@example.test>';
+    config.mailHost = 'smtp.example.test';
+    config.mailPort = 587;
+    config.mailSecure = false;
+    config.mailUser = 'apiuser';
+    config.mailPass = 'apikey';
     await sendAdminEmail({
       to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello',
       attachments: [{ filename: 'invoice.pdf', content: Buffer.from('%PDF-test'), contentType: 'application/pdf' }],
     });
-    assert.equal(calls.length, 2);
-    assert.equal(calls[0][1].get('to'), 'kamaracomputers@gmail.com');
-    assert.equal(calls[1][1].get('to'), 'client@example.test');
-    for (const call of calls) {
-      assert.equal(call[0], 'https://api.eu.mailgun.net/v3/example.test/messages');
-      assert.equal(call[1].get('h:Reply-To'), 'kamaracomputers@gmail.com');
-      assert.equal(call[1].get('attachment').name, 'invoice.pdf');
-      assert.equal(await call[1].get('attachment').text(), '%PDF-test');
-      assert.equal(call[2].auth.password, 'test-key');
+    assert.equal(messages.length, 2);
+    assert.equal(messages[0].to, 'kamaracomputers@gmail.com');
+    assert.equal(messages[1].to, 'client@example.test');
+    for (const message of messages) {
+      assert.equal(message.replyTo, 'kamaracomputers@gmail.com');
+      assert.match(message.text, /Hello/);
     }
-    axios.post = async () => {
-      const error = new Error('test-key and private message');
-      error.response = { status: 401 };
-      throw error;
-    };
-    await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }),
-      error => /HTTP 401/.test(error.message) && /recipient email was not attempted/.test(error.message) && !error.message.includes('test-key'));
-    config.mailPass = '';
-    await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }), /Mailgun/);
   } finally {
-    axios.post = originalPost;
+    nodemailer.createTransport = originalTransport;
+    Object.assign(config, originalConfig);
   }
 });
+
+test('production email fails closed if MAIL_HOST is not configured', async () => {
+  const originalConfig = { ...config };
+  try {
+    config.nodeEnv = 'production';
+    config.mailFrom = 'Kel Kamara <sender@example.test>';
+    config.mailHost = '';
+    config.mailUser = 'apiuser';
+    await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }), /MAIL_HOST must be configured/);
+  } finally {
+    Object.assign(config, originalConfig);
+  }
+});
+
+test('production email fails closed if MAIL_USER is not configured', async () => {
+  const originalConfig = { ...config };
+  try {
+    config.nodeEnv = 'production';
+    config.mailFrom = 'Kel Kamara <sender@example.test>';
+    config.mailHost = 'smtp.example.test';
+    config.mailUser = '';
+    await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }), /MAIL_USER must be configured/);
+  } finally {
+    Object.assign(config, originalConfig);
+  }
+});
+
+test('SMTP failures do not expose credentials in error messages', async () => {
+  const originalTransport = nodemailer.createTransport;
+  const originalConfig = { ...config };
+  try {
+    config.nodeEnv = 'production';
+    config.mailFrom = 'Kel Kamara <sender@example.test>';
+    config.mailHost = 'smtp.example.test';
+    config.mailUser = 'apiuser';
+    config.mailPass = 'secret-api-key';
+    nodemailer.createTransport = () => ({
+      sendMail: async () => {
+        throw new Error('SMTP failed: secret-api-key was invalid');
+      },
+    });
+    await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }),
+      error => !error.message.includes('secret-api-key'));
+  } finally {
+    nodemailer.createTransport = originalTransport;
+    Object.assign(config, originalConfig);
+  }
+});
+
+

@@ -90,19 +90,18 @@ payment instructions and authentication tokens.
 
 Development admin email is delivered only to MailHog. Inside Docker the default
 host is `mailhog`; for a backend running on the host set `MAILHOG_HOST=127.0.0.1`
-and use the published `MAILHOG_PORT`. Production admin email uses the Mailgun EU
-API only: configure `MAILGUN_DOMAIN`, `MAIL_PASS` (Mailgun API key), and
-`MAIL_FROM`. There is no fallback to another mail provider.
-All outgoing emails use `kamaracomputers@gmail.com` as their reply-to address.
-For contact form emails, the visitor's address remains in the message body;
-replying directly addresses Kel, not the visitor.
-Every email except a contact form email is sent first as a forwarded copy to
-`kamaracomputers@gmail.com`, with the intended recipient identified in the
-subject, and then separately to the intended recipient. The copy has the same
-body and attachments. If the copy fails, the recipient send is not attempted.
-If the recipient send fails, the copy has already been sent; check delivery
-before retrying, as a timeout can leave delivery uncertain and retrying sends
-another copy. Provider acceptance does not guarantee delivery.
+and use the published `MAILHOG_PORT`. All environments use SMTP: configure
+`MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`, `MAIL_USER`, `MAIL_PASS`, and
+`MAIL_FROM` for your platform's SMTP service. All outgoing emails use
+`kamaracomputers@gmail.com` as their reply-to address. For contact form emails,
+the visitor's address remains in the message body; replying directly addresses
+Kel, not the visitor. Every email except a contact form email is sent first as
+a forwarded copy to `kamaracomputers@gmail.com`, with the intended recipient
+identified in the subject, and then separately to the intended recipient. The
+copy has the same body and attachments. If the copy fails, the recipient send
+is not attempted. If the recipient send fails, the copy has already been sent;
+check delivery before retrying, as a timeout can leave delivery uncertain and
+retrying sends another copy. Provider acceptance does not guarantee delivery.
 CI runs the email tests with a dedicated MailHog service. To run them locally,
 start an isolated MailHog, set `ADMIN_TEST_MAILHOG_SMTP_PORT` and
 `ADMIN_TEST_MAILHOG_API_PORT` to its published ports, then run

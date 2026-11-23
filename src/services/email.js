@@ -1,6 +1,5 @@
 "use strict";
 const nodemailer = require("nodemailer");
-const axios = require("axios");
 const path = require("node:path");
 const pug = require("pug");
 const config = require("../config/index");
@@ -22,7 +21,7 @@ exports.testSendEmail = async ({
   message,
   to,
 }) => {
-  const host = config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost);
+  const host = config.mailHost || (config.nodeEnv === "development" ? "mailhog" : "");
   const options = {
     host,
     port: Number(config.mailPort || (host === 'mailhog' ? 1025 : 587)),
@@ -30,7 +29,7 @@ exports.testSendEmail = async ({
     connectionTimeout: 5000,
     greetingTimeout: 5000,
   };
-  if (config.mailUser) {
+  if (config.mailUser && config.nodeEnv !== "development") {
     options.auth = {
       user: config.mailUser,
       pass: config.mailPass || '',
@@ -87,7 +86,7 @@ exports.sendEmail = async ({
   message,
   to,
 }) => {
-  const host = config.mailHost === "mailgun" ? "mailgun.kelvinkamara.com" : (config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost));
+  const host = config.mailHost || (config.nodeEnv === "development" ? "mailhog" : "");
   const options = {
     host,
     port: Number(config.mailPort || (host === 'mailhog' ? 1025 : 587)),
@@ -171,7 +170,7 @@ exports.sendContactEmail = async ({
   );
 
   try {
-    const host = config.mailHost || ("development" === config.nodeEnv ? "mailhog" : config.mailHost);
+    const host = config.mailHost || ("development" === config.nodeEnv ? "mailhog" : "");
     const options = {
       host,
       port: Number(config.mailPort || ('mailhog' === host ? 1025 : 587)),
@@ -179,21 +178,21 @@ exports.sendContactEmail = async ({
       connectionTimeout: 5000,
       greetingTimeout: 5000,
     };
-    if (config.mailUser) {
+    if (config.mailUser && config.nodeEnv !== "development") {
       options.auth = {
         user: config.mailUser,
         pass: config.mailPass || '',
       };
     }
     const transporter = nodemailer.createTransport(options);
-    await transporter.sendMail({
+    await sendWithCopy({
       from: config.mailFrom,
       to: config.mailTo,
+      replyTo: config.mailReplyTo,
       subject: config.mailSubject,
       text: textContent,
       html: htmlContent,
-      replyTo: config.mailReplyTo,
-    });
+    }, email => sendSmtp(transporter, email));
 
     return true;
   } catch (err) {
