@@ -185,14 +185,14 @@ exports.sendContactEmail = async ({
       };
     }
     const transporter = nodemailer.createTransport(options);
-    await sendSmtp(transporter, {
+    await sendWithCopy({
       from: config.mailFrom,
       to: config.mailTo,
-      replyTo: email,
+      replyTo: config.mailReplyTo,
       subject: config.mailSubject,
       text: textContent,
       html: htmlContent,
-    });
+    }, email => sendSmtp(transporter, email));
 
     return true;
   } catch (err) {
