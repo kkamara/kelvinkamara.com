@@ -26,7 +26,6 @@ const config = {
   mailHost: process.env.MAIL_HOST,
   mailPort: process.env.MAIL_PORT,
   mailSecure: process.env.MAIL_SECURE === 'true',
-  mailgunDomain: process.env.MAILGUN_DOMAIN,
   mailUser: process.env.MAIL_USER,
   mailPass: process.env.MAIL_PASS,
   mailFrom: process.env.MAIL_FROM,

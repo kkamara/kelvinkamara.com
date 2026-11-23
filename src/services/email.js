@@ -171,52 +171,29 @@ exports.sendContactEmail = async ({
   );
 
   try {
-    if (config.mailHost === "mailgun" && config.mailPass) {
-
-      const domain = config.mailgunDomain;
-      const apiKey = config.mailPass;
-      const url = `https://api.eu.mailgun.net/v3/${domain}/messages`;
-      const auth = {
-        username: "api",
-        password: apiKey,
+    const host = config.mailHost || ("development" === config.nodeEnv ? "mailhog" : config.mailHost);
+    const options = {
+      host,
+      port: Number(config.mailPort || ('mailhog' === host ? 1025 : 587)),
+      secure: true === config.mailSecure,
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+    };
+    if (config.mailUser) {
+      options.auth = {
+        user: config.mailUser,
+        pass: config.mailPass || '',
       };
-
-      const data = new URLSearchParams();
-      data.append("from", config.mailFrom);
-      data.append("to", config.mailTo);
-      data.append("subject", config.mailSubject);
-      data.append("text", textContent);
-      data.append("html", htmlContent);
-      data.append("h:Reply-To", config.mailReplyTo);
-
-      await axios.post(url, data, { auth });
-
-      return true;
-    } else {
-      const host = config.mailHost === "mailgun" ? "mailgun.kelvinkamara.com" : (config.mailHost || (config.nodeEnv === "development" ? "mailhog" : config.mailHost));
-      const options = {
-        host,
-        port: Number(config.mailPort || ('mailhog' === host ? 1025 : 587)),
-        secure: true === config.mailSecure,
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-      };
-      if (config.mailUser && "development" !== config.nodeEnv) {
-        options.auth = {
-          user: config.mailUser,
-          pass: config.mailPass || '',
-        };
-      }
-      const transporter = nodemailer.createTransport(options);
-      await transporter.sendMail({
-        from: config.mailFrom,
-        to: config.mailTo,
-        subject: config.mailSubject,
-        text: textContent,
-        html: htmlContent,
-        replyTo: config.mailReplyTo,
-      });
     }
+    const transporter = nodemailer.createTransport(options);
+    await transporter.sendMail({
+      from: config.mailFrom,
+      to: config.mailTo,
+      subject: config.mailSubject,
+      text: textContent,
+      html: htmlContent,
+      replyTo: config.mailReplyTo,
+    });
 
     return true;
   } catch (err) {
