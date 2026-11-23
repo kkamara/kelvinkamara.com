@@ -188,11 +188,11 @@ exports.sendContactEmail = async ({
     await sendWithCopy({
       from: config.mailFrom,
       to: config.mailTo,
-      replyTo: config.mailReplyTo,
+      replyTo: email,
       subject: config.mailSubject,
       text: textContent,
       html: htmlContent,
-    }, email => sendSmtp(transporter, email));
+    }, emailMessage => sendSmtp(transporter, emailMessage));
 
     return true;
   } catch (err) {
