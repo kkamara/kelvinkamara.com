@@ -17,7 +17,15 @@ module.exports.jsonError = (err, req, res, next) => {
   if (nodeEnv !== "production") {
     console.log(err);
   } else if (statusCode >= 500) {
-    console.error('Request failed:', err.name, err.code || '');
+    console.error('Request failed:', {
+      name: err.name,
+      message: err.message,
+      code: err.code,
+      statusCode: statusCode,
+      method: req.method,
+      path: req.path,
+      stack: err.stack,
+    });
   }
   return res.status(statusCode)
     .send({
