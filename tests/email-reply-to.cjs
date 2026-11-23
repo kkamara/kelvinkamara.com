@@ -22,16 +22,15 @@ test('all SMTP emails use the configured reply-to and retain the contact sender'
     assert.equal(await sendEmail({ to: 'recipient@example.test', plainText: 'Test', html: '<p>Test</p>' }), true);
     assert.equal(await sendContactEmail({ name: 'Visitor', email: 'visitor@example.test', message: 'Hello' }), true);
     await sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' });
-    assert.equal(messages.length, 8);
+    assert.equal(messages.length, 7);
     assert.equal(messages[0].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[1].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[2].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[3].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[4].replyTo, 'visitor@example.test');
-    assert.equal(messages[5].replyTo, 'visitor@example.test');
+    assert.equal(messages[5].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[6].replyTo, 'kamaracomputers@gmail.com');
-    assert.equal(messages[7].replyTo, 'kamaracomputers@gmail.com');
-    for (const [copy, recipient] of [[messages[0], messages[1]], [messages[2], messages[3]], [messages[4], messages[5]], [messages[6], messages[7]]]) {
+    for (const [copy, recipient] of [[messages[0], messages[1]], [messages[2], messages[3]], [messages[5], messages[6]]]) {
       assert.equal(copy.to, 'kamaracomputers@gmail.com');
       assert.equal(copy.subject, `Fwd: [Copy for ${recipient.to}] ${recipient.subject}`);
       assert.equal(copy.text, recipient.text);
@@ -39,6 +38,7 @@ test('all SMTP emails use the configured reply-to and retain the contact sender'
     }
     assert.match(messages[4].text, /visitor@example\.test/);
     assert.match(messages[4].html, /visitor@example\.test/);
+    assert.equal(messages[4].to, 'recipient@example.test');
   } finally {
     nodemailer.createTransport = originalTransport;
     Object.assign(config, originalConfig);
@@ -62,13 +62,13 @@ test('all SMTP emails from production also use configured reply-to and preserve 
     config.mailSubject = 'Contact';
     assert.equal(await sendContactEmail({ name: 'Visitor', email: 'visitor@example.test', message: 'Hello' }), true);
     await sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' });
-    assert.equal(messages.length, 4);
+    assert.equal(messages.length, 3);
     assert.equal(messages[0].replyTo, 'visitor@example.test');
-    assert.equal(messages[1].replyTo, 'visitor@example.test');
+    assert.equal(messages[1].replyTo, 'kamaracomputers@gmail.com');
     assert.equal(messages[2].replyTo, 'kamaracomputers@gmail.com');
-    assert.equal(messages[3].replyTo, 'kamaracomputers@gmail.com');
     assert.match(messages[0].text, /visitor@example\.test/);
     assert.match(messages[0].html, /visitor@example\.test/);
+    assert.equal(messages[0].to, 'recipient@example.test');
     assert.equal(messages[1].to, 'kamaracomputers@gmail.com');
     assert.equal(messages[2].to, 'client@example.test');
     assert.equal(messages[1].subject, 'Fwd: [Copy for client@example.test] Invoice');
