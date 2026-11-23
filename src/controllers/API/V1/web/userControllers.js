@@ -24,7 +24,7 @@ const createUser = asyncHandler(async (req, res) => {
       firstName: req.bodyString("firstName"),
       lastName: req.bodyString("lastName"),
       email: req.bodyEmail("email"),
-      password: req.bodyString("password"),
+      password: req.body.password, // Uncleaned password
     });
   if (false === cleanData) {
     res.status(status.BAD_REQUEST);
@@ -81,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
     .user
     .getCleanLoginData(
       req.bodyEmail("email"),
-      req.bodyString("password"),
+      req.body.password, // Uncleaned password
     );
   if (false === cleanData) {
     res.status(status.BAD_REQUEST);
@@ -246,7 +246,7 @@ const updateUser = asyncHandler(async (req, res) => {
       firstName: req.bodyString("firstName"),
       lastName: req.bodyString("lastName"),
       email: req.bodyString("email"),
-      password: req.bodyString("password"),
+      password: req.body.password, // Uncleaned password
     });
   
   let newPassword, newPasswordSalt;
