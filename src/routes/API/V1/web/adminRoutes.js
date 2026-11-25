@@ -21,6 +21,9 @@ router.use(authenticate, asyncHandler(async (req, res, next) => {
 router.get('/clients', controller.clients);
 router.post('/clients', controller.createClient);
 router.put('/clients/:id', controller.updateClient);
+router.get('/clients/:id/subscriptions', controller.subscriptions);
+router.post('/subscriptions', controller.createSubscription);
+router.patch('/subscriptions/:id', controller.updateSubscription);
 router.get('/invoices', controller.invoices);
 router.post('/invoices', controller.createInvoice);
 router.post('/invoices/:id/stripe-link', controller.createStripeLink);

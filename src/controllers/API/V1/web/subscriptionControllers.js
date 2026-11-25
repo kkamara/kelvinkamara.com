@@ -1,4 +1,4 @@
-const { Subscription, User } = require('../../../../models/V1');
+const { Subscription, user: User } = require('../../../../models/V1');
 const { nodeEnv } = require('../../../../config');
 
 /**

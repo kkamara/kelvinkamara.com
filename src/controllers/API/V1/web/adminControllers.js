@@ -105,6 +105,28 @@ exports.updateClient = asyncHandler(async (req, res) => {
 exports.invoices = list('adminInvoices');
 exports.agreements = list('adminAgreements');
 exports.payments = list('adminPayments');
+exports.subscriptions = asyncHandler(async (req, res) => {
+  const clientId = id(res, req.paramInt('id'));
+  await client(res, clientId);
+  res.json({ data: await query('SELECT * FROM adminSubscriptions WHERE clientId=:clientId ORDER BY id DESC', { clientId }) });
+});
+exports.createSubscription = asyncHandler(async (req, res) => {
+  const data = {
+    clientId: id(res, req.bodyInt('clientId')),
+    serviceName: string(res, req.bodyString('serviceName'), 'Service name', 255),
+  };
+  await client(res, data.clientId);
+  const [newId] = await insert('INSERT INTO adminSubscriptions (clientId, serviceName, startDate, isActive, createdAt, updatedAt) VALUES (:clientId, :serviceName, CURRENT_TIMESTAMP, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', data);
+  res.status(status.CREATED).json({ data: await record(res, 'adminSubscriptions', newId) });
+});
+exports.updateSubscription = asyncHandler(async (req, res) => {
+  const subscriptionId = id(res, req.paramInt('id'));
+  const isActive = req.body.isActive;
+  if (typeof isActive !== 'boolean') fail(res, status.BAD_REQUEST, 'Active status must be true or false.');
+  await record(res, 'adminSubscriptions', subscriptionId);
+  await update('UPDATE adminSubscriptions SET isActive=:isActive, endDate=CASE WHEN :isActive THEN NULL ELSE CURRENT_TIMESTAMP END, updatedAt=CURRENT_TIMESTAMP WHERE id=:id', { id: subscriptionId, isActive });
+  res.json({ data: await record(res, 'adminSubscriptions', subscriptionId) });
+});
 const agreementText = (res, body) => ({
   title: string(res, body.title, 'Title', 200),
   body: string(res, body.body, 'Agreement text', 50000),

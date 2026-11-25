@@ -58,6 +58,7 @@ test('private admin workflows against an isolated MySQL database', async () => {
       '../src/migrations/V1/20261120235000-create-admin-tables',
       '../src/migrations/V1/20261121010000-protect-stripe-link-retries',
       '../src/migrations/V1/20261121020000-create-agreement-templates',
+      '../src/migrations/V1/20261125010000-create-admin-subscriptions',
     ]) await require(migration).up(qi, db.Sequelize);
     for (const table of ['adminAgreements', 'adminAgreementTemplates']) {
       await db.sequelize.query(`ALTER TABLE \`${table}\` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci`);
@@ -92,6 +93,23 @@ test('private admin workflows against an isolated MySQL database', async () => {
     const clientId = first.data.data.id;
     assert.equal((await request(`/admin/clients/${clientId}`, 'PUT', { ...newClient, company: 'Test Ltd' }, token)).data.data.company, 'Test Ltd');
     const second = await request('/admin/clients', 'POST', { ...newClient, email: 'second@example.test' }, token);
+    assert.equal((await request('/admin/subscriptions', 'POST', { clientId, serviceName: 'Hosting' })).response.status, 401);
+    assert.equal((await request('/admin/subscriptions', 'POST', { clientId, serviceName: 'Hosting' }, otherToken)).response.status, 403);
+    assert.equal((await request('/admin/subscriptions', 'POST', { clientId, serviceName: '  ' }, token)).response.status, 400);
+    assert.equal((await request('/admin/subscriptions', 'POST', { clientId: 999999, serviceName: 'Hosting' }, token)).response.status, 404);
+    const subscription = await request('/admin/subscriptions', 'POST', { clientId, serviceName: ' Hosting ' }, token);
+    assert.equal(subscription.response.status, 201);
+    assert.equal(subscription.data.data.serviceName, 'Hosting');
+    assert.equal(subscription.data.data.clientId, clientId);
+    const subscriptionId = subscription.data.data.id;
+    assert.equal((await request(`/admin/clients/${clientId}/subscriptions`, 'GET', undefined, token)).data.data.length, 1);
+    assert.equal((await request(`/admin/clients/${second.data.data.id}/subscriptions`, 'GET', undefined, token)).data.data.length, 0);
+    assert.equal((await request(`/admin/subscriptions/${subscriptionId}`, 'PATCH', { isActive: false }, token)).data.data.isActive, 0);
+    assert.ok((await request(`/admin/clients/${clientId}/subscriptions`, 'GET', undefined, token)).data.data[0].endDate);
+    const reactivated = await request(`/admin/subscriptions/${subscriptionId}`, 'PATCH', { isActive: true }, token);
+    assert.equal(reactivated.data.data.isActive, 1);
+    assert.equal(reactivated.data.data.endDate, null);
+    assert.equal((await request(`/admin/subscriptions/${subscriptionId}`, 'PATCH', { isActive: 'false' }, token)).response.status, 400);
     const invoice = { clientId, description: 'Website work', amountPence: 10250, dueDate: '2026-12-01', paymentInstructions: 'Bank transfer', paymentLink: '' };
     assert.equal((await request('/admin/invoices', 'POST', { ...invoice, dueDate: '2026-02-30' }, token)).response.status, 400);
     assert.equal((await request('/admin/invoices', 'POST', { ...invoice, paymentLink: 'http://example.test' }, token)).response.status, 400);
