@@ -108,19 +108,23 @@ run migrations with `NODE_ENV=production` using Sequelize CLI instead.
 SQL query logging is disabled because queries may contain client details,
 payment instructions and authentication tokens.
 
-Development admin email is delivered only to MailHog. Inside Docker the default
-host is `mailhog`; for a backend running on the host set `MAILHOG_HOST=127.0.0.1`
-and use the published `MAILHOG_PORT`. All environments use SMTP: configure
-`MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`, `MAIL_USER`, `MAIL_PASS`, and
-`MAIL_FROM` for your platform's SMTP service. All outgoing emails use
-`kamaracomputers@gmail.com` as their reply-to address. For contact form emails,
-the visitor's address remains in the message body; replying directly addresses
-Kel, not the visitor. Every email except a contact form email is sent first as
-a forwarded copy to `kamaracomputers@gmail.com`, with the intended recipient
-identified in the subject, and then separately to the intended recipient. The
-copy has the same body and attachments. If the copy fails, the recipient send
-is not attempted. If the recipient send fails, the copy has already been sent;
-check delivery before retrying, as a timeout can leave delivery uncertain and
+The example Docker development setup sends email through MailHog at
+`MAIL_HOST=mailhog` and `MAIL_PORT=1025`; the app itself uses the configured
+SMTP host and does not force development email through MailHog. For a backend
+running on the host, set `MAIL_HOST=127.0.0.1` and `MAIL_PORT` to the published
+MailHog SMTP port (1025 by default). Admin workspace email also requires
+non-empty `MAIL_FROM`, `MAIL_HOST`, and `MAIL_USER`; with MailHog, `MAIL_USER`
+can be a placeholder. Configure `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`,
+`MAIL_USER`, `MAIL_PASS`, and `MAIL_FROM` for your platform's SMTP service.
+Admin workspace emails and other non-contact emails use
+`kamaracomputers@gmail.com` as their reply-to address. Contact-form emails
+instead use the visitor's address as the reply-to, so replying goes to the
+visitor. Every email except a contact-form email is sent first as a forwarded
+copy to `kamaracomputers@gmail.com`, with the intended recipient identified in
+the subject, and then separately to the intended recipient. The copy has the
+same body and attachments. If the copy fails, the recipient send is not
+attempted. If the recipient send fails, the copy has already been sent; check
+delivery before retrying, as a timeout can leave delivery uncertain and
 retrying sends another copy. Provider acceptance does not guarantee delivery.
 CI runs the email tests with a dedicated MailHog service. To run them locally,
 start an isolated MailHog, set `ADMIN_TEST_MAILHOG_SMTP_PORT` and
@@ -130,7 +134,8 @@ start an isolated MailHog, set `ADMIN_TEST_MAILHOG_SMTP_PORT` and
 Invoices use GBP and do not depend on Stripe. Payment instructions can include
 bank-transfer details, and an HTTPS payment link can optionally be supplied or
 generated for an existing invoice. Set `STRIPE_SECRET` to a test secret or
-restricted key in development and a live key in production. Each generated link
+restricted test key in development (`sk_test_` or `rk_test_`) and a live secret
+or restricted key in production (`sk_live_` or `rk_live_`). Each generated link
 can be used to complete Stripe's checkout once. After a client completes
 checkout, Stripe automatically deactivates the link, so it cannot be used for
 another checkout. Opening the link without completing checkout does not use it
