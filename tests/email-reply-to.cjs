@@ -23,6 +23,8 @@ test('all SMTP emails use the configured reply-to and retain the contact sender'
     assert.equal(await testSendEmail({ to: 'recipient@example.test', plainText: 'Test', html: '<p>Test</p>' }), true);
     assert.equal(await sendEmail({ to: 'recipient@example.test', plainText: 'Test', html: '<p>Test</p>' }), true);
     assert.equal(await sendContactEmail({ name: 'Visitor', email: 'visitor@example.test', message: 'Hello' }), true);
+    config.mailUser = 'test-user';
+    config.mailPass = 'test-password';
     await sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' });
     assert.equal(messages.length, 7);
     assert.equal(messages[0].replyTo, 'kamaracomputers@gmail.com');
@@ -105,6 +107,8 @@ test('SMTP failure stops the sequence and reports which send failed', async () =
     assert.deepEqual(attempts.map(message => message.to), ['kamaracomputers@gmail.com']);
     attempts.length = 0;
     failureAt = 2;
+    config.mailUser = 'test-user';
+    config.mailPass = 'test-password';
     await assert.rejects(() => sendAdminEmail({ to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello' }), /copy was accepted.*recipient email could not be sent/i);
     assert.deepEqual(attempts.map(message => message.to), ['kamaracomputers@gmail.com', 'client@example.test']);
   } finally {

@@ -5,16 +5,19 @@ const nodemailer = require('nodemailer');
 const config = require('../src/config');
 const { sendAdminEmail } = require('../src/services/adminEmail');
 
-test('development email goes to isolated MailHog with the document attached', async () => {
+test('development email goes to isolated MailHog with the document attached', async t => {
   const smtpPort = process.env.ADMIN_TEST_MAILHOG_SMTP_PORT;
   const apiPort = process.env.ADMIN_TEST_MAILHOG_API_PORT;
   if (!smtpPort || !apiPort) throw new Error('Isolated MailHog SMTP and API ports are required.');
+  const originalConfig = { ...config };
+  t.after(() => Object.assign(config, originalConfig));
   config.nodeEnv = 'development';
   config.mailFrom = 'Kel Kamara <sender@example.test>';
   config.mailHost = '127.0.0.1';
   config.mailPort = smtpPort;
   config.mailSecure = false;
-  config.mailUser = '';
+  config.mailUser = 'test-user';
+  config.mailPass = 'test-password';
   await sendAdminEmail({
     to: 'client@example.test', firstName: 'Ava', subject: 'Invoice',
     message: 'Please pay by bank transfer.', paymentLink: '',
@@ -39,7 +42,11 @@ test('production email via SMTP with authentication and document attachment', as
   const originalTransport = nodemailer.createTransport;
   const originalConfig = { ...config };
   const messages = [];
-  nodemailer.createTransport = () => ({ sendMail: async message => messages.push(message) });
+  let transportOptions;
+  nodemailer.createTransport = options => {
+    transportOptions = options;
+    return { sendMail: async message => messages.push(message) };
+  };
   try {
     config.nodeEnv = 'production';
     config.mailFrom = 'Kel Kamara <sender@example.test>';
@@ -52,12 +59,15 @@ test('production email via SMTP with authentication and document attachment', as
       to: 'client@example.test', firstName: 'Ava', subject: 'Invoice', message: 'Hello',
       attachments: [{ filename: 'invoice.pdf', content: Buffer.from('%PDF-test'), contentType: 'application/pdf' }],
     });
+    assert.deepEqual(transportOptions.auth, { user: 'apiuser', pass: 'apikey' });
     assert.equal(messages.length, 2);
     assert.equal(messages[0].to, 'kamaracomputers@gmail.com');
     assert.equal(messages[1].to, 'client@example.test');
     for (const message of messages) {
       assert.equal(message.replyTo, 'kamaracomputers@gmail.com');
       assert.match(message.text, /Hello/);
+      assert.equal(message.attachments[0].filename, 'invoice.pdf');
+      assert.deepEqual(message.attachments[0].content, Buffer.from('%PDF-test'));
     }
   } finally {
     nodemailer.createTransport = originalTransport;
