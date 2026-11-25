@@ -1,0 +1,343 @@
+.subscriptions-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  .subscriptions-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      font-weight: 600;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    h2 {
+      color: #555;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .alert {
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border: none;
+
+      &.alert-success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      &.alert-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+    }
+  }
+}
+
+.add-subscription-section {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  border-left: 4px solid #667eea;
+
+  .subscription-form {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    .form-group {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 0;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s;
+
+        &:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        &:disabled {
+          background-color: #e9ecef;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .btn {
+      padding: 10px 25px;
+      font-weight: 500;
+      white-space: nowrap;
+
+      &.btn-primary {
+        background-color: #667eea;
+        border-color: #667eea;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #5568d3;
+          border-color: #5568d3;
+        }
+
+        &:disabled {
+          background-color: #ccc;
+          border-color: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+.subscriptions-list-section {
+  .subscriptions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    h2 {
+      margin-bottom: 0;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+
+      .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+
+        &.btn-primary {
+          background-color: #667eea;
+          border-color: #667eea;
+          color: white;
+        }
+
+        &.btn-outline-primary {
+          background-color: transparent;
+          border: 1px solid #667eea;
+          color: #667eea;
+
+          &:hover {
+            background-color: #667eea;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .text-center {
+    text-align: center;
+    padding: 40px 20px;
+
+    .spinner-border {
+      color: #667eea;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .subscriptions-table-wrapper {
+    overflow-x: auto;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+
+    .table {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+
+      thead {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #ddd;
+
+        th {
+          color: #555;
+          font-weight: 600;
+          padding: 15px;
+          border: none;
+        }
+      }
+
+      tbody {
+        tr {
+          border-bottom: 1px solid #eee;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #f9f9f9;
+          }
+
+          td {
+            padding: 15px;
+            vertical-align: middle;
+            color: #666;
+
+            .badge {
+              font-size: 0.85rem;
+              padding: 6px 12px;
+              border-radius: 20px;
+
+              &.bg-success {
+                background-color: #28a745 !important;
+              }
+
+              &.bg-secondary {
+                background-color: #6c757d !important;
+              }
+            }
+
+            .action-buttons {
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+
+              .btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+                border-radius: 4px;
+                border: 1px solid;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &.btn-warning {
+                  background-color: #ffc107;
+                  border-color: #ffc107;
+                  color: #333;
+
+                  &:hover {
+                    background-color: #e0a800;
+                    border-color: #e0a800;
+                  }
+                }
+
+                &.btn-success {
+                  background-color: #28a745;
+                  border-color: #28a745;
+                  color: white;
+
+                  &:hover {
+                    background-color: #218838;
+                    border-color: #218838;
+                  }
+                }
+
+                &.btn-danger {
+                  background-color: #dc3545;
+                  border-color: #dc3545;
+                  color: white;
+
+                  &:hover {
+                    background-color: #c82333;
+                    border-color: #c82333;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .subscriptions-container {
+    padding: 20px 10px;
+
+    .subscriptions-content {
+      padding: 20px;
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .add-subscription-section {
+    padding: 20px;
+
+    .subscription-form {
+      flex-direction: column;
+
+      .form-group {
+        width: 100%;
+        min-width: auto;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+
+  .subscriptions-list-section {
+    .subscriptions-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .filter-buttons {
+        width: 100%;
+        gap: 8px;
+
+        .btn {
+          flex: 1;
+        }
+      }
+    }
+
+    .subscriptions-table-wrapper {
+      .table {
+        font-size: 0.85rem;
+
+        thead th,
+        tbody td {
+          padding: 10px;
+        }
+
+        tbody td .action-buttons {
+          flex-direction: column;
+
+          .btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
