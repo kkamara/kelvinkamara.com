@@ -14,7 +14,7 @@ const { cors } = require('./middlewares/V1/corsMiddleware');
 const agreementJson = require('./middlewares/V1/agreementJsonMiddleware');
 
 const app = express();
-const adminDist = process.env.ADMIN_DIST_PATH || path.join(__dirname, '../frontend/dist');
+const adminDist = process.env.ADMIN_DIST_PATH || path.join(__dirname, '../admin/dist');
 
 // Trust proxy in production
 if (config.nodeEnv === 'production') {
