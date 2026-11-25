@@ -144,11 +144,10 @@ or sending an agreement, to avoid producing an incorrect document.
 The agreement character-set migration cannot be rolled back safely
 once Unicode text has been saved; back up the database before applying it.
 Payment exports are CSV files for the selected client.
-Client subscriptions are stored separately from account-user subscriptions and
-can be ended or reactivated in the admin workspace. The
+Client subscriptions can be ended or reactivated in the admin workspace. The
 `20261125010000-create-admin-subscriptions` migration creates their table; its
-rollback deletes all records in that table. Existing account-user subscriptions
-are not automatically transferred because user and admin-client IDs differ.
+rollback deletes all records in that table. Legacy account-user subscription
+records are not automatically transferred because user and admin-client IDs differ.
 Client data, financial details, and documents are sensitive: restrict database
 and server access, use HTTPS, and maintain secure backups.
 
