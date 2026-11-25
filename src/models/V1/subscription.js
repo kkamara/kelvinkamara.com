@@ -4,11 +4,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Subscription extends Model {
     static associate(models) {
-      Subscription.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      });
+      if (models.User) {
+        Subscription.belongsTo(models.User, {
+          foreignKey: 'userId',
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        });
+      }
     }
   }
 

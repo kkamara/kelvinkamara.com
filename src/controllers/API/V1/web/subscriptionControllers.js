@@ -1,5 +1,5 @@
-const { Subscription, User } = require('../../models/V1');
-const { nodeEnv } = require('../../config');
+const { Subscription, User } = require('../../../../models/V1');
+const { nodeEnv } = require('../../../../config');
 
 /**
  * Add a new subscription for a client
