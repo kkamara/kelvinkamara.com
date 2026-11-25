@@ -11,25 +11,24 @@ module.exports.notFound = asyncHandler((req, res, next) => {
 });
 
 module.exports.jsonError = (err, req, res, next) => {
-  const errorStatus = err.statusCode || err.status;
-  const statusCode = res.statusCode >= 400 ? res.statusCode :
-    (Number.isInteger(errorStatus) && errorStatus >= 400 && errorStatus <= 599 ? errorStatus : status.INTERNAL_SERVER_ERROR);
-  if (nodeEnv !== "production") {
-    console.log(err);
-  } else if (statusCode >= 500) {
-    console.error('Request failed:', {
-      name: err.name,
-      message: err.message,
-      code: err.code,
-      statusCode: statusCode,
-      method: req.method,
-      path: req.path,
-      stack: err.stack,
-    });
-  }
+  console.error('Request failed:', {
+    name: err.name,
+    message: err.message,
+    code: err.code,
+    statusCode: res.statusCode,
+    method: req.method,
+    path: req.path,
+    stack: err.stack,
+  });
+  // Handlers set the status before throwing; anything else is an unexpected failure (or a body-parser error).
+  const handled = 400 <= res.statusCode;
+  const statusCode = handled ?
+    res.statusCode :
+    (400 <= err.status && 600 > err.status ? err.status : status.INTERNAL_SERVER_ERROR);
+  const exposeMessage = handled || 500 > statusCode || "production" !== nodeEnv;
   return res.status(statusCode)
     .send({
-      message: nodeEnv === "production" && statusCode >= 500 && err.expose !== true ? message500 : err.message,
+      message: exposeMessage ? err.message : message500,
       stack: "production" === nodeEnv ? null : err.stack,
     });
 };
