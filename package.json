@@ -6,7 +6,7 @@
     "test": "cross-env NODE_ENV=test mocha tests/**/{,**/}*.js",
     "start": "cross-env DEBUG=express:* node src/app.js",
     "dev": "cross-env DEBUG=express:* nodemon src/app.js --trace-warnings --legacy-watch",
-    "dev:frontend": "concurrently \"cross-env DEBUG=express:* nodemon src/app.js --trace-warnings --legacy-watch\" \"cd frontend && npm run dev\"",
+    "dev:frontend": "concurrently \"cross-env DEBUG=express:* nodemon src/app.js --trace-warnings --legacy-watch\" \"cd admin && npm run dev\"",
     "setup": "node setup.js",
     "model:generate": "cross-env NODE_ENV=development npx sequelize-cli model:generate",
     "migration:generate": "cross-env NODE_ENV=development npx sequelize-cli migration:generate",

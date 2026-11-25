@@ -3,12 +3,12 @@
 FROM node:26 AS base
 RUN npm install --global yarn@1.22.22
 
-FROM base AS frontend-build
+FROM base AS admin-build
 
-WORKDIR /app/frontend
-COPY ["frontend/package.json", "frontend/yarn.lock", "./"]
+WORKDIR /app/admin
+COPY ["admin/package.json", "admin/yarn.lock", "./"]
 RUN yarn install --frozen-lockfile
-COPY frontend/ ./
+COPY admin/ ./
 RUN yarn build
 
 FROM base
@@ -23,7 +23,7 @@ COPY ["package.json", "yarn.lock*", "./"]
 RUN yarn install
 
 COPY . .
-COPY --from=frontend-build /app/frontend/dist /opt/admin-dist
+COPY --from=admin-build /app/admin/dist /opt/admin-dist
 RUN mkdir -p logs sessions uploads
 
 CMD ["yarn", "run", "dev"]

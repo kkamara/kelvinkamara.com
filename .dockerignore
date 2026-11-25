@@ -3,12 +3,10 @@ node_modules
 .gitignore
 vendor
 tmp
-frontend/node_modules
-frontend/dist
+admin/node_modules
+admin/dist
 .env*
-frontend/.env*
-frontend/.env.dev
-frontend/.env.production
+admin/.env*
 config.json
 config.production.json
 logs

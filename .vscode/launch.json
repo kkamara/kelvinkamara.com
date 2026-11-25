@@ -19,9 +19,9 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Debug Frontend",
+      "name": "Debug Admin Frontend",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/frontend"
+      "webRoot": "${workspaceFolder}/admin"
     }
   ]
 }

@@ -15,6 +15,8 @@
 
 * [Usage](#usage)
 
+* [Private admin workspace](#private-admin-workspace)
+
 * [Using Docker?](#using-docker)
 
 * [Mail Server With Docker](#mail-server-with-docker)
@@ -36,10 +38,10 @@ yarn migrate
 yarn seed:all
 ```
 
-#### Running frontend
+#### Running the admin frontend
 
 ```bash
-cd frontend
+cd admin
 cp .env.example .env
 yarn
 yarn dev
@@ -64,16 +66,34 @@ yarn start
 
 ### Private admin workspace
 
-The client workspace is available at `/admin`. Build it before serving it through
-Express:
+The React client workspace is available at `/admin`. It is implemented in
+`admin/`, and Express serves the built files from `admin/dist` by default.
+Build it before serving it through Express:
 
 ```bash
-cd frontend
+cd admin
 yarn
 yarn build
 cd ..
 yarn migrate
 ```
+
+The workspace provides an overview and pages for:
+
+* **Clients:** add and edit client names, email addresses, company details,
+  phone numbers, and notes.
+* **Invoices:** create GBP invoices, optional payment instructions and HTTPS
+  payment links, download PDF documents, email invoices, and create single-use
+  Stripe Checkout links.
+* **Agreements:** write agreements, save and reuse agreement templates, download
+  PDFs, email agreements, manually mark signatures, and delete agreements or
+  templates.
+* **Payments:** manually record payments, associate them with an invoice,
+  export a selected client's payment history as CSV, and email that CSV.
+* **Subscriptions:** add ongoing services for a client and end or reactivate
+  them.
+* **Actions:** send a welcome message, project update or payment reminder to
+  a client's saved email address.
 
 Set `ADMIN_PASSWORD` privately in the server's environment or ignored `.env`
 file before running the administrator seeder on a new database. The login is the
@@ -155,9 +175,9 @@ The admin app is excluded from the sitemap and disallowed in `robots.txt`.
 These controls do not provide access security; the API additionally requires
 an authenticated administrator.
 
-The Docker image builds the frontend into `/opt/admin-dist`, outside the
-development bind mount. `ADMIN_DIST_PATH` selects the built frontend directory
-and defaults to `frontend/dist` outside the image. The image does not embed
+The Docker image builds the admin app into `/opt/admin-dist`, outside the
+development bind mount. `ADMIN_DIST_PATH` selects the built admin directory
+and defaults to `admin/dist` outside the image. The image does not embed
 `.env`, `config.json`, logs, sessions, or uploads. Supply the private configuration files at runtime
 and persist the runtime directories outside the image. The development Compose
 bind mount already supplies the project files. MySQL may implicitly commit DDL,
@@ -170,7 +190,7 @@ the project's transaction pattern.
 yarn dev
 ```
 
-#### Reload server and frontend app on project files change
+#### Reload server and admin app on project files change
 
 ```bash
 yarn dev:frontend
