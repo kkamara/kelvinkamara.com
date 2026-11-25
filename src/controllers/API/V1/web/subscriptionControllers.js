@@ -281,7 +281,7 @@ exports.getActiveServices = async (req, res) => {
       });
     }
 
-    // Fetch distinct active service names
+    // Fetch distinct active service names using raw query
     const services = await Subscription.findAll({
       attributes: ['serviceName'],
       where: {
@@ -289,17 +289,15 @@ exports.getActiveServices = async (req, res) => {
         isActive: true,
       },
       raw: true,
-      group: ['serviceName'],
       order: [['serviceName', 'ASC']],
-      subQuery: false,
     });
 
-    const serviceNames = services.map((s) => s.serviceName);
+    const uniqueServices = [...new Set(services.map((s) => s.serviceName))];
 
     return res.status(200).json({
       success: true,
-      count: serviceNames.length,
-      data: serviceNames,
+      count: uniqueServices.length,
+      data: uniqueServices,
     });
   } catch (error) {
     if ('production' !== nodeEnv) {

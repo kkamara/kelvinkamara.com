@@ -4,7 +4,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Subscription extends Model {
     static associate(models) {
-      // Association with User table
       Subscription.belongsTo(models.User, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',
@@ -27,24 +26,20 @@ module.exports = (sequelize, DataTypes) => {
       serviceName: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        comment: 'Name of the service the client is subscribed to',
       },
       startDate: {
-        type: DataTypes.DATETIME,
+        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-        comment: 'When the subscription started',
+        defaultValue: DataTypes.NOW,
       },
       endDate: {
-        type: DataTypes.DATETIME,
+        type: DataTypes.DATE,
         allowNull: true,
-        comment: 'When the subscription ended, null if still active',
       },
       isActive: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
-        comment: 'Whether the subscription is currently active',
       },
     },
     {
