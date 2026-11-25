@@ -78,6 +78,20 @@ Configure SMTP for all environments:
 - [x] Logging configured properly (logs/ directory exists)
 - [x] Session storage working (sessions/ directory exists)
 
+### ✅ Database Features
+
+- [x] Subscription feature implemented
+  - [x] Model created: `src/models/V1/subscription.js`
+  - [x] Migration created: `src/migrations/V1/20261125000000-create-subscriptions-table.js`
+  - [x] Controller created: `src/controllers/API/V1/web/subscriptionControllers.js`
+  - [x] Routes created: `src/routes/API/V1/web/subscriptionRoutes.js`
+  - [x] Routes integrated into API
+  - [x] Tests created: `tests/subscriptionTests.js`
+- [ ] Migration run successfully: `npm run migrate`
+- [ ] Subscription table created in database
+- [ ] Foreign key to users table verified
+- [ ] Indexes created for performance (userId, isActive, userId+isActive)
+
 ### ✅ Static Assets
 
 - [x] `public/assets/` directory created with all images
@@ -112,12 +126,16 @@ npm install
 cp .env.example .env
 # Edit .env with your production settings
 
-# 3. Test locally
+# 3. Run database migrations
+npm run migrate
+
+# 4. Test locally
 npm run dev
 
-# 4. Verify everything works
+# 5. Verify everything works
 # Visit http://localhost:8000
 # Test contact form
+# Check subscription API endpoints
 # Check logs in logs/access.log
 ```
 
@@ -127,14 +145,17 @@ npm run dev
 # 1. Build the image
 docker build -t kelvinkamara:latest .
 
-# 2. Run with docker-compose
+# 2. Run migrations in container
+docker-compose run app npm run migrate
+
+# 3. Run with docker-compose
 docker-compose up -d
 
-# 3. Verify it's running
+# 4. Verify it's running
 docker ps
 curl http://localhost:8000
 
-# 4. View logs
+# 5. View logs
 docker logs -f kelvinkamara
 ```
 
@@ -156,53 +177,23 @@ cp .env.example .env
 # Edit .env with production values
 nano .env
 
-# 5. Start with PM2
+# 5. Run migrations
+npm run migrate
+
+# 6. Start with PM2
 npm install -g pm2
 pm2 start src/app.js --name kelvinkamara
 pm2 startup
 pm2 save
 
-# 6. Setup reverse proxy (Nginx)
+# 7. Setup reverse proxy (Nginx)
 # Configure Nginx to proxy to http://localhost:8000
 # Configure SSL certificate with Let's Encrypt
 # See NODEJS_README.md for full Nginx config
 
-# 7. Restart services
+# 8. Restart services
 sudo systemctl restart nginx
 pm2 restart kelvinkamara
-```
-
-### Heroku Deployment
-
-```bash
-# 1. Login to Heroku
-heroku login
-
-# 2. Create app
-heroku create kelvinkamara
-# Or use existing: heroku git:remote -a kelvinkamara
-
-# 3. Set environment variables
-heroku config:set APP_KEY=your-random-key
-heroku config:set APP_URL=https://kelvinkamara.herokuapp.com
-heroku config:set MAIL_HOST=your-smtp-host
-heroku config:set MAIL_PORT=587
-heroku config:set MAIL_SECURE=false
-heroku config:set MAIL_USER=your-smtp-username
-heroku config:set MAIL_PASS=your-smtp-password
-heroku config:set MAIL_FROM=noreply@your-domain.com
-heroku config:set TURNSTILE_SITEKEY=your-sitekey
-heroku config:set TURNSTILE_SECRET=your-secret
-heroku config:set MAIL_TO=your-email@example.com
-
-# 4. Deploy
-git push heroku main
-
-# 5. View logs
-heroku logs --tail
-
-# 6. Verify health
-curl https://kelvinkamara.herokuapp.com
 ```
 
 ---
@@ -217,7 +208,8 @@ After deployment, verify these items:
 - [ ] No unhandled exceptions in logs
 - [ ] Memory usage is stable
 - [ ] CPU usage is reasonable (< 50%)
-- [ ] Database connections working (if applicable)
+- [ ] Database connections working
+- [ ] Database migrations completed successfully
 
 ### ✅ Web Endpoints
 
@@ -226,6 +218,17 @@ After deployment, verify these items:
 - [ ] Robots.txt accessible: `GET /robots.txt`
 - [ ] Contact API responds: `POST /api/contact`
 - [ ] 404 errors handled gracefully
+
+### ✅ Subscription API Endpoints
+
+- [ ] Add subscription: `POST /api/v1/subscriptions`
+- [ ] Get active subscriptions: `GET /api/v1/subscriptions/active/:userId`
+- [ ] Get all subscriptions: `GET /api/v1/subscriptions/all/:userId`
+- [ ] Get active services: `GET /api/v1/subscriptions/services/active/:userId`
+- [ ] Check service subscription: `GET /api/v1/subscriptions/check/:userId/:serviceName`
+- [ ] End subscription: `PUT /api/v1/subscriptions/:subscriptionId/end`
+- [ ] Reactivate subscription: `PUT /api/v1/subscriptions/:subscriptionId/reactivate`
+- [ ] Delete subscription: `DELETE /api/v1/subscriptions/:subscriptionId`
 
 ### ✅ Contact Form
 
@@ -242,6 +245,7 @@ After deployment, verify these items:
 - [ ] Home page loads in < 1 second
 - [ ] Contact form in < 500ms
 - [ ] Email sends within 5 seconds
+- [ ] Subscription endpoints respond in < 200ms
 - [ ] No timeout errors
 - [ ] No 500 errors in logs
 
@@ -253,6 +257,7 @@ After deployment, verify these items:
 - [ ] CAPTCHA verification working
 - [ ] Rate limiting active
 - [ ] Session cookies secure
+- [ ] Subscription endpoints require authentication
 
 ### ✅ Monitoring
 
@@ -260,6 +265,7 @@ After deployment, verify these items:
 - [ ] Error alerts configured (if applicable)
 - [ ] Uptime monitoring active
 - [ ] Performance metrics visible
+- [ ] Database health monitored
 
 ---
 
@@ -289,15 +295,8 @@ pm2 restart kelvinkamara
 # If that doesn't work, rollback and restart
 git revert HEAD
 npm install
+npm run migrate:undo  # Only if migration caused the issue
 pm2 restart kelvinkamara
-```
-
-### Using Heroku
-
-```bash
-# Rollback to previous release
-heroku releases
-heroku rollback v3  # Replace with actual version number
 ```
 
 ---
@@ -309,6 +308,7 @@ heroku rollback v3  # Replace with actual version number
 - [ ] Monitor logs for errors: `tail -f logs/access.log`
 - [ ] Check disk space: `df -h`
 - [ ] Verify uptime: `ps aux | grep node`
+- [ ] Check database health: `npm run db:health` (if implemented)
 
 ### Weekly Checks
 
@@ -316,6 +316,7 @@ heroku rollback v3  # Replace with actual version number
 - [ ] Check for critical npm vulnerabilities: `npm audit`
 - [ ] Verify backups are working
 - [ ] Test email sending
+- [ ] Test subscription endpoints
 
 ### Monthly Checks
 
@@ -324,13 +325,15 @@ heroku rollback v3  # Replace with actual version number
 - [ ] Run security audit: `npm audit`
 - [ ] Test disaster recovery
 - [ ] Review and rotate logs
+- [ ] Verify database indexes are optimized
 
 ### Quarterly Checks
 
 - [ ] Security scan of application
-- [ ] Load testing
+- [ ] Load testing (including subscription endpoints)
 - [ ] Review and update dependencies
 - [ ] Update SSL certificates (if used)
+- [ ] Database optimization and maintenance
 
 ---
 
@@ -359,6 +362,12 @@ TURNSTILE_SECRET=1x0000000000000000000000000000000AA
 ALLOWED_ORIGINS=https://kelvinkamara.com,https://www.kelvinkamara.com
 SECURE_SSL_REDIRECT=true
 SECURE_SSL_PROXY_HEADER=X-Forwarded-Proto,https
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=kelvinkamara_prod
+DB_USER=app_user
+DB_PASS=<strong-password>
 ```
 
 ### Optional Environment Variables
@@ -381,6 +390,23 @@ RATE_LIMIT_MAX=10000   # requests per window
 3. Check `APP_KEY` is set and valid
 4. Verify all required dependencies installed: `npm install`
 5. Check port 8000 is not already in use
+6. Verify database connection configured
+
+### Database Migrations Failed
+
+1. Check database connection in `.env`
+2. Verify database user has proper permissions
+3. Check migration file syntax: `npm run migrate --debug`
+4. If migration failed mid-way, rollback: `npm run migrate:undo`
+5. Fix the migration file and retry
+
+### Subscription Endpoints Not Working
+
+1. Verify migration ran successfully: `npm run migrate`
+2. Check subscription table exists: `SHOW TABLES LIKE 'subscriptions'`
+3. Verify authentication middleware is working
+4. Check API request includes authentication
+5. Review logs for detailed error: `tail -f logs/access.log`
 
 ### Email Not Sending
 
@@ -414,9 +440,10 @@ RATE_LIMIT_MAX=10000   # requests per window
 
 1. Check system load: `top` or `htop`
 2. Verify email service isn't blocking
-3. Check database queries (if using database)
+3. Check database queries and indexes
 4. Monitor network latency
-5. Scale horizontally if needed
+5. Check subscription query performance with indexes
+6. Scale horizontally if needed
 
 ---
 
@@ -428,18 +455,22 @@ RATE_LIMIT_MAX=10000   # requests per window
 - Keep Node.js updated
 - Monitor logs for suspicious activity
 - Regularly update dependencies
+- Protect database credentials
 
 ⚠️ **Data Backups**:
 - Backup logs regularly
-- If using database, backup daily
+- Backup database daily
 - Test restore procedures
 - Store backups securely
+- Include subscription data in backups
 
 ⚠️ **Monitoring**:
 - Set up alerts for errors
 - Monitor email delivery
 - Track uptime
 - Monitor resource usage
+- Monitor database performance
+- Track subscription API usage
 
 ---
 
@@ -450,6 +481,39 @@ RATE_LIMIT_MAX=10000   # requests per window
 - [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md) - Migration details
 - [AUDIT_REPORT.md](./AUDIT_REPORT.md) - Security audit
 - [INDEX.md](./INDEX.md) - Documentation index
+
+---
+
+## Subscription Feature Implementation
+
+**Files Added**:
+- `src/models/V1/subscription.js` - Subscription data model
+- `src/migrations/V1/20261125000000-create-subscriptions-table.js` - Database table creation
+- `src/controllers/API/V1/web/subscriptionControllers.js` - 8 endpoint handlers
+- `src/routes/API/V1/web/subscriptionRoutes.js` - RESTful API routes
+- `tests/subscriptionTests.js` - Comprehensive test suite (15+ tests)
+
+**Database Table**: `subscriptions`
+- Tracks client service subscriptions
+- Fields: id, userId, serviceName, startDate, endDate, isActive, timestamps
+- Soft delete support with paranoid mode
+- Optimized indexes for queries
+
+**API Endpoints** (all require authentication):
+- `POST /api/v1/subscriptions` - Add subscription
+- `GET /api/v1/subscriptions/active/:userId` - Get active subscriptions
+- `GET /api/v1/subscriptions/all/:userId` - Get all subscriptions
+- `GET /api/v1/subscriptions/services/active/:userId` - Get active service names
+- `GET /api/v1/subscriptions/check/:userId/:serviceName` - Check service access
+- `PUT /api/v1/subscriptions/:subscriptionId/end` - End subscription
+- `PUT /api/v1/subscriptions/:subscriptionId/reactivate` - Reactivate subscription
+- `DELETE /api/v1/subscriptions/:subscriptionId` - Delete subscription
+
+**Setup**:
+```bash
+npm run migrate  # Create subscriptions table
+npm test -- tests/subscriptionTests.js  # Run tests
+```
 
 ---
 
